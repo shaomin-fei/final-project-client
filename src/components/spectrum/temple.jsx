@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-/* eslint no-undef: "off" */
+
 
 /*
  * @Author: shaomin fei
@@ -13,6 +13,9 @@
 import React,{Component} from 'react';
 import {List} from 'immutable';
 import PropTypes from "prop-types"
+
+
+import {SpectrumUtils} from "./utils"
 
 
 //const Highcharts=require('../../thirdparty/Highcharts-8.1.2/code/highcharts.src');
@@ -79,23 +82,6 @@ function randomNum(minNum, maxNum) {
        
 export default class Spectrum extends Component{
 
-    // private chart:Highcharts.Chart|null;
-    // private chartHeatMap:Highcharts.Chart|null;
-    // private container:any;
-    // private heatMapContainer:HTMLDivElement|null;
-    // // private heatMapColIndex:number=0;
-    // private lstHeatMapData:Array<Array<Array<number>>>=[];
-    // private heatMapCount:number=30;
-    // private specProps:IProps={
-    //     specAttr:{}
-    // };
-   
-    // private isMouseDown:boolean;
-    // private  options:Highcharts.Options ={};
-    // private positionMouseDown:IPosition;
-    // private restZoom:boolean;
-    //private packageCount:number;
-
     //@type {HTMLDivElement}
     container=null;
     /**
@@ -145,13 +131,22 @@ export default class Spectrum extends Component{
         this.restZoom=false;
         this.chart=null;
         this.chartHeatMap=null;
-        this.chartHeatMap=null;
+        
         
         //this.lstHeatMapData=[];
     
         // this.state={
         //     packageCount:0
         // }
+    }
+ /*********
+  * @param {Highcharts.Axis} xAxis
+  * @param {Highcharts.AxisSetExtremesEventObject} event
+  * 用箭头函数，否则this不对，需要绑定waterFallXaxisZoomedCallback=this.waterFallXaxisZoomedCallback.bind(this)
+  */
+
+    waterFallXaxisZoomedCallback=(min,max)=>{
+        this.chart.xAxis[0].setExtremes(min,max);
     }
     /**
       * @Author: shaomin fei
@@ -185,7 +180,7 @@ export default class Spectrum extends Component{
             title:{
                 text:""
             },
-            
+           
             chart:{
                 
                 zoomType:'xy',
@@ -203,7 +198,7 @@ export default class Spectrum extends Component{
                     }
                 },
                 events:{
-                    selection:this.resetZoomWhenDragLeft,
+                    selection:this.ZoomXaxis,
                 },
              },
              xAxis:{
@@ -213,9 +208,14 @@ export default class Spectrum extends Component{
                 // gridline will not show if don't set gridlinewidth
                 type:"linear",
                 gridLineWidth:1,
-                 crosshair:true,
+                 crosshair:{
+                     width:5,
+                     color:"red",
+                     zIndex:10,
+                 },
                  gridLineColor:"gray",
                  gridLineDashStyle:"LongDash",
+                 
                  //tickAmount:10,
                 //  at least show ten points of x
                  //minRange:10,
@@ -302,62 +302,23 @@ export default class Spectrum extends Component{
     }
     //@param {Highcharts.ChartSelectionContextObject} e
     //@return: {boolean}
-    resetZoomWhenDragLeft=(e)=>{
+    ZoomXaxis=(event)=>{
         // stop zoom in
-        // console.log(e.xAxis);
-        // if((e.xAxis[0].axis.oldMin||0)>(e.xAxis[0].axis.min||0)){
-        //     console.log("left");
-        // }
-       if(this.restZoom){
-           return false;
-       }
-        return true;
+        const [min,max]=SpectrumUtils.ZoomXaxies(event,this.chart.xAxis[0].tickInterval);
+        this.chartHeatMap&&this.chartHeatMap.ChangeExtremes(min,max);
+            //动态修改
+            //this.DynamicChangeTickInterval(xdataL);
+            //this.renderMaxOrMin("Max");
+        return false;
     }
-    // shouldComponentUpdate(){
-    //     if(this.props.specAttr.packageCount===this.state.packageCount){
-    //         return false;
-    //     }
-    //     this.setState({packageCount:this.props.specAttr.packageCount});
-       
-    //     return true;
-    // }
+   
     componentDidMount(){
     
         this.setOptions();
-        (this.container).onmousedown=this.containerMouseDown;
-        (this.container).onmouseup=this.containerMouseUp;
-        
-
+       
     }
     componentWillUnmount(){
-        (this.container).onmousedown=null;
-        (this.container).onmouseup=null;
-    }
-    //@type {MouseEvent} e
-    containerMouseDown=(e)=>{
-        this.isMouseDown=true;
-        this.positionMouseDown={x:e.x,y:e.y};
-    }
-    //@param {MouseEvent} e
-    containerMouseUp=(e)=>{
-        this.isMouseDown=false;
-        if(this.positionMouseDown.x>e.x){
-            //left drag
-            this.restZoom=true;
-            if(this.chart){
-                //restore
-                this.chart.xAxis[0].setExtremes(undefined,undefined);
-                this.chart.yAxis[0].setExtremes(undefined,undefined);
-            }
-           
-            //Highcharts.fireEvent(this,"selection",e);
-        }else{
-            //right drag
-            this.restZoom=false;
-        }
-        
-        //console.log(this.chartHeatMap?.legend.options.symbolHeight);
-        //Highcharts.fireEvent(this,"selection",e);
+       
     }
      render(){
 
@@ -411,7 +372,7 @@ export default class Spectrum extends Component{
             <div ref={dv=>this.container=dv}>
 
             </div>
-            <WaterFall ref={wf=>this.chartHeatMap=wf}></WaterFall>
+            <WaterFall waterFallXaxisZoomedCallback={this.waterFallXaxisZoomedCallback} ref={wf=>this.chartHeatMap=wf}></WaterFall>
             </>
         ); 
      }

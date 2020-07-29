@@ -7,6 +7,9 @@ import React, { Component } from 'react';
 // import Highcharts from 'highcharts/highstock';
 
 import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js"
+import { number } from 'prop-types';
+
+import {SpectrumUtils} from "./utils"
 
 
 
@@ -36,9 +39,16 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
             this.chartHeatMap=null;
             this.heatMapCount=30;
         }
-
+// 用箭头函数，否则需要绑定this
+        ZoomX=(event)=>{
+            //console.log(this);
+            //console.log(this.chartHeatMap);
+            const [min,max]=SpectrumUtils.ZoomXaxies(event,this.chartHeatMap.xAxis[0].tickInterval);
+            this.props.waterFallXaxisZoomedCallback(min,max);
+            return false;
+        }
         updateData(data, animation){
-            const dataIn=Date.now();
+            //const dataIn=Date.now();
             if(this.points){
                 this.points.splice(0,this.points.length);
             }
@@ -70,104 +80,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
             }
             //console.log("new update",Date.now()-dataIn);
             return true;
-            /*var options = this.options, dataSorting = options.dataSorting, oldData = this.points, pointsToAdd = [], hasUpdatedByKey, i, point, lastIndex, requireSorting = this.requireSorting, equalLength = data.length === oldData.length, succeeded = true;
-            this.xIncrement = null;
-            // Iterate the new data
-            data.forEach(function (pointOptions, i) {
-                var id, x, pointIndex, optionsObject = (defined(pointOptions) &&
-                    this.pointClass.prototype.optionsToObject.call({ series: this }, pointOptions)) || {};
-                // Get the x of the new data point
-                x = optionsObject.x;
-                id = optionsObject.id;
-                if (id || isNumber(x)) {
-                    pointIndex = this.findPointIndex(optionsObject, lastIndex);
-                    // Matching X not found
-                    // or used already due to ununique x values (#8995),
-                    // add point (but later)
-                    if (pointIndex === -1 ||
-                        typeof pointIndex === 'undefined') {
-                        pointsToAdd.push(pointOptions);
-                        // Matching X found, update
-                    }
-                    else if (oldData[pointIndex] &&
-                        pointOptions !== options.data[pointIndex]) {
-                        oldData[pointIndex].update(pointOptions, false, null, false);
-                        // Mark it touched, below we will remove all points that
-                        // are not touched.
-                        oldData[pointIndex].touched = true;
-                        // Speed optimize by only searching after last known
-                        // index. Performs ~20% bettor on large data sets.
-                        if (requireSorting) {
-                            lastIndex = pointIndex + 1;
-                        }
-                        // Point exists, no changes, don't remove it
-                    }
-                    else if (oldData[pointIndex]) {
-                        oldData[pointIndex].touched = true;
-                    }
-                    // If the length is equal and some of the nodes had a
-                    // match in the same position, we don't want to remove
-                    // non-matches.
-                    if (!equalLength ||
-                        i !== pointIndex ||
-                        (dataSorting && dataSorting.enabled) ||
-                        this.hasDerivedData) {
-                        hasUpdatedByKey = true;
-                    }
-                }
-                else {
-                    // Gather all points that are not matched
-                    pointsToAdd.push(pointOptions);
-                }
-            }, this);
-            // Remove points that don't exist in the updated data set
-            let dateIn=Date.now();
-            if (hasUpdatedByKey) {
-                i = oldData.length;
-                while (i--) {
-                    point = oldData[i];
-                    if (point && !point.touched && point.remove) {
-                        point.remove(false, animation);
-                    }
-                }
-                console.log("upate destroy out",Date.now()-dateIn);
-                // If we did not find keys (ids or x-values), and the length is the
-                // same, update one-to-one
-            }
-            else if (equalLength && (!dataSorting || !dataSorting.enabled)) {
-                data.forEach(function (point, i) {
-                    // .update doesn't exist on a linked, hidden series (#3709)
-                    // (#10187)
-                    if (oldData[i].update && point !== oldData[i].y) {
-                        oldData[i].update(point, false, null, false);
-                    }
-                });
-                // Don't add new points since those configs are used above
-                pointsToAdd.length = 0;
-                // Did not succeed in updating data
-            }
-            else {
-                succeeded = false;
-            }
-            oldData.forEach(function (point) {
-                if (point) {
-                    point.touched = false;
-                }
-            });
-            if (!succeeded) {
-                return false;
-            }
-            // Add new points
-            pointsToAdd.forEach(function (point) {
-                this.addPoint(point, false, null, null, false);
-            }, this);
-            if (this.xIncrement === null &&
-                this.xData &&
-                this.xData.length) {
-                this.xIncrement = arrayMax(this.xData);
-                this.autoIncrement();
-            }
-            return true;*/
+            
            
             //console.log("child update");
         }
@@ -203,9 +116,9 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                         
                         //(this.chartHeatMap.get("waterfall") as Highcharts.Series).setData(dataShowTemp,true,false,true);
                         //(this.chartHeatMap.get("waterfall") ).setData([],false);
-                        const date=Date.now();
+                        //const date=Date.now();
                         (this.chartHeatMap.get("waterfall")).setData(dataShow,true);
-                        console.log("set data",Date.now()-date);
+                        //console.log("set data",Date.now()-date);
                     
                         // (this.chartHeatMap.get("waterfall")).update({
                         //     type:"heatmap",
@@ -222,6 +135,14 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
             this.setHeatMapOptions();
             ExtendChart();
         }
+        /*****
+         * @param {number} min
+         * @param {number} max
+         */
+        ChangeExtremes(min,max){
+            this.chartHeatMap&&this.chartHeatMap.xAxis[0].setExtremes(min,max);
+            
+        }
         setHeatMapOptions(){
             //    do not use boost when using wrap,or wrapped function drawpoints will no invoke
             //:Highcharts.Options
@@ -231,8 +152,18 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                        text:""
                    },
                    chart:{
+                       events:{
+                           selection:this.ZoomX
+                       },
                        type:"heatmap",
                        zoomType:"x",
+                       resetZoomButton: {
+                        theme: {
+                            // do not show the deafult button
+                            //resetChartZoom() function can reset to the original
+                            display: 'none'
+                        }
+                    },
                        borderWidth:1,
                        borderColor:"red",
                        height: (9 / 16 * 100) + '%' // 16:9 ratio
@@ -268,7 +199,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                     endOnTick: false,
                     max:this.heatMapCount,
                     min:0,
-                    crosshair:true,
+                    //crosshair:true,
                     //tickPositions: [0, 6, 12, 18, 24],
                     //tickWidth: 1,
                     //min: 0,
@@ -277,7 +208,12 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                    },
                    xAxis:{
                     categories: [],
+                    tickInterval:10,
                     visible: false,
+                    // sync X to spectrum
+                    event:{
+                        setExtremes:this.props.waterFallXaxisZoomedCallback
+                    },
                    // type: 'linear',
                     crosshair:true,
                     // x axis goes to upper side
@@ -337,13 +273,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                         enabled:false
                     },
                     symbolHeight:this.chartHeatMap?.plotHeight,
-                    // symbolHeight: (this.chartHeatMap&&this.chartHeatMap.options&&
-                    // this.chartHeatMap.options.chart&&this.chartHeatMap.options.chart.height&&
-                    // this.chartHeatMap.options.chart.spacingBottom&&this.chartHeatMap.options.chart.spacingTop)?
-                    // this.chartHeatMap.options.chart.height-
-                    // this.chartHeatMap.options.chart.spacingBottom-
-                    // this.chartHeatMap.options.chart.spacingTop
-                    // :200
+                    
                  },
             
                    series: [{
@@ -351,10 +281,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                    id:"waterfall",
                    name:"waterfall",
                     type:"heatmap",
-                    marker:{
-                        animation:false,
-                        enabled:true,
-                    },
+
                     
                     nullColor: '#EFEFEF',
                     // dataLabels: {
@@ -363,16 +290,13 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                     // },
                     //colsize: 5000, // one day
                     tooltip: {
-                        headerFormat: 'value<br/>',
+                        headerFormat: 'time<br/>',
                         pointFormat: '{point.x:%e %b, %Y} {point.y}:00: <b>{point.value} </b>'
                     },
                     turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
                 }],
         
-                // data:{
-                //     columns:[[1,1,1,1,1],[10,10,10,10,10],[50,50,50,50,50]],
-                //     rows:[[1,1,1,1,1],[10,10,10,10,10],[50,50,50,50,50]],
-                // }
+               
                };
                
                this.chartHeatMap=Highcharts.chart(this.heatMapContainer,options);
@@ -380,18 +304,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                (this.chartHeatMap.get("waterfall")).__proto__.updateData=this.updateData;
                //update the legend height
                this.chartHeatMap.legend.update({symbolHeight:this.chartHeatMap?.plotHeight},true);
-              
-            //   let data=[];
-            //   for(let col=0;col<50;col++){
-            //     for(let i=0;i<801;i++){
-            //         let temp=[i,col,randomNum(-40,100)];
-            //         data.push(temp);
-            //    }
-            //   }
-               
-             // (this.chartHeatMap.get("waterfall") as Highcharts.Series).setData(data);
-              
-               
+             
            }
 
         render(){
@@ -434,9 +347,9 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
          * that requires one shape each point.
          * @param {Highcharts.Series} this
          */
-        H.wrap(H.Series.prototype, 'drawPoints', function() {
+        H.wrap(H.seriesTypes.heatmap.prototype, 'drawPoints', function() {
 
-            const dateIn=Date.now();
+            //const dateIn=Date.now();
             var ctx = this.getContext();
 
             if (ctx) {
@@ -460,7 +373,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
                 });
 
                 this.canvasToSVG();
-                console.log("drawPoints",Date.now()-dateIn);
+                //console.log("drawPoints",Date.now()-dateIn);
             } else {
                 this.chart.showLoading('Your browser doesn\'t support HTML5 canvas, <br>please use a modern browser');
 
@@ -470,7 +383,7 @@ import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js
             }
         });
 
-        H.Series.prototype.directTouch = false; // Use k-d-tree
+        H.seriesTypes.heatmap.prototype.directTouch = false; // Use k-d-tree
 
     })(Highcharts)
 };

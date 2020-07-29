@@ -6,3 +6,5 @@ quit your last commit,注意，仅仅是撤回commit操作，您写的代码仍�
 
 如果你进行了2次commit，想都撤回，可以使用HEAD~2
 4 GitLens 插件，管理git提交
+5 highcharts with large set,heatmap
+https://www.highcharts.com/forum/viewtopic.php?t=36417
