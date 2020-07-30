@@ -55,7 +55,7 @@ export default class WaterFall extends Component {
   updateData(data, animation) {
    
     if (this.points) {
-        this.points[0].x=100;
+        //this.points[0].x=100;
       this.points.splice(0, this.points.length);
     }
     if (this.data) {
@@ -88,7 +88,10 @@ export default class WaterFall extends Component {
     //console.log("child update");
   }
  
-  setData(yData) {
+  redraw(animation){
+    this.chartHeatMap.redraw(animation);
+  }
+  setData(yData,bDraw) {
     if (yData) {
       let data = [];
       let dataShow = [];
@@ -118,7 +121,7 @@ export default class WaterFall extends Component {
         //(this.chartHeatMap.get("waterfall") ).setData([],false);
         const date=Date.now();
         this.chartHeatMap.get("waterfall").thisData=data;
-        this.chartHeatMap.get("waterfall").setData(dataShow, true);
+        this.chartHeatMap.get("waterfall").setData(dataShow, bDraw);
         console.log("set data",Date.now()-date);
 
         // (this.chartHeatMap.get("waterfall")).update({
@@ -169,11 +172,12 @@ export default class WaterFall extends Component {
       },
       boost: {
         enabled: false,
-        //usePreallocated:true,
-        //useAlpha:false,
-        //useGPUTranslations: true,
+        // usePreallocated:true,
+        // useAlpha:false,
+        // useGPUTranslations: true,
       },
 
+      
       exporting: {
         enabled: false,
       },

@@ -150,23 +150,27 @@ export default class Spectrum extends Component{
     }
     /**
       * @Author: shaomin fei
+      * 准备数据需要一定的时间，所以等数据准备好在画，准备数据期间，不卡主界面
       * @description: 
       * @Date: 2020-07-28 12:50:05
       * @param {number[]} yData
       * @return: 
       */
-     setData(yData){
-        if(yData){
+     async setData(yData){
+        const reslult=await ((yData)=>{
+            if(yData){
                 if(this.chart){
-                    (this.chart.get("real-line")).setData(yData||[],true);
+                    (this.chart.get("real-line")).setData(yData||[],false);
                 }
                 if(this.chartHeatMap){
-                    this.chartHeatMap.setData(yData);
+                    this.chartHeatMap.setData(yData,false);
                 }
             }
+            return true;
+        })(yData);
             
-        
-
+        this.chart.redraw(false);
+        this.chartHeatMap.redraw(false);
         }
     
   
