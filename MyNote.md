@@ -8,3 +8,14 @@ quit your last commit,注意，仅仅是撤回commit操作，您写的代码仍�
 4 GitLens 插件，管理git提交
 5 highcharts with large set,heatmap
 https://www.highcharts.com/forum/viewtopic.php?t=36417
+6 一个同行写的瀑布图
+https://jsfiddle.net/codexu/ugva08cq/
+7 插件：Bookmarks 快速跳转到制定行
+
+使用：
+
+    开关：ctrl+alt+k
+
+     跳至上一个：ctrl+alt+j
+
+     跳至下一个：ctrl+alt+l
