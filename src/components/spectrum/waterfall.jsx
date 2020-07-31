@@ -178,7 +178,7 @@ export default class WaterFall extends Component {
       this.options.data.push(point);
       
     }, this);
-    console.log("new update",Date.now()-dataIn);
+    //console.log("new update",Date.now()-dataIn);
     if (this.xIncrement === null && this.xData && this.xData.length) {
       this.xIncrement = arrayMax(this.xData);
       this.autoIncrement();
@@ -228,7 +228,7 @@ export default class WaterFall extends Component {
         this.chartHeatMap.get("waterfall").thisData=data;
         this.chartHeatMap.get("waterfall").setData(dataShow, bDraw);
         
-        console.log("set data",Date.now()-date);
+        //set data",Date.now()-date);
 
         // (this.chartHeatMap.get("waterfall")).update({
         //     type:"heatmap",
@@ -457,16 +457,16 @@ export default class WaterFall extends Component {
       prePoints[i].plotY+=height;
       prePoints[i].y-=1;
     }
-    console.log("move other",Date.now()-dateIn);
+    //console.log("move other",Date.now()-dateIn);
     if(prePoints.length/this.thisData.length>=totalRow){
       //满了，需要先删在改，删掉尾巴上的this.thisData.length个点
       let ii=0;
-      const dateRm=Date.now();
+      //const dateRm=Date.now();
       const len=prePoints.length-thisData.length;
       for(ii=prePoints.length-1;ii>=len;ii--){
         this.removePoint(ii,false,false);
       }
-      console.log("delete count",ii,Date.now()-dateRm);
+      //console.log("delete count",ii,Date.now()-dateRm);
     }
    
     let dateAdd=Date.now();
@@ -482,7 +482,7 @@ export default class WaterFall extends Component {
     }
     this.data.splice(0,0,...newPts) ;
     this.points.splice(0,0,...newPts);
-    console.log("Data add",Date.now()-dateAdd);
+    //console.log("Data add",Date.now()-dateAdd);
     const series=this;
     const symbol=this.options.marker;
     const symbols=this.chart.renderer.symbols;
@@ -493,13 +493,13 @@ export default class WaterFall extends Component {
     let dateShape=Date.now();
     calculateShapes(newPts,hasRegularShape);
 
-  console.log("data shape",Date.now()-dateShape);
+  //console.log("data shape",Date.now()-dateShape);
 
 
-  const dateSevent=Date.now();
+  //const dateSevent=Date.now();
 
   translateColors(series, newPts);
-  console.log("fire event",Date.now()-dateSevent);
+  //console.log("fire event",Date.now()-dateSevent);
   
     
     //this.originalTranslate();
@@ -616,7 +616,7 @@ const ExtendChart = () => {
                 pt&&pts.push(pt);
 
             });
-            console.log("find points",Date.now()-dateIn);
+            //console.log("find points",Date.now()-dateIn);
             return pts;
 
         })();
@@ -670,7 +670,7 @@ const ExtendChart = () => {
              );
            }
         });
-        console.log("draw rect",Date.now()-dateRec);
+        //console.log("draw rect",Date.now()-dateRec);
 
      
      };
@@ -685,7 +685,7 @@ const ExtendChart = () => {
               0, 0, this.waterFallCanvas.width, this.waterFallCanvas.height,
               0, 0,
               this.canvas.width, this.canvas.height)
-              console.log("drawImage",Date.now()-dateIn);
+              //console.log("drawImage",Date.now()-dateIn);
 
           }
 
@@ -703,7 +703,7 @@ const ExtendChart = () => {
         
 
         this.canvasToSVG();
-        console.log("new img",Date.now()-dateIn);
+        //console.log("new img",Date.now()-dateIn);
 
         return;
       }

@@ -211,6 +211,7 @@ export default class Spectrum extends Component {
     this.specProps.specAttr.yTitle = yTitle || this.specProps.specAttr.yTitle;
     this.specProps.specAttr.yMin = yMin || this.specProps.specAttr.yMin;
     this.specProps.specAttr.yMax = yMax || this.specProps.specAttr.yMax;
+    // 不画crosshair, 即鼠标移动的时候，不画x，y的线，只画吸附点
     this.options = {
       title: {
         text: "",
@@ -242,11 +243,11 @@ export default class Spectrum extends Component {
         // gridline will not show if don't set gridlinewidth
         type: "linear",
         gridLineWidth: 1,
-        crosshair: {
-          width: 5,
-          color: "red",
-          zIndex: 10,
-        },
+        // crosshair: {
+        //   width: 5,
+        //   color: "red",
+        //   zIndex: 10,
+        // },
         gridLineColor: "gray",
         gridLineDashStyle: "LongDash",
 
@@ -281,7 +282,7 @@ export default class Spectrum extends Component {
         gridLineWidth: 1,
         min: this.specProps.specAttr.yMin,
         max: this.specProps.specAttr.yMax,
-        crosshair: true,
+        //crosshair: true,
         gridLineColor: "gray",
         gridLineDashStyle: "LongDash",
         tickInterval: 20,
@@ -298,8 +299,12 @@ export default class Spectrum extends Component {
           type: "line",
           color: "green",
           lineWidth: 2.5,
-          boostThreshold: 200,
+          boostThreshold: 2000,
           showInLegend: false,
+        //   非boost模式下，立即生成kdtree，
+        //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
+        //boost模式下，线宽等属性不生效
+          kdNow:true,
           data: yData ? yData : [],
         },
       ],
