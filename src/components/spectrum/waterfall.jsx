@@ -6,7 +6,7 @@ import React, { Component } from "react";
 // Alternatively, this is how to load Highstock. Highmaps is similar.
 // import Highcharts from 'highcharts/highstock';
 
-import Highcharts from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js";
+import Highcharts,{merge,extend,fireEvent} from "../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js";
 import { number } from "prop-types";
 
 import { SpectrumUtils } from "./utils";
@@ -18,7 +18,61 @@ import { SpectrumUtils } from "./utils";
  * - Add a K-D-tree to find the nearest point on mouse move. Since we no longer have SVG shapes
  *   to capture mouseovers, we need another way of detecting hover points for the tooltip.
  */
-
+// function merge() {
+//   /* eslint-enable valid-jsdoc */
+//   var i, args = arguments, len, ret = {}, doCopy = function (copy, original) {
+//       // An object is replacing a primitive
+//       if (typeof copy !== 'object') {
+//           copy = {};
+//       }
+//       objectEach(original, function (value, key) {
+//           // Copy the contents of objects, but not arrays or DOM nodes
+//           if (isObject(value, true) &&
+//               !isClass(value) &&
+//               !isDOMElement(value)) {
+//               copy[key] = doCopy(copy[key] || {}, value);
+//               // Primitives and arrays are copied over directly
+//           }
+//           else {
+//               copy[key] = original[key];
+//           }
+//       });
+//       return copy;
+//   };
+//   // If first argument is true, copy into the existing object. Used in
+//   // setOptions.
+//   if (args[0] === true) {
+//       ret = args[1];
+//       args = Array.prototype.slice.call(args, 2);
+//   }
+//   // For each argument, extend the return
+//   len = args.length;
+//   for (i = 0; i < len; i++) {
+//       ret = doCopy(ret, args[i]);
+//   }
+//   return ret;
+// }
+function translateColors (series,points) {
+                
+  var  nullColor = series.options.nullColor, 
+                colorAxis = series.colorAxis, 
+                colorKey = series.colorKey;
+                points.forEach(function (point) {
+                    var value = point.getNestedProperty(colorKey), color;
+                    color = point.options.color ||
+                        (point.isNull || point.value === null ?
+                            nullColor :
+                            (colorAxis && typeof value !== 'undefined') ?
+                                colorAxis.toColor(value, point) :
+                                point.color || series.color);
+                    if (color && point.color !== color) {
+                        point.color = color;
+                        if (series.options.legendType === 'point' && point.legendItem) {
+                            series.chart.legend.colorizeItem(point, point.visible);
+                        }
+                    }
+                });
+            }
 function arrayMax(data) {
   var i = data.length,
     max = data[0];
@@ -28,6 +82,41 @@ function arrayMax(data) {
     }
   }
   return max;
+}
+function calculateShapes(points,hasRegularShape){
+  points.forEach(function (point) {
+    var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
+        x: Math.min(cellAttr.x1, cellAttr.x2),
+        y: Math.min(cellAttr.y1, cellAttr.y2),
+        width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
+        height: Math.max(Math.abs(cellAttr.y2 - cellAttr.y1), 0)
+    };
+   
+    // If marker shape is regular (symetric), find shorter
+    // cell's side.
+    if (hasRegularShape) {
+        sizeDiff = Math.abs(shapeArgs.width - shapeArgs.height);
+        shapeArgs.x = Math.min(cellAttr.x1, cellAttr.x2) +
+            (shapeArgs.width < shapeArgs.height ? 0 : sizeDiff / 2);
+        shapeArgs.y = Math.min(cellAttr.y1, cellAttr.y2) +
+            (shapeArgs.width < shapeArgs.height ? sizeDiff / 2 : 0);
+        shapeArgs.width = shapeArgs.height =
+            Math.min(shapeArgs.width, shapeArgs.height);
+    }
+    pointAttr = {
+        plotX: (cellAttr.x1 + cellAttr.x2) / 2,
+        plotY: (cellAttr.y1 + cellAttr.y2) / 2,
+        clientX: (cellAttr.x1 + cellAttr.x2) / 2,
+        shapeType: 'path',
+        shapeArgs:shapeArgs
+        //  shapeArgs: merge(true, shapeArgs, {
+        //      d: symbols[shape](shapeArgs.x, shapeArgs.y, shapeArgs.width, shapeArgs.height)
+        //  })
+    };
+    
+    extend(point, pointAttr);
+   
+});
 }
 export default class WaterFall extends Component {
   constructor(props) {
@@ -53,13 +142,15 @@ export default class WaterFall extends Component {
     return false;
   };
   updateData(data, animation) {
-   
+
+    this.prePoints=this.points;
+    this.preData=this.data;
     if (this.points) {
         //this.points[0].x=100;
-      this.points.splice(0, this.points.length);
+      this.points=[];
     }
     if (this.data) {
-      this.data.splice(0, this.data.length);
+      this.data=[];
     }
     if (this.processedXData) {
       this.processedXData.splice(0, this.processedXData.length);
@@ -74,8 +165,18 @@ export default class WaterFall extends Component {
       this.valueData.splice(0, this.valueData.length);
     }
     const dataIn=Date.now();
+    let index=0;
     data.forEach(function (point) {
-      this.addPoint(point, false, null, null, false);
+      //this.addPoint(point, false, null, null, false);
+      //xData，yData，processedXData，processedXData分别关联
+       this.xData.push(point[0]);
+       this.yData.push(point[1]);
+      //xData，yData
+      // this.processedXData.push(point[0]);
+      // this.processedYData.push(point[2]);
+      this.valueData.push(point[2]);
+      this.options.data.push(point);
+      
     }, this);
     console.log("new update",Date.now()-dataIn);
     if (this.xIncrement === null && this.xData && this.xData.length) {
@@ -89,9 +190,10 @@ export default class WaterFall extends Component {
   }
 
 
+
  
-  redraw(animation){
-    this.chartHeatMap.redraw(animation);
+  async redraw(animation){
+    await this.chartHeatMap.redraw(animation);
   }
   setData(yData,bDraw) {
     if (yData) {
@@ -309,7 +411,18 @@ export default class WaterFall extends Component {
     //    replace  update function and speed up the process
     this.chartHeatMap.get("waterfall").__proto__.updateData = this.updateData;
 
+    this.chartHeatMap.get("waterfall").originalTranslate=
+    this.chartHeatMap.get("waterfall").__proto__.translate;
+
+    this.chartHeatMap.get("waterfall").__proto__.translate=this.wrappedTranslate
+
+    this.chartHeatMap.get("waterfall").prePoints=[];
+
+    this.chartHeatMap.get("waterfall").preData=[];
+
     this.chartHeatMap.get("waterfall").thisData=[];
+
+    this.chartHeatMap.get("waterfall").totalRow=this.heatMapCount;
 
     //this.chartHeatMap.get("waterfall").Zoomed=reDrawImg;
 
@@ -319,6 +432,77 @@ export default class WaterFall extends Component {
       { symbolHeight: this.chartHeatMap?.plotHeight },
       true
     );
+  }
+   
+  wrappedTranslate(){
+    const dateIn=Date.now();
+    let prePoints=this.prePoints;
+    let preData=this.preData;
+    this.points=prePoints;
+    this.data=preData;
+    const thisData=this.thisData;
+    const totalRow=this.totalRow;
+    if(prePoints.length==0){
+      //第一次
+      this.originalTranslate();
+      return;
+    }
+    const shapeArgs=prePoints[0].shapeArgs;
+    //const {width,height}=shapeArgs;
+    const {height}=shapeArgs;
+    //修改剩下点的位置信息，每一行都下移一行，point里面的点和data里面的是关联引用，改一个就可以了
+    for(let i=0;i<prePoints.length;i++){
+      prePoints[i].options.y-=1;//索引减1
+      prePoints[i].shapeArgs.y+=height;
+      prePoints[i].plotY+=height;
+      prePoints[i].y-=1;
+    }
+    console.log("move other",Date.now()-dateIn);
+    if(prePoints.length/this.thisData.length>=totalRow){
+      //满了，需要先删在改，删掉尾巴上的this.thisData.length个点
+      let ii=0;
+      const dateRm=Date.now();
+      const len=prePoints.length-thisData.length;
+      for(ii=prePoints.length-1;ii>=len;ii--){
+        this.removePoint(ii,false,false);
+      }
+      console.log("delete count",ii,Date.now()-dateRm);
+    }
+   
+    let dateAdd=Date.now();
+    //新数据添加
+    let newPts=[];
+    for (let i = 0; i < thisData.length; i++) {
+      //const cursor = cropStart + i;
+      const pt=(new this.pointClass()).init(this, 
+      this.options.data[i], this.processedXData[i]);
+      
+      newPts.push(pt);
+      //
+    }
+    this.data.splice(0,0,...newPts) ;
+    this.points.splice(0,0,...newPts);
+    console.log("Data add",Date.now()-dateAdd);
+    const series=this;
+    const symbol=this.options.marker;
+    const symbols=this.chart.renderer.symbols;
+    const shape =  symbols[symbol] ? symbol : 'rect';
+    const hasRegularShape = ['circle', 'square'].indexOf(shape) !== -1;
+    
+
+    let dateShape=Date.now();
+    calculateShapes(newPts,hasRegularShape);
+
+  console.log("data shape",Date.now()-dateShape);
+
+
+  const dateSevent=Date.now();
+
+  translateColors(series, newPts);
+  console.log("fire event",Date.now()-dateSevent);
+  
+    
+    //this.originalTranslate();
   }
 
   render() {
@@ -365,6 +549,12 @@ const ExtendChart = () => {
     };
 
     Series.prototype.reDrawImg= function (series){
+    const symbol=series.options.marker;
+    const symbols=series.chart.renderer.symbols;
+    const shape =  symbols[symbol] ? symbol : 'rect';
+    const hasRegularShape = ['circle', 'square'].indexOf(shape) !== -1;
+    calculateShapes(series.points,hasRegularShape);
+    
       series.points.forEach(point=>{
 
         var plotY = point.plotY,
