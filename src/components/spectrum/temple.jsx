@@ -16,6 +16,7 @@ import PropTypes from "prop-types"
 
 
 import {SpectrumUtils} from "./utils"
+import "./spctrum.less"
 
 
 //const Highcharts=require('../../thirdparty/Highcharts-8.1.2/code/highcharts.src');
@@ -108,6 +109,9 @@ export default class Spectrum extends Component{
     static propTypes={
         specAttr:PropTypes.object.isRequired,
     }
+    state={
+        chartLoaded:false
+    }
     constructor(props){
         super(props);
         this.specProps={
@@ -131,6 +135,7 @@ export default class Spectrum extends Component{
         this.restZoom=false;
         this.chart=null;
         this.chartHeatMap=null;
+        this.measureCount=0;
         
         
         //this.lstHeatMapData=[];
@@ -158,6 +163,9 @@ export default class Spectrum extends Component{
       */
      async setData(yData){
         const reslult=await ((yData)=>{
+            // if(this.measureCount===10){
+            //     return;
+            // }    
             if(yData){
                 if(this.chart){
                     (this.chart.get("real-line")).setData(yData||[],false);
@@ -168,12 +176,18 @@ export default class Spectrum extends Component{
             }
             return true;
         })(yData);
-            
+        // if(this.measureCount===10){
+        //     return;
+        // }    
         this.chart.redraw(false);
         this.chartHeatMap.redraw(false);
-        }
+        this.measureCount++;
+        document.getElementById("measureCount").innerText=this.measureCount;
+        
+    }
     
   
+      
     setOptions(){
         const {xTitle,yTitle,yMin,yMax,yData}=this.props.specAttr;
         this.specProps.specAttr.xTitle=xTitle||this.specProps.specAttr.xTitle;
@@ -288,14 +302,15 @@ export default class Spectrum extends Component{
              },
              boost:{
                  enabled:true,
-                usePreallocated:true,
+                //  don't use this,when it's true,we will see a line from left to the right when we zoomed 
+                //usePreallocated:true,
                 //useAlpha:false,
                 useGPUTranslations: true,
 
              }
             
         }
-        this.chart=Highcharts.chart(this.container,this.options);
+        this.chart=Highcharts.chart(this.container,this.options,this.afterChartLoaded);
        
         this.chart.XRangeMHz={
             startMHz:88,
@@ -304,6 +319,24 @@ export default class Spectrum extends Component{
             yDataLen:0
         }
     }
+    afterChartLoaded=()=>{
+        //const chartLoaded=true;
+        //this.setState({chartLoaded});
+        
+    }
+    addMeasureCount=()=>{
+        const html="<div id=measureDiv>Measure Count:<span id=measureCount></span></div>";
+        this.addLable(html,40,100);
+       
+
+    }
+        //添加图表lable
+        addLable=(html, left, top, classname) =>{
+            return this.chart.renderer.label(html, left, top, null, null, null, true, false, classname).css({
+                color: 'red',
+                fontSize: '14px'
+            }).add();
+        }
     //@param {Highcharts.ChartSelectionContextObject} e
     //@return: {boolean}
     ZoomXaxis=(event)=>{
@@ -319,6 +352,7 @@ export default class Spectrum extends Component{
     componentDidMount(){
     
         this.setOptions();
+        this.addMeasureCount();
        
     }
     componentWillUnmount(){
@@ -374,7 +408,7 @@ export default class Spectrum extends Component{
         return (
             <>
             <div ref={dv=>this.container=dv}>
-
+             
             </div>
             <WaterFall waterFallXaxisZoomedCallback={this.waterFallXaxisZoomedCallback} ref={wf=>this.chartHeatMap=wf}></WaterFall>
             </>

@@ -87,6 +87,8 @@ export default class WaterFall extends Component {
 
     //console.log("child update");
   }
+
+
  
   redraw(animation){
     this.chartHeatMap.redraw(animation);
@@ -120,8 +122,10 @@ export default class WaterFall extends Component {
         //(this.chartHeatMap.get("waterfall") as Highcharts.Series).setData(dataShowTemp,true,false,true);
         //(this.chartHeatMap.get("waterfall") ).setData([],false);
         const date=Date.now();
+        this.chartHeatMap.get("waterfall").isTranslated=false;
         this.chartHeatMap.get("waterfall").thisData=data;
         this.chartHeatMap.get("waterfall").setData(dataShow, bDraw);
+        
         console.log("set data",Date.now()-date);
 
         // (this.chartHeatMap.get("waterfall")).update({
@@ -386,6 +390,8 @@ const ExtendChart = () => {
      });
      series.canvasToSVG();
     }
+
+  
     /**
      * Wrap the drawPoints method to draw the points in canvas instead of the slower SVG,
      * that requires one shape each point.
