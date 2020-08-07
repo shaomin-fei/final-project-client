@@ -1,0 +1,31 @@
+.header_always_exist {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  width: 100px;
+  cursor: pointer;
+}
+.header_always_exist_pic {
+  width: 16px;
+}
+.dropDownMenu .ant-dropdown-menu {
+  background: rgba(5, 59, 110, 0.9);
+  border-radius: 4px;
+}
+.dropDownMenu .ant-dropdown-menu-item:hover {
+  background: rgba(5, 59, 110, 0.9);
+}
+.dropDownMenu label {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.dropDownMenu .ant-btn > span {
+  display: inline-block;
+  width: 100px;
+}
+.dropDownMenu .ant-btn {
+  margin: 10px;
+}
+.userInfo {
+  color: white;
+}

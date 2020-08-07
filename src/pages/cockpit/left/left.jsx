@@ -1,0 +1,23 @@
+/*
+ * @Description: 
+ * @version: 1.0
+ * @Author: shaomin fei
+ * @Date: 2020-08-06 10:02:28
+ * @LastEditors: shaomin fei
+ * @LastEditTime: 2020-08-06 19:40:15
+ */
+import React from 'react';
+
+import DailyMonitor from "./daily-monitor/DailyMonitor";
+import Status from "./status/status";
+
+const Left=function(props){
+    return (
+    <>
+    <Status/>
+    <DailyMonitor/>
+    </>
+    );
+}
+
+export default Left;

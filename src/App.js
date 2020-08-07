@@ -15,6 +15,7 @@ import './App.css';
 
 
 import {WrpperSpectrumTest} from './components/spectrum/testspectrum';
+import BaseMap from "./components/map/basemap";
 
 // const spectrumProps={
 //   yData:[1,2,3,5,6,7],
@@ -26,14 +27,16 @@ import {WrpperSpectrumTest} from './components/spectrum/testspectrum';
 // }
 
 function App() {
+  
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <WrpperSpectrumTest ></WrpperSpectrumTest>
+        {/* <WrpperSpectrumTest ></WrpperSpectrumTest> */}
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <BaseMap></BaseMap>
         <a
           className="App-link"
           href="https://reactjs.org"

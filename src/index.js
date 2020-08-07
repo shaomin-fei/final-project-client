@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 14:15:40
- * @LastEditTime: 2020-07-28 16:23:47
+ * @LastEditTime: 2020-08-06 09:12:53
  * @LastEditors: shaomin fei
  * @Description: 
  * @FilePath: \rms-ui\src\index.js
@@ -9,14 +9,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+import {MainPageInfo} from './config/config'
 
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MainPageInfo.mainPage />
   </React.StrictMode>,
   document.getElementById('root')
 );

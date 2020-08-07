@@ -48,13 +48,14 @@ function generateData(){
 }
 
 
-export const WrpperSpectrumTest=()=>{
+export const WrpperSpectrumTest=(props)=>{
 
     let [specData,setSpecData]= useState([]);
     let wrapperAttr={
         interval:null,
         didMount:false
     }
+    console.log("WrpperSpectrumTestxxx",props.children);
     let attr=useRef(wrapperAttr);
     //@type {Spectrum}{}
     let spec=useRef(null);

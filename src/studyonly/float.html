@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        #box{
+            /* width: 600px;
+            height: 600px; */
+            background:deeppink;
+            /* 父div在不设置宽高的情况下，
+            会自动感知没有设置float属性的子元素的高度，并自动调整,
+            设置overfloat属性为hidden可以让其感知到float 属性的子元素高度 */
+            /* overflow: hidden; */
+            float: left;
+
+        }
+        #box>div:first-child{
+            width: 200px;
+            height: 200px;
+            background: green;
+            float: right;
+        }
+        #box>div:nth-child(2){
+            width: 200px;
+            height: 200px;
+            background: aqua;
+            float: right;
+        }
+        #box>div:nth-child(3){
+            width: 200px;
+            height: 200px;
+            background: red;
+            float: right;
+        }
+        #box>div:last-child{
+            width: 400px;
+            height: 400px;
+            background: black;
+            clear:both
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+</html>
