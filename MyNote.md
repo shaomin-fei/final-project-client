@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-06 17:28:52
+ * @LastEditTime: 2020-08-10 23:24:02
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -36,3 +36,12 @@ npm install ol
 https://developers.google.com/web/updates/2017/12/audio-worklet
 11  box-shadow文章
 https://blog.csdn.net/qq_26769677/article/details/70766373
+12 echarts
+https://gallery.echartsjs.com/editor.html?c=xkwL0ooeD-
+13 vscode js 提示
+https://blog.csdn.net/zgz682000/article/details/81223266
+
+ jsdoc泛形
+ https://zhuanlan.zhihu.com/p/110326971
+
+https://outlook.office365.com/owa/calendar/SaskatchewanInterculturalAssociation1@saskintercultural.org/bookings/

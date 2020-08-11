@@ -17,7 +17,7 @@
 .left_img {
   height: 28px;
   width: 20px;
-  background: url("../../../../imgs//icon/monitorSet/left.png") center no-repeat;
+  background: url("../../../../imgs/icon/monitorSet/left.png") center no-repeat;
   background-size: cover;
 }
 .title {
@@ -67,33 +67,14 @@
   width: 10px;
   height: 10px;
 }
-.net_condition {
-  margin-top: 10px;
-  width: 100%;
-  height: calc(100% - 165px);
-}
-.net_condition .net_order {
-  height: calc(100% - 30px);
-  width: 100%;
-}
-.net_condition > section:first-child {
-  height: 30px;
-  line-height: 30px;
-  background-image: linear-gradient(to right, rgba(23, 150, 242, 0) 2%, rgba(23, 150, 242, 0.75) 52%, rgba(23, 150, 242, 0.1) 100%);
-}
-.net_condition > section:first-child .anticon svg {
-  color: greenyellow;
-  margin-left: 10px;
-  margin-top: -8px;
-}
-.dev_status {
+.right_signal {
   margin-top: 5px;
   position: relative;
   border: 1px solid #0f488f;
   height: 70%;
   box-shadow: 0px 0px 21px 0px #155099 inset;
 }
-.dev_status .statusTitle {
+.right_signal .right_signal_title {
   display: flex;
   justify-content: center;
   cursor: pointer;
@@ -102,55 +83,4 @@
   margin: 0px auto;
   line-height: 28px;
   background-color: #71b4 2;
-}
-.dev_status .status_amount {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0px 10px;
-}
-.dev_status .status_amount div {
-  background-image: url('../../../../imgs/icon/monitorSet/circletwo.png');
-  background-size: 100% 100%;
-  margin-top: 5px;
-  height: 70px;
-  width: 70px;
-  line-height: 70px;
-}
-.dev_status .status_amount .status_working {
-  color: #35ff00;
-}
-.dev_status .status_amount .status_idle {
-  color: #00ffe4;
-}
-.dev_status .status_amount .status_fault {
-  color: red;
-}
-.dev_status .status_amount .status_shutdown {
-  color: #b5b5b5;
-}
-.dev_status .status_description {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0px 10px;
-}
-.dev_status .status_description div {
-  width: 70px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 0.7em;
-  margin-top: 5px;
-}
-.dev_status .status_description .des_working {
-  color: #35ff00;
-}
-.dev_status .status_description .des_idle {
-  color: #00ffe4;
-}
-.dev_status .status_description .des_fault {
-  color: red;
-}
-.dev_status .status_description .des_shutdown {
-  color: #b5b5b5;
 }

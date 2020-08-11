@@ -1,0 +1,101 @@
+.font_info {
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: white;
+  font-family: ' DINAlternate-Bold' 'MicrosoftYaHei-Bold';
+}
+.dev_status:hover {
+  box-shadow: 0px 0px 21px 12px #3578ca inset;
+}
+.line_separator {
+  width: 95%;
+  height: 1px;
+  margin: 10px auto;
+  background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+}
+.left_img {
+  height: 28px;
+  width: 20px;
+  background: url("../../../../imgs//icon/monitorSet/left.png") center no-repeat;
+  background-size: cover;
+}
+.title {
+  height: 100%;
+  background: url("../../../../imgs/icon/monitorSet/middle.png");
+  background-size: 100% 100%;
+}
+.right_img {
+  height: 28px;
+  width: 20px;
+  background: url("../../../../imgs/icon//monitorSet/right.png") center no-repeat;
+  background-size: cover;
+}
+.corner_left_top {
+  border-top: 3px solid #199dfc;
+  border-left: 3px solid #199dfc;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_left_bottom {
+  border-bottom: 3px solid #199dfc;
+  border-left: 3px solid #199dfc;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_right_bottom {
+  border-bottom: 3px solid #199dfc;
+  border-right: 3px solid #199dfc;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_right_top {
+  border-top: 3px solid #199dfc;
+  border-right: 3px solid #199dfc;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 10px;
+  height: 10px;
+}
+.daily_task_container {
+  position: relative;
+  height: calc(30% - 16px);
+  margin-top: 10px;
+  border: 1px solid #0f488f;
+  box-shadow: 0px 0px 21px 0px #155099 inset;
+}
+.daily_task_container .daily_task_title {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+.daily_task_container .running_task_group {
+  height: calc(100% - 80px);
+  display: flex;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.daily_task_container:hover {
+  box-shadow: 0px 0px 21px 12px #3578ca inset;
+}
+.vertical_seprator {
+  height: 95%;
+  width: 1px;
+  margin: 1px auto;
+  background-image: linear-gradient(to bottom, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+}
+.task_count {
+  text-align: center;
+  color: #ffff00;
+}

@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 14:15:40
- * @LastEditTime: 2020-08-06 09:12:53
+ * @LastEditTime: 2020-08-10 11:35:20
  * @LastEditors: shaomin fei
  * @Description: 
  * @FilePath: \rms-ui\src\index.js
@@ -18,6 +18,7 @@ import {MainPageInfo} from './config/config'
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* <div id="test" style={{width:"100px",height:"100px",border:"1px solid red"}}>sfsdf</div> */}
     <MainPageInfo.mainPage />
   </React.StrictMode>,
   document.getElementById('root')

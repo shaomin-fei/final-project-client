@@ -1,0 +1,146 @@
+.font_info {
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: white;
+  font-family: ' DINAlternate-Bold' 'MicrosoftYaHei-Bold';
+}
+.dev_status:hover {
+  box-shadow: 0px 0px 21px 12px #3578ca inset;
+}
+.line_separator {
+  width: 95%;
+  height: 1px;
+  margin: 10px auto;
+  background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+}
+.left_img {
+  height: 28px;
+  width: 20px;
+  background: url("../../../../imgs/icon/monitorSet/left.png") center no-repeat;
+  background-size: cover;
+}
+.title {
+  height: 100%;
+  background: url("../../../../imgs/icon/monitorSet/middle.png");
+  background-size: 100% 100%;
+}
+.right_img {
+  height: 28px;
+  width: 20px;
+  background: url("../../../../imgs/icon//monitorSet/right.png") center no-repeat;
+  background-size: cover;
+}
+.corner_left_top {
+  border-top: 3px solid #199dfc;
+  border-left: 3px solid #199dfc;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_left_bottom {
+  border-bottom: 3px solid #199dfc;
+  border-left: 3px solid #199dfc;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_right_bottom {
+  border-bottom: 3px solid #199dfc;
+  border-right: 3px solid #199dfc;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  width: 10px;
+  height: 10px;
+}
+.corner_right_top {
+  border-top: 3px solid #199dfc;
+  border-right: 3px solid #199dfc;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 10px;
+  height: 10px;
+}
+.station_on_map {
+  width: 43px;
+  height: 43px;
+  position: relative;
+  cursor: pointer;
+}
+.station_on_map .station_img {
+  height: 32px;
+  width: 32px;
+  float: left;
+}
+.station_on_map .out_flash_circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: green;
+  float: right;
+  position: absolute;
+  top: -2px;
+  right: 5px;
+  transform: scale(0.2);
+  animation: flash 2.5s infinite;
+  animation-play-state: running;
+  /* Safari and Chrome */
+  -webkit-animation: flash 2.5s infinite;
+  -webkit-animation-play-state: running;
+  /* Safari 和 Chrome */
+}
+@keyframes flash {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+#main_page_map_latlon {
+  float: left;
+  position: absolute;
+  bottom: 10px;
+  z-index: 10;
+  width: 200px;
+  height: 30px;
+  color: #9acbff;
+  font-size: 1em;
+  font-weight: bold;
+}
+.map_bottom {
+  width: 100%;
+  height: calc(15% - 10px);
+  box-shadow: 0px 0px 21px 0px #155099 inset;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #9acbff;
+  margin-top: 1px;
+}
+.map_bottom .row {
+  height: 30%;
+}
+.drag_vertical {
+  height: 1px;
+  background-color: #0f488f;
+}
+.drag_vertical:hover {
+  cursor: ns-resize;
+}
+.map_bottom_first_row {
+  margin-top: 10px;
+}
+.row > div {
+  margin-top: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -2,7 +2,7 @@
 .cockPit{
     margin: 0px;
     padding: 0px;
-    background: #05183E;
+    background: rgb(6, 24, 61);
 }
 .header{
     // border:3px solid black;
@@ -13,11 +13,12 @@
     
 }
 .header:hover{
-    box-shadow: 0px 2px 3px #ccc;
+    box-shadow: 0px 0px 21px 0px rgb(21, 80, 153) inset;
     border-radius: 5px;
 }
 
 .header_left{
+    margin-left: 100px;
     width: 25%;
     flex-grow: 2;
     -webkit-flex-grow:2;
@@ -59,19 +60,42 @@
 }
 .content_container{
     margin-top: 5px;
+    background-color: #06183d;
     height: calc(100vh - 45px);
     // background-color: red;
 }
 .row_container{
     height: 100%;
-    border:1px solid purple;
+    // border:1px solid purple;
     // background-color: red;
 }
 .page_left{
     height: 100%;
-    border:1px solid greenyellow;
+    // border:1px solid greenyellow;
     
 }
+.page_center{
+    border:1px solid rgb(15,72,143);
+    box-shadow: 0px 0px 21px 0px rgb(21, 80, 153) inset;
+    height: 100%;
+    padding:0px;
+}
+#main_page_map_container{
+    height: 85%;
+    width: 100%;
+    //border:1px solid greenyellow;
+    position: relative;
+    left:2px;
+    margin-right: 2px;
+}
+.page_center:hover {
+    box-shadow: 0px 0px 21px 12px rgb(53, 120, 202) inset;
+  }
+
+  .page_right{
+      height: 100%;
+      border:1px solid greenyellow;
+  }
 // .header_always_exist{
 //     background: rgb(154,203,255);
 //     position: absolute;
