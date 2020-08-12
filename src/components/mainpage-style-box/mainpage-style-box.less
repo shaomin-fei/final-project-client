@@ -1,37 +1,53 @@
-.font_info{
-    text-align: center;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color:white;
-    font-family:' DINAlternate-Bold','MicrosoftYaHei-Bold';
+@import "../../styles/commonstyle.less";
+.outter{
+    margin-top: 5px;
+    // height: 40px;
+    position: relative;
+    border: 1px solid rgb(15,72,143);
+    //border: 1px solid red;
+     height: 70%;
+    box-shadow: 0px 0px 21px 0px rgb(21,80,153) inset;
+    .frame_title{
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+         //border: 1px solid yellow;
+        height: 28px;
+        width: 100%;
+        margin:0px auto;
+        line-height: 28px;
+        background-color: #71b42;  
+        .title{
+            height: 100%;
+             background: url("../../imgs/icon/monitorSet/middle.png");
+             background-size: 100% 100%;
+            //border-bottom: 1px solid red;
+        }
+
+    }
 }
-.dev_status:hover{
+.outter:hover{
     box-shadow: 0px 0px 21px 12px rgb(53, 120, 202) inset;
 }
-.line_separator{
-    width: 95%;
-    height: 1px;
-    margin:10px auto;
-    background-image: linear-gradient(to right,rgba(25,157,252,0.2)1%,rgba(25,157,252,1)50%,rgba(25,157,252,0.2)96%);
-}
+
 
 .left_img{
     height: 28px;
     width: 20px;
-    background: url("../../../../imgs/icon/monitorSet/left.png") center no-repeat;
+    background: url("../../imgs/icon/monitorSet/left.png") center no-repeat;
     background-size: cover;
     
 }
 .title{
     height: 100%;
-     background: url("../../../../imgs/icon/monitorSet/middle.png");
+     background: url("../../imgs/icon/monitorSet/middle.png");
      background-size: 100% 100%;
     //border-bottom: 1px solid red;
 }
 .right_img{
     height: 28px;
     width: 20px;
-    background: url("../../../../imgs/icon//monitorSet/right.png") center no-repeat;
+    background: url("../../imgs/icon//monitorSet/right.png") center no-repeat;
     background-size: cover;
 }
 .corner_left_top{

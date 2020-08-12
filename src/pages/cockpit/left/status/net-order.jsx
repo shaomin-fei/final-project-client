@@ -26,7 +26,7 @@ export default class NetOrder extends Component{
     }
     componentDidMount(){
         const option=this.intiChart();
-        this.chart = echarts.init(document.getElementById('container'));
+        this.chart = echarts.init(document.getElementById('net_last5_container'));
         this.chart.setOption(option);
         window.onresize=()=>{
             this.chart.resize();
@@ -125,7 +125,7 @@ export default class NetOrder extends Component{
     }
     render(){
         return (
-            <div id="container" className="net_order"></div>
+            <div id="net_last5_container" className="net_order"></div>
         );
     }
 }

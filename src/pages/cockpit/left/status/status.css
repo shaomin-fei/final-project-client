@@ -1,12 +1,9 @@
-.font_info {
+.mainpage_title_font_info {
   text-align: center;
-  font-size: 1.6em;
+  font-size: 1.6rem;
   font-weight: bold;
   color: white;
-  font-family: ' DINAlternate-Bold' 'MicrosoftYaHei-Bold';
-}
-.dev_status:hover {
-  box-shadow: 0px 0px 21px 12px #3578ca inset;
+  font-family: 'DINAlternate-Bold', 'MicrosoftYaHei-Bold';
 }
 .line_separator {
   width: 95%;
@@ -14,66 +11,14 @@
   margin: 10px auto;
   background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
 }
-.left_img {
-  height: 28px;
-  width: 20px;
-  background: url("../../../../imgs//icon/monitorSet/left.png") center no-repeat;
-  background-size: cover;
-}
-.title {
-  height: 100%;
-  background: url("../../../../imgs/icon/monitorSet/middle.png");
-  background-size: 100% 100%;
-}
-.right_img {
-  height: 28px;
-  width: 20px;
-  background: url("../../../../imgs/icon//monitorSet/right.png") center no-repeat;
-  background-size: cover;
-}
-.corner_left_top {
-  border-top: 3px solid #199dfc;
-  border-left: 3px solid #199dfc;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 10px;
-  height: 10px;
-}
-.corner_left_bottom {
-  border-bottom: 3px solid #199dfc;
-  border-left: 3px solid #199dfc;
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-  width: 10px;
-  height: 10px;
-}
-.corner_right_bottom {
-  border-bottom: 3px solid #199dfc;
-  border-right: 3px solid #199dfc;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  width: 10px;
-  height: 10px;
-}
-.corner_right_top {
-  border-top: 3px solid #199dfc;
-  border-right: 3px solid #199dfc;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  width: 10px;
-  height: 10px;
-}
 .net_condition {
   margin-top: 10px;
   width: 100%;
   height: calc(100% - 165px);
 }
 .net_condition .net_order {
-  height: calc(100% - 30px);
+  height: 100%;
+  margin-top: 10px;
   width: 100%;
 }
 .net_condition > section:first-child {
@@ -86,30 +31,13 @@
   margin-left: 10px;
   margin-top: -8px;
 }
-.dev_status {
-  margin-top: 5px;
-  position: relative;
-  border: 1px solid #0f488f;
-  height: 70%;
-  box-shadow: 0px 0px 21px 0px #155099 inset;
-}
-.dev_status .statusTitle {
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  height: 28px;
-  width: 100%;
-  margin: 0px auto;
-  line-height: 28px;
-  background-color: #71b4 2;
-}
-.dev_status .status_amount {
+.status_amount {
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 0px 10px;
 }
-.dev_status .status_amount div {
+.status_amount div {
   background-image: url('../../../../imgs/icon/monitorSet/circletwo.png');
   background-size: 100% 100%;
   margin-top: 5px;
@@ -117,40 +45,40 @@
   width: 70px;
   line-height: 70px;
 }
-.dev_status .status_amount .status_working {
+.status_amount .status_working {
   color: #35ff00;
 }
-.dev_status .status_amount .status_idle {
+.status_amount .status_idle {
   color: #00ffe4;
 }
-.dev_status .status_amount .status_fault {
+.status_amount .status_fault {
   color: red;
 }
-.dev_status .status_amount .status_shutdown {
+.status_amount .status_shutdown {
   color: #b5b5b5;
 }
-.dev_status .status_description {
+.status_description {
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 0px 10px;
 }
-.dev_status .status_description div {
+.status_description div {
   width: 70px;
   height: 20px;
   line-height: 20px;
   font-size: 0.7em;
   margin-top: 5px;
 }
-.dev_status .status_description .des_working {
+.status_description .des_working {
   color: #35ff00;
 }
-.dev_status .status_description .des_idle {
+.status_description .des_idle {
   color: #00ffe4;
 }
-.dev_status .status_description .des_fault {
+.status_description .des_fault {
   color: red;
 }
-.dev_status .status_description .des_shutdown {
+.status_description .des_shutdown {
   color: #b5b5b5;
 }
