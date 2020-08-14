@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import ReactDom from "react-dom";
 
+import {RouterEnum} from "../../../../config/define"
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
 import SignalChart from './signal-chart'
 import "./signal.css"
@@ -13,7 +14,9 @@ export default class Signal extends Component{
     render(){
         return (
             <MainPageStyleBox width="100%" height="calc(60% - 10px)" title="Signal Warning" 
-            mountDivId="signal_content" mountDivHeight="calc(100% - 50px)"/>
+            mountDivId="signal_content" mountDivHeight="calc(100% - 50px)"
+            linkedPath={RouterEnum.SignalManage}
+            />
         );
     }
     

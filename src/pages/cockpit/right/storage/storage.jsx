@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom"
 
+import {RouterEnum} from "../../../../config/define"
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
 import StorageChart from "./storage-chart"
 import "./storage.css"
@@ -18,7 +19,12 @@ export default class Storage extends Component{
     }
     render(){
         return (
-            <MainPageStyleBox width="100%" height="40%" title="Storage" mountDivId="storage_content" mountDivHeight="calc(100% - 43px)"/>
+            <MainPageStyleBox width="100%" height="40%"
+             title="Storage" mountDivId="storage_content" 
+             mountDivHeight="calc(100% - 43px)"
+             linkedPath={RouterEnum.DataManage}
+             
+             />
         );
     }
 }

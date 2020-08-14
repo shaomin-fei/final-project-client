@@ -4,12 +4,13 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:52:52
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-11 10:38:18
+ * @LastEditTime: 2020-08-13 20:07:38
  */
 import React,{Component} from "react";
 import ReactDom from "react-dom"
 import { ArrowUpOutlined } from "@ant-design/icons";
 
+import {RouterEnum} from "../../../../config/define"
 import NetOrder from "./net-order";
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
 import "./status.css";
@@ -45,7 +46,11 @@ export default class Status extends Component {
   render(){
     return (
     <>
-      <MainPageStyleBox width="100%" height="70%" title="Device Status" mountDivId="status_content" mountDivHeight="calc(100% - 30px)"/>
+      <MainPageStyleBox width="100%" height="70%" 
+      title="Device Status" mountDivId="status_content" 
+      mountDivHeight="calc(100% - 30px)"
+      linkedPath={RouterEnum.StationManage}
+      />
       
          {/* show amount in circle button */}
          

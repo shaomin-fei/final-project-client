@@ -19,7 +19,7 @@
   width: 120px;
   left: 0px;
   opacity: 1;
-  transition: left 0.4s ease-in;
+  transition: left 0.4s linear;
 }
 .main_navbar_container > section {
   cursor: pointer;

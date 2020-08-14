@@ -4,11 +4,12 @@
  * @Author: shaomin fei
  * @Date: 2020-08-11 07:57:25
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-11 11:08:07
+ * @LastEditTime: 2020-08-13 20:03:11
  */
 
 import React from "react";
 import PropTypes from "prop-types";
+import {withRouter} from 'react-router-dom'
 
 import "./mainpage-style-box.css";
 
@@ -23,10 +24,10 @@ import "./mainpage-style-box.css";
 
  
 const MainPageStyleBox = function (props) {
-  const { height, width, title,mountDivId ,mountDivHeight} = props;
+  const { height, width, title,mountDivId ,mountDivHeight,linkedPath} = props;
   return (
     <section className="outter" style={{height:height, width:width}}>
-      <section className="frame_title">
+      <section className="frame_title" onClick={()=>linkedPath&&props.history.push(linkedPath)}>
         <section className="left_img"></section>
         <section className="title mainpage_title_font_info">{title}</section>
         <section className="right_img"></section>
@@ -46,8 +47,9 @@ MainPageStyleBox.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   text: PropTypes.string,
+  linkedPath:PropTypes.string,
 //   挂载点div的id，真正的内容挂载在该div下面
   mountDivId:PropTypes.string.isRequired,
   mountDivHeight:PropTypes.string.isRequired,
 };
-export default MainPageStyleBox;
+export default withRouter(MainPageStyleBox);

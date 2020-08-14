@@ -1,21 +1,18 @@
-//@ts-check
-
 import React, { Component } from 'react';
 
-import './realtime-task.css';
 import MainNavgationBar from '../../components/main-nav/main-nav';
-
-class RealtimeTask extends Component {
+import './data-manage.css'
+class DataManage extends Component {
     render() {
         return (
             <>
            
             <MainNavgationBar/>
             <section className="line_separator_hr"></section>
-            <section className="page_container">i'm realtime task page</section>
+            <section className="page_container">i'm Data-manage page</section>
            </>
         );
     }
 }
 
-export default RealtimeTask;
+export default DataManage;

@@ -4,4 +4,5 @@ export const RouterEnum={
     SignalManage:"/signalmanage",
     DataManage:"/datamanage",
     StationManage:"/stationmanage",
+    
  }
