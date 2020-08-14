@@ -1,0 +1,134 @@
+
+.main_navbar_container{
+    display:flex;
+    justify-content: space-around;
+    height: 50px;
+    width: 100%;
+    //border: 1px solid red;
+    line-height: 50px;
+    background-color: #06183d;
+    color:white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+   
+    .main_navbar_slider{
+        position: fixed;
+        //border:2px solid yellow;
+        background-image: url('../..//imgs/nav-bar-bg.png');
+        background-size: 100% 100%;
+        background-position: left bottom;
+        height: 100%;
+        width: 120px;
+        left: 0px;
+        opacity: 1;
+        // transition-property:width,height;
+        transition: left 0.4s ease-in;
+        //transition: display 2s ease-in;
+        
+    }
+    //border-bottom: 1px solid white;
+    >section{
+        cursor: pointer;
+    }
+
+    .main_navbar_home,.main_navbar_home,.main_navbar_realtime,
+.main_navbar_signal,.main_navbar_db,.main_navbar_station{
+    position: relative;
+    /* 元素上触发的动画，均按照这个方式进行过度，如后面的 hover 动画,鼠标离开后，动画原样返回 */
+  transition: all 0.5s ease;
+}
+
+
+// .main_navbar_home:hover::after,.main_navbar_realtime:hover::after,
+// .main_navbar_signal:hover::after,.main_navbar_db:hover::after,.main_navbar_station:hover::after{
+//     content: "";
+//     position: absolute;
+//     display: inline-block;
+//     background-image: url('../..//imgs/nav-bar-bg.png');
+//     background-size: 100% 100%;
+//     background-position: left bottom;
+//     top:0px;
+//     left: 0px;
+//     width: 100%;
+//     height: 50px;
+
+//     //transform: translate(-50%,-10%);
+//      -webkit-animation-play-state:running;
+//      -webkit-animation-name: toHoverItem;
+//      -webkit-animation-duration: 1s;
+
+//      animation-name: toHoverItem;
+//      animation-duration: 1s;
+//      animation-play-state: running;
+    
+//    transition: all 0s linear;
+
+//     @keyframes toHoverItem {
+//         // from {transform: translate(100px,0px);}
+//         // to {transform: translate(10px,0px);}
+//         from {left:100px;}
+//         to {left:0px;}
+
+//     }
+
+//         @-webkit-keyframes toHoverItem /* Safari and Chrome */
+// {
+//     from {left:100px;}
+//         to {left:0px;}
+// }
+
+// }
+    .main_navbar_home:hover,.main_navbar_realtime:hover,
+    .main_navbar_signal:hover,.main_navbar_db:hover,.main_navbar_station:hover{
+        text-shadow: 1px 1px #ccc;
+        font-size: 1.3rem;
+    }
+    .main_navbar_itembg{
+        color:#0cd2fd;
+        height: 100%;
+        width: 120px;
+       // border: 1px red solid;
+        background-image: url('../..//imgs/nav-bar-bg.png');
+        background-size: 100% 100%;
+        background-position: left bottom;
+        
+        //justify-content: space-around;
+    }
+    
+    .row{
+        //padding:-200px;
+        //margin:0px;
+        width: 100%;
+        height: 98%;
+        text-align: center;
+        //border:2px greenyellow solid;
+    }
+    .col_first_section{
+        padding: 0px;
+        
+    }
+   .col_tools{
+    //border: 1px red solid;
+    // 默认有padding
+    padding: 0px;
+    
+   }
+    .main_navbar_realtime{
+        //background-image: url('../..//imgs/nav-bar-bg.png');
+    }
+    .titleImg{
+        //border: 1px solid red;
+        margin-right: 5px;
+        margin-top:-3px;
+        width: 25px;
+        height: 28px;
+    }
+    
+    .header_always_exist{
+        //border: 1px solid red;
+        margin-top: 16px;
+        //margin-right: 5px;
+    }
+}
+

@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-10 23:24:02
+ * @LastEditTime: 2020-08-13 01:24:52
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -45,3 +45,171 @@ https://blog.csdn.net/zgz682000/article/details/81223266
  https://zhuanlan.zhihu.com/p/110326971
 
 https://outlook.office365.com/owa/calendar/SaskatchewanInterculturalAssociation1@saskintercultural.org/bookings/
+
+14 404 页面设计
+https://www.cnblogs.com/lhb25/archive/2012/11/26/404-error-pages-psd-template.html
+
+15 解决 Error processing launch: Error: Could not attach to main target
+In the section Extensions -> JavaScript Debugger set option Debug > JavaScript: Use Preview to false.
+
+16  Reactjs code snippets
+Reactjs
+VS Code Reactjs snippets
+Version Installs Ratings
+
+This extension contains code snippets for Reactjs and is based on the awesome babel-sublime-snippets package.
+
+Installation
+In order to install an extension you need to launch the Command Palette (Ctrl + Shift + P or Cmd + Shift + P) and type Extensions. There you have either the option to show the already installed snippets or install new ones.
+
+Supported languages (file extensions)
+JavaScript (.js)
+TypeScript (.ts)
+JavaScript React (.jsx)
+TypeScript React (.tsx)
+Breaking change in version 2.0.0
+Removed support for jsx language as it was giving errors in developer tools #39
+
+Breaking change in version 1.0.0
+Up until verion 1.0.0 all the JavaScript snippets where part of the extension. In order to avoid duplication the snippets are now included only to this extension and if you want to use them you have to install it explicitly.
+
+Usage
+When installing the extension React development could be really fun create react component
+
+As VS Code from version 0.10.10 supports React components syntax inside js files the snippets are available for JavaScript language as well. In the following example you can see the usage of a React stateless component with prop types snippets inside a js and not jsx file. create react stateless component
+
+Snippets
+Below is a list of all available snippets and the triggers of each one. The ⇥ means the TAB key.
+
+Trigger	Content
+rcc→	class component skeleton
+rrc→	class component skeleton with react-redux connect
+rrdc→	class component skeleton with react-redux connect and dispatch
+rccp→	class component skeleton with prop types after the class
+rcjc→	class component skeleton without import and default export lines
+rcfc→	class component skeleton that contains all the lifecycle methods
+rwwd→	class component without import statements
+rpc→	class pure component skeleton with prop types after the class
+rsc→	stateless component skeleton
+rscp→	stateless component with prop types skeleton
+rscm→	memoize stateless component skeleton
+rscpm→	memoize stateless component with prop types skeleton
+rsf→	stateless named function skeleton
+rsfp→	stateless named function with prop types skeleton
+rsi→	stateless component with prop types and implicit return
+fcc→	class component with flow types skeleton
+fsf→	stateless named function skeleton with flow types skeleton
+fsc→	stateless component with flow types skeleton
+rpt→	empty propTypes declaration
+rdp→	empty defaultProps declaration
+con→	class default constructor with props
+conc→	class default constructor with props and context
+est→	empty state object
+cwm→	componentWillMount method
+cdm→	componentDidMount method
+cwr→	componentWillReceiveProps method
+scu→	shouldComponentUpdate method
+cwup→	componentWillUpdate method
+cdup→	componentDidUpdate method
+cwun→	componentWillUnmount method
+gsbu→	getSnapshotBeforeUpdate method
+gdsfp→	static getDerivedStateFromProps method
+cdc→	componentDidCatch method
+ren→	render method
+sst→	this.setState with object as parameter
+ssf→	this.setState with function as parameter
+props→	this.props
+state→	this.state
+bnd→	binds the this of method inside the constructor
+disp→	MapDispatchToProps redux function
+The following table lists all the snippets that can be used for prop types. Every snippet regarding prop types begins with pt so it's easy to group it all together and explore all the available options. On top of that each prop type snippets has one equivalent when we need to declare that this property is also required.
+
+For example pta creates the PropTypes.array and ptar creates the PropTypes.array.isRequired
+
+Trigger	Content
+pta→	PropTypes.array,
+ptar→	PropTypes.array.isRequired,
+ptb→	PropTypes.bool,
+ptbr→	PropTypes.bool.isRequired,
+ptf→	PropTypes.func,
+ptfr→	PropTypes.func.isRequired,
+ptn→	PropTypes.number,
+ptnr→	PropTypes.number.isRequired,
+pto→	PropTypes.object,
+ptor→	PropTypes.object.isRequired,
+pts→	PropTypes.string,
+ptsr→	PropTypes.string.isRequired,
+ptsm→	PropTypes.symbol,
+ptsmr→	PropTypes.symbol.isRequired,
+ptan→	PropTypes.any,
+ptanr→	PropTypes.any.isRequired,
+ptnd→	PropTypes.node,
+ptndr→	PropTypes.node.isRequired,
+ptel→	PropTypes.element,
+ptelr→	PropTypes.element.isRequired,
+pti→	PropTypes.instanceOf(ClassName),
+ptir→	PropTypes.instanceOf(ClassName).isRequired,
+pte→	PropTypes.oneOf(['News', 'Photos']),
+pter→	PropTypes.oneOf(['News', 'Photos']).isRequired,
+ptet→	PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+ptetr→	PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+ptao→	PropTypes.arrayOf(PropTypes.number),
+ptaor→	PropTypes.arrayOf(PropTypes.number).isRequired,
+ptoo→	PropTypes.objectOf(PropTypes.number),
+ptoor→	PropTypes.objectOf(PropTypes.number).isRequired,
+ptoos→	PropTypes.objectOf(PropTypes.shape()),
+ptoosr→	PropTypes.objectOf(PropTypes.shape()).isRequired,
+ptsh→	PropTypes.shape({color: PropTypes.string, fontSize: PropTypes.number}),
+ptshr→	PropTypes.shape({color: PropTypes.string, fontSize: PropTypes.number}).isRequired,
+Categories
+Snippets
+Tags
+snippet
+Resources
+Repository
+Download Extension
+Project Details
+xabikos/vscode-react
+No Pull Requests
+2 Open Issues
+Last Commit: 6 months ago
+More Info
+Version	2.4.0	
+Released on	2015/11/17 下午2:54:33	
+Last updated	
+2019/10/29 下午3:40:30
+Publisher	charalampos karypidis	
+Unique Identifier	xabikos.ReactSnippets	
+Report	Report Abuse	  
+
+
+17 react 使用@操作符代表src根目录
+安装npm i react-app-rewired customize-cra -D
+首先先在package.json中配置 把react-scripts替换成为react-app-rewired
+"scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+}
+
+替换成为
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+}
+
+在项目根目录和package.json同级下面新建一个 config-overrides.js的文件
+const { override, addWebpackAlias} = require('customize-cra')
+const path = require('path')
+const resolve = path.join(__dirname, './src')
+module.exports = override(
+	  // 用来配置 @ 导入
+    addWebpackAlias({
+        '@': resolve
+    })  
+)
+
+14 Home, RealTime Task, (Signal Manage),  Data Manage, Station Manage 

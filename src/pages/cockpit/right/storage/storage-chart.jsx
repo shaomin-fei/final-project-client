@@ -7,6 +7,12 @@ export default class StorageChart extends Component {
   componentDidMount() {
     this.createChart();
   }
+ componentWillUnmount(){
+  window.removeEventListener("resize",this.resizeChart)
+ }
+ resizeChart=()=>{
+  this.chart&&this.chart.resize();
+}
   createChart = () => {
     var bigfonts = 12;
     //var nsum = 800;
@@ -150,9 +156,9 @@ export default class StorageChart extends Component {
 
     this.chart = echarts.init(document.getElementById("storage_chart_id"));
     this.chart.setOption(option);
-    window.onresize = () => {
-      this.chart.resize();
-    };
+    
+    window.addEventListener("resize",this.resizeChart)
+   
   };
   createContent = () => {
     // return (

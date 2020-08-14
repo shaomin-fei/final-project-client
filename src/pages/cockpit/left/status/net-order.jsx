@@ -28,10 +28,14 @@ export default class NetOrder extends Component{
         const option=this.intiChart();
         this.chart = echarts.init(document.getElementById('net_last5_container'));
         this.chart.setOption(option);
-        window.onresize=()=>{
-            this.chart.resize();
-        }
+        window.addEventListener("resize",this.resizeChart);
     }
+    componentWillUnmount(){
+        window.removeEventListener("resize",this.resizeChart);
+    }
+    resizeChart=()=>{
+        this.chart&&this.chart.resize();
+      }
     intiChart=()=>{
         const option = {
             //backgroundColor: '#05274C',

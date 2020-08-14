@@ -4,15 +4,19 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:59:16
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-07 21:47:18
+ * @LastEditTime: 2020-08-13 00:08:31
  */
 import React from 'react';
+import {withRouter} from 'react-router-dom'
 
 import './daily-monitor.css'
 const DailyMonitor=function(props){
+    const redirectToRealTimePage=()=>{
+        props.history.replace("/realtime");
+    }
     return (
         <section className="daily_task_container">
-            <div className="daily_task_title">
+            <div className="daily_task_title" onClick={redirectToRealTimePage}>
                 <div className="left_img"></div>
                 <div className="title font_info">Running Task</div>
                 <div className="right_img"></div>
@@ -47,4 +51,4 @@ const DailyMonitor=function(props){
     );
 }
 
-export default DailyMonitor;
+export default withRouter(DailyMonitor);

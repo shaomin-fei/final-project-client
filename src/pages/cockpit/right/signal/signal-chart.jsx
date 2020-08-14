@@ -37,6 +37,10 @@ export default class SignalChart extends Component {
   }
   componentWillUnmount() {
     //clearInterval(this.interValFlash);
+    window.removeEventListener("resize",this.resizeChart);
+  }
+  resizeChart=()=>{
+    this.chart&&this.chart.resize();
   }
   createChart = () => {
     var lineColor = "#406A92";
@@ -334,9 +338,7 @@ export default class SignalChart extends Component {
     };
     this.chart = echarts.init(document.getElementById("signal_chart_id"));
     this.chart.setOption(this.option);
-    window.onresize = () => {
-      this.chart.resize();
-    };
+    window.addEventListener("resize",this.resizeChart);
     
     this.chart.on("click", (params) => {
       //console.log(params);
