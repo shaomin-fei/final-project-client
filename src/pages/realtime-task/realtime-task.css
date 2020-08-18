@@ -1,10 +1,41 @@
+@import '../../index.css';
 .line_separator_hr {
   width: 100%;
-  height: 2px;
+  height: var(--mainpageHrSeparatorHeight);
   background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
 }
 .page_container {
   background-color: #06183d;
   height: calc(100vh - 52px);
   color: white;
+}
+.content_layout {
+  height: calc(100vh - 59px);
+  background-color: #06183d;
+  padding: 5px;
+}
+.site-layout {
+  background-color: transparent;
+}
+.left_sider {
+  background-color: #06183d;
+}
+.ant-tree {
+  background-color: transparent;
+  color: white;
+}
+.site-layout-background {
+  margin-top: 5px;
+  min-height: 280px;
+}
+.left_tree_container {
+  height: 100%;
+  margin-top: 5px;
+}
+.left_tree_section {
+  height: 70%;
+}
+.left_task_section {
+  margin-top: 2px;
+  height: calc(30% - 2px);
 }

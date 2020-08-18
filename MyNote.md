@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-13 01:24:52
+ * @LastEditTime: 2020-08-17 14:58:27
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -51,6 +51,13 @@ https://www.cnblogs.com/lhb25/archive/2012/11/26/404-error-pages-psd-template.ht
 
 15 解决 Error processing launch: Error: Could not attach to main target
 In the section Extensions -> JavaScript Debugger set option Debug > JavaScript: Use Preview to false.
+
+17 配置webworker 
+https://www.jianshu.com/p/10f2e0ac09c0  用customize-cra配置，并
+npm install worker-loader --save-dev 安装 插件
+18 不用work-loader:
+https://segmentfault.com/a/1190000020299095?utm_source=tag-newest
+19 file-loader版本有问题会导致图片加载不对 package-lock.json中可以查看执行脚本react-scripts的版本依赖
 
 16  Reactjs code snippets
 Reactjs

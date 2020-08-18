@@ -58,7 +58,8 @@ let[spanClassName,setSpanClassName]=useState("steam1");
                 <h1>Page Not Found</h1>
                 <h3>We couldn't have what you were looking for......</h3>
             </hgroup>
-            <Link to="/cockpit">
+            {/* target={"_blank"} open in a new tab, in this case, it's a new process */}
+            <Link to="/cockpit" >
                 <div className="link">Click To Home Page &gt;&gt;</div>
             </Link>
         </div>  
