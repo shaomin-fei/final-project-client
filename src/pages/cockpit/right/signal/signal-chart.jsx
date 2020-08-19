@@ -1,10 +1,22 @@
 import React, { Component } from "react";
+import pubsub from "pubsub-js";
+
+import { getSingalByReason } from "../../../../workers/workers-manage";
+import CmdDefineEnum from "../../../../workers/cmd-define";
+ 
+import {Issue,SignalStaticByReason} from "../../context"
 
 const echarts = require("echarts");
+
 export default class SignalChart extends Component {
   chart = null;
   option = null;
   interValFlash = null;
+  /**
+   * @type {SignalStaticByReason}
+   */
+  //signals=null;
+
   barName = {
     powerIssue: "Power Issue",
     timeIssue: "Time Issue",
@@ -15,33 +27,96 @@ export default class SignalChart extends Component {
       name: this.barName.powerIssue,
       value: 5,
       selected: true,
-      itemStyle : {
+      signals:null,
+      itemStyle: {
         borderColor: "rgba(237,255,21,0.6)",
-      }
+      },
     },
     {
       name: this.barName.timeIssue,
       value: 10,
+      signals:null,
       selected: false,
     },
     {
       name: this.barName.newSignal,
       value: 8,
+      signals:null,
       selected: false,
     },
   ];
-  selectedBarIndex = -1;
-  needToHighlight = true;
+
   componentDidMount() {
     this.createChart();
+    /**
+     * @type {SignalStaticByReason}
+     */
+    const signal=getSingalByReason();
+    this.setChartData(signal);
+    if(signal){
+      this.triggerSelected();
+    }
+    this.pubToken=pubsub.subscribe(CmdDefineEnum.cmdGetSignalByReason,this.signalStaticByReason);
   }
   componentWillUnmount() {
     //clearInterval(this.interValFlash);
-    window.removeEventListener("resize",this.resizeChart);
+    window.removeEventListener("resize", this.resizeChart);
+    this.pubToken&&pubsub.unsubscribe(this.pubToken);
   }
-  resizeChart=()=>{
-    this.chart&&this.chart.resize();
+  signalStaticByReason=(msg,data)=>{
+    console.log("receive signalStaticByReason",data);
+    this.setChartData(data);
+    this.triggerSelected();
   }
+  triggerSelected=()=>{
+    const transferData=[];
+   this.showData.forEach(data=>{
+     if(data.selected){
+       transferData.push(...data.signals);
+     }
+   });
+    pubsub.publish(CmdDefineEnum.cmdSignalByReasonChoosed,transferData);
+  }
+  /**
+   * @Date: 2020-08-18 23:29:01
+   * @Description: 
+   * @param {SignalStaticByReason}  data
+   * @return {void} 
+   */
+  setChartData(data){
+    if(!data){
+      return;
+    }
+    
+    //this.signals=data;
+    this.showData[0].signals=data.powerIssue;
+    this.showData[0].value=this.getStationCount(data.powerIssue);
+    this.showData[1].signals=data.timeIssue;
+    this.showData[1].value=this.getStationCount(data.timeIssue);
+    this.showData[2].signals=data.newSignal;
+    this.showData[2].value=this.getStationCount(data.newSignal);
+    const tempData = [];
+    this.showData.forEach(data=>{
+      tempData.push({...data});
+    });
+    this.chartDataChange(tempData);
+  }
+  /**
+   * 
+   * @param {Array<Issue>} issuData 
+   */
+  getStationCount(issuData){
+    const set=new Set();
+    issuData.forEach(issue=>{
+      issue.stations.forEach(st=>{
+        set.add(st);
+      })
+    })
+    return set.size;
+  }
+  resizeChart = () => {
+    this.chart && this.chart.resize();
+  };
   createChart = () => {
     var lineColor = "#406A92";
     var labelColor = "#fff";
@@ -321,7 +396,6 @@ export default class SignalChart extends Component {
           },
           label: {
             normal: {
-              
               show: true,
               position: "top",
               fontSize: fontSize,
@@ -338,55 +412,33 @@ export default class SignalChart extends Component {
     };
     this.chart = echarts.init(document.getElementById("signal_chart_id"));
     this.chart.setOption(this.option);
-    window.addEventListener("resize",this.resizeChart);
-    
+    window.addEventListener("resize", this.resizeChart);
+
+
     this.chart.on("click", (params) => {
       //console.log(params);
       const tempData = [];
       this.showData.forEach((data) => {
-        
         if (data.name === params.data.name) {
           data.selected = !params.data.selected;
-          data.selected=!params.data.selected;
-          if(data.selected){
+          data.selected = !params.data.selected;
+          if (data.selected) {
             data.itemStyle = {
               borderColor: "rgba(237,255,21,0.6)",
             };
-          }else{
+          } else {
             data.itemStyle = {
               borderColor: "#2EA9E5",
             };
           }
-          
-        } 
+        }
         const temp = { ...data };
         tempData.push(temp);
       });
+      this.chartDataChange(tempData);
+      this.triggerSelected();
       //this.chart.setOption(this.option);
-      this.chart.setOption({
-        series: [
-          {
-            data: tempData,
-          },
-          {
-            data: tempData,
-          },
-          {
-            data: tempData,
-          },
-          {
-            data: tempData,
-          },
-          // 柱状图，不要边框
-          {
-            data: tempData.map(data=>{
-               const temp={...data};
-               delete temp.itemStyle;
-               return temp;
-            }),
-          },
-        ],
-      }); //在option 里面，背景color是函数，可以重新计算颜色
+      //在option 里面，背景color是函数，可以重新计算颜色
       //this.selectedBarIndex=params.seriesIndex;
       // const option=this.chart.getOption();
       // console.log("option",option);
@@ -404,6 +456,32 @@ export default class SignalChart extends Component {
       // }
     });
   };
+  chartDataChange=(newData)=>{
+    this.chart.setOption({
+      series: [
+        {
+          data: newData,
+        },
+        {
+          data: newData,
+        },
+        {
+          data: newData,
+        },
+        {
+          data: newData,
+        },
+        // 柱状图，不要边框
+        {
+          data: newData.map((data) => {
+            const temp = { ...data };
+            delete temp.itemStyle;
+            return temp;
+          }),
+        },
+      ],
+    }); 
+  }
   render() {
     return (
       <div id="signal_chart_id" style={{ width: "100%", height: "100%" }}></div>

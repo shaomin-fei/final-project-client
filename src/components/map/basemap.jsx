@@ -178,6 +178,9 @@ export default class BaseMap extends Component{
       });
       this.map.addOverlay(overLay);
     };
+    clearOverLayers=()=>{
+      this.map.getOverlays().clear();
+    }
   
     componentDidMount(){
       //this.loadMousePosition(this.mousePositionContainerID);

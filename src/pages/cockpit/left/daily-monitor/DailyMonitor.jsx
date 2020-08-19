@@ -1,19 +1,25 @@
+
+//@ts-check
 /*
  * @Description: 
  * @version: 1.0
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:59:16
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-13 00:08:31
+ * @LastEditTime: 2020-08-18 14:29:37
  */
 import React from 'react';
+import { connect} from "react-redux"
 import {withRouter} from 'react-router-dom'
 
+import {TaskType} from "../../../../common/data/task"
 import './daily-monitor.css'
 const DailyMonitor=function(props){
     const redirectToRealTimePage=()=>{
         props.history.replace("/realtime");
     }
+    const {currentTask}=props;
+    console.log("currentTask",currentTask,props);
     return (
         <section className="daily_task_container">
             <div className="daily_task_title" onClick={redirectToRealTimePage}>
@@ -26,15 +32,15 @@ const DailyMonitor=function(props){
             <div className="running_task_group"> 
            
             <div className="font_info">Auto
-            <div className="task_count">0</div>
+            <div className="task_count">{currentTask?currentTask.Auto:0}</div>
             </div>
             <div className="vertical_seprator"></div>
             <div className="font_info">Fixed
-            <div className="task_count">0</div>
+            <div className="task_count">{currentTask?currentTask.Fixed:0}</div>
             </div>
             <div className="vertical_seprator"></div>
             <div className="font_info">Scan
-            <div className="task_count">0</div>
+            <div className="task_count">{currentTask?currentTask.Scan:0}</div>
             </div>
             </div>
             
@@ -51,4 +57,8 @@ const DailyMonitor=function(props){
     );
 }
 
-export default withRouter(DailyMonitor);
+export default 
+    connect(
+        //@ts-ignore
+        state=>({currentTask:state.currentTask}),
+    )(withRouter(DailyMonitor));

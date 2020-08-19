@@ -4,12 +4,18 @@
  * @Author: shaomin fei
  * @Date: 2020-08-16 13:24:41
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 00:03:59
+ * @LastEditTime: 2020-08-18 11:57:49
  */
 
 import {RunningTask,TaskInfo} from "./task";
 
-export default class DeviceInfo{
+export const DeviceStatusEnum={
+    WORKING:"working",
+    IDLE:"idle",
+    FAULT:"fault",
+    SHUTDOWN:"shutdown"
+}
+export class DeviceInfo{
     id="";
     name="";
     status=DeviceStatusEnum.WORKING;

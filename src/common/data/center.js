@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-15 11:18:42
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 00:02:46
+ * @LastEditTime: 2020-08-18 10:50:19
  */
 //@ts-check
 export default class CenterInfo{
@@ -13,7 +13,7 @@ export default class CenterInfo{
     lat=0;
     id="";
     /**
-     *@typedef {import('./station')} Station
+     *@typedef {import('./station').default} Station
      @type {Array<Station>}
      */
     stations=[];

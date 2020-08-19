@@ -1,19 +1,24 @@
+//@ts-check
 import React from 'react';
 import { Component } from 'react';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 const echarts = require('echarts');
 
-var cost = [0.8, 0.7, 0.4,0.2, 0.1]//current net speed, percentage of the total band
+var speed = [0.8, 0.7, 0.4,0.2, 0.1]//current net speed, percentage of the total band
+var realSpeed=[0,0,0,0,0];
 //var dataCost = [10.01,200,200,1000.01,200000]//真是的金额
-var totalCost = [ 1,1,1,1,1]//比例综合
+var total = [ 1,1,1,1,1]//比例综合
 var idealBand = [10, 10, 10,10, 8]//ideal net band
-var grade = ['station1','station2','station3','station4','station5', ]
-var myColor = ['#21BF57','#56D0E3',  '#1089E7', '#F8B448','#F57474', ];
+var stations = ['station1','station2','station3','station4','station5', ]
+var myColor = ["#F57474",'#F8B448','#1089E7','#56D0E3','#21BF57'];//[,  , ,'', ];
+
 var data = {
-    grade: grade,
-    cost: cost,
-    totalCost: totalCost,
+    stations: stations,
+    speed: speed,
+    total: total,
     idealBand: idealBand,
+    realSpeed:realSpeed,
     //dataCost:dataCost
 };
 
@@ -22,12 +27,15 @@ export default class NetOrder extends Component{
     constructor(props){
         super(props);
         this.chart=null;
+        this.option=null;
         
     }
     componentDidMount(){
-        const option=this.intiChart();
+        this.option=this.intiChart();
+        //@ts-ignore
         this.chart = echarts.init(document.getElementById('net_last5_container'));
-        this.chart.setOption(option);
+        //@ts-ignore
+        this.chart.setOption(this.option);
         window.addEventListener("resize",this.resizeChart);
     }
     componentWillUnmount(){
@@ -66,7 +74,9 @@ export default class NetOrder extends Component{
                     show: false,
                 },
                 z:-1,
-                data: data.grade
+                //  from top to left
+                inverse:true,
+                data: data.stations,
             },
             series: [{
                 type: 'bar',
@@ -93,7 +103,7 @@ export default class NetOrder extends Component{
                     },
                 },
                 z: -1,
-                data: data.totalCost,
+                data: data.total,
                 // data: da
             }, {
                 type: 'bar',
@@ -103,6 +113,7 @@ export default class NetOrder extends Component{
                      normal: {
                         barBorderRadius: 16,
                         color: function(params) {
+                            //todo choose color by speed range
                             var num = myColor.length;
                             return myColor[params.dataIndex % num]
                         },
@@ -114,7 +125,7 @@ export default class NetOrder extends Component{
                         show: true,
                         position: 'top',
                         formatter: function(params){
-                            return data.cost[params.dataIndex]*data.idealBand[params.dataIndex]*1000/8+"kBs";
+                            return data.realSpeed[params.dataIndex]+"KBs";
                         }
                     }
                 },
@@ -122,12 +133,37 @@ export default class NetOrder extends Component{
                     show: true,
                 },
                 z: -1,
-                data: data.cost,
+                data: data.speed,
+               
             }]
         }
         return option;
     }
+    /**
+     * @typedef {import("../../../../common/data/station").default} Station
+     * @param {Array<Station>} lastFive 
+     */
+    setData(lastFive){
+        for(let i=0;i<5;i++){
+            stations[i]=lastFive[i].name;
+            speed[i]=(Math.round(lastFive[i].netSpeed*8*0.001*100/lastFive[i].netband))*0.01;
+            idealBand[i]=lastFive[i].netband;
+            realSpeed[i]=lastFive[i].netSpeed;
+
+        }
+        //debugger;
+       
+        const option={...this.option};
+         //@ts-ignore
+        this.chart&&this.chart.setOption(option);
+    }
     render(){
+        const {lastFive}=this.props;
+        if(lastFive&&lastFive.length>0){
+            console.log("lastfive",lastFive);
+            this.setData(lastFive);
+        }
+
         return (
             <div id="net_last5_container" className="net_order"></div>
         );

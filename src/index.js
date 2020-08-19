@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 14:15:40
- * @LastEditTime: 2020-08-17 22:17:00
+ * @LastEditTime: 2020-08-18 14:13:28
  * @LastEditors: shaomin fei
  * @Description:
  * @FilePath: \rms-ui\src\index.js
@@ -21,13 +21,13 @@ import WorkersManage from "./workers/workers-manage";
 import store from "./redux/store";
 
 const workManage=new WorkersManage();
-workManage.start();
-// window.addEventListener("close",()=>{
-//   workManage.stop();
-// });
-// window.addEventListener("load",()=>{
-//   workManage.start();
-// });
+//workManage.start();
+window.addEventListener("close",()=>{
+  workManage.stop();
+});
+window.addEventListener("load",()=>{
+  
+});
 const render=()=>{
   ReactDOM.render(
   //don't use strictMode,or the antd will report warning:findDOMNode is deprecated in StrictMode.  xx
@@ -51,5 +51,6 @@ const render=()=>{
 )
 };
 render();
+workManage.start();
 store.subscribe(render);
 

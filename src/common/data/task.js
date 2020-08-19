@@ -4,9 +4,14 @@
  * @Author: shaomin fei
  * @Date: 2020-08-16 14:05:48
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-17 09:33:52
+ * @LastEditTime: 2020-08-18 12:03:10
  */
-class RunningTask{
+export const TaskType={
+    auto:"Auto",
+    fixed:"Fixed",
+    scan:"Scan",
+}
+export class RunningTask{
     id="";
     name="";
     param="";
@@ -15,11 +20,8 @@ class RunningTask{
     type="realtime";//realtime,auto
     startTime=Date.now;
 }
-class TaskInfo{
+export class TaskInfo{
     name="";
     param="";
 }
-module.exports={
-    RunningTask,
-    TaskInfo,
-}
+

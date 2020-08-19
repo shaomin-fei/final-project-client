@@ -4,14 +4,15 @@
  * @Author: shaomin fei
  * @Date: 2020-08-15 11:17:58
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-17 08:59:46
+ * @LastEditTime: 2020-08-18 10:22:39
  */
-const DeviceInfo=require("./device");
+import {DeviceStatusEnum,DeviceInfo} from "./device";
 class Station{
     id="";
     name="";
     lon=0;
     lat=0;
+    status=DeviceStatusEnum.WORKING;
     /**
      * net band from center to station,MB/s
      */
@@ -28,4 +29,4 @@ class Station{
 
 }
 
-module.exports=Station;
+export default Station;

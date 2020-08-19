@@ -1,9 +1,9 @@
 .font_info {
   text-align: center;
-  font-size: 1.6em;
+  font-size: 1.6rem;
   font-weight: bold;
   color: white;
-  font-family: ' DINAlternate-Bold' 'MicrosoftYaHei-Bold';
+  font-family: ' DINAlternate-Bold', 'MicrosoftYaHei-Bold';
 }
 .dev_status:hover {
   box-shadow: 0px 0px 21px 12px #3578ca inset;
@@ -68,8 +68,8 @@
   height: 10px;
 }
 .station_on_map {
-  width: 43px;
-  height: 43px;
+  width: 45px;
+  height: 45px;
   position: relative;
   cursor: pointer;
 }
@@ -77,6 +77,21 @@
   height: 32px;
   width: 32px;
   float: left;
+}
+.station_on_map .out_flash_with_level {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: red;
+  float: right;
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  color: yellow;
+  font-weight: bold;
+  text-align: center;
+  line-height: 20px;
+  font-size: 10px;
 }
 .station_on_map .out_flash_circle {
   width: 10px;

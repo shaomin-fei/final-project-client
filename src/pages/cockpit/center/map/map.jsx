@@ -6,72 +6,59 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-11 01:45:25
+ * @LastEditTime: 2020-08-19 01:12:08
  */
 
 import React, { Component } from "react";
-import "ol/ol.css";
-import { Map, View, Overlay } from "ol";
-import { XYZ, Cluster, OSM, Vector as VectorSource } from "ol/source.js";
-import {
-  defaults as defaultControls,
-  Control,
-  ScaleLine,
-  OverviewMap,
-  MousePosition,
-} from "ol/control.js";
-import {
-  Heatmap as HeatmapLayer,
-  Tile as TileLayer,
-  Vector as VectorLayer,
-} from "ol/layer.js";
-import {
-  Circle as CircleStyle,
-  Fill,
-  Stroke,
-  Style,
-  Text,
-  Icon as IconStyle,
-} from "ol/style.js";
-import {
-  fromLonLat,
-  toLonLat,
-  transformExtent,
-  transform,
-  getTransform,
-} from "ol/proj.js";
-import { createStringXY } from "ol/coordinate.js";
-import OverlayPositioning from "ol/OverlayPositioning";
-import KML from "ol/format/KML";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
+import pubsub from "pubsub-js";
 
-import OverlayInfo, { IconInfo } from "./overlay-info";
-import { element } from "prop-types";
+import BaseMap from "../../../../components/map/basemap";
+import {MapInitInfo, LonLat} from "../../../../components/map/datas";
+import OverlayInfo from "../../../../components/map/overlay-info";
+import MapConfig from "../../../../config/mapconfig";
+import CmdDefineEnum from "../../../../workers/cmd-define";
+import CenterInfo from "../../../../common/data/center";
+import {getCurrentTree} from "../../../../workers/workers-manage";
+import {Issue, SignalStaticByReason} from "../../context"
+
 
 import "./station_overlay.css";
 
-import stationOffLineImg from "../../../../imgs/station/超短波一类固定站_离线.png";
+class StationContainSignal{
+  stationid="";
+  frequencies=[];
+  maxLevel=[];
+  reasons=[];
+  occurTime=[];
+  information=[];
+  occupy=[];
+}
 
 export default class CenterMap extends Component {
+  /**
+   * @type {Map<string,StationContainSignal>}
+   */
+  mapStationAndSignal=new Map();
     state={
         mapContainerHeight:0,
         mapBottomContainerTop:0,
     }
   constructor(props) {
     super(props);
-    this.map = null;
-    this.iconLayer = null;
-    this.isResizing=false;
     /**
-     * @type {VectorSource}
+     * @type {BaseMap}
      */
-    this.iconLayterSrc = null;
-    //this.stationSrc=null;
+    this.map = null;
+    this.isResizing=false;
+    this.topicToken=[];
+    this.stationLay=null;
   }
   componentWillUnmount(){
       document.removeEventListener("mousemove",this.resizeVertical);
       document.removeEventListener("mouseup",this.resizeEnd);
+      this.topicToken.forEach(token=>{
+        pubsub.unsubscribe(token);
+      });
       //document.removeEventListener("mouseout",this.resizeEnd);
   }
   componentDidMount() {
@@ -80,208 +67,145 @@ export default class CenterMap extends Component {
       this.InitmapContainerHeight=this.mapContainer.clientHeight;
       document.addEventListener("mousemove",this.resizeVertical);
       document.addEventListener("mouseup",this.resizeEnd);
-      //document.addEventListener("mouseout",this.resizeEnd);
-    // document.onmousemove=this.resizeVertical;
-    // document.onmouseup=this.resizeEnd;
-    // document.onmouseout=this.resizeEnd;
-    this.map = new Map({
-      target: "main_page_map_container",
-      layers: [
-        new TileLayer({
-          //默认将瓦片图层放在最底层
-          zIndex: -1,
-          visible: false,
-          source: new OSM(),
-          // source: new XYZ({
-          //     wrapX: false,
-          //     url: ""
-          // })
-        }),
-      ],
-      controls: defaultControls({
-        zoom: false,
-        attribution: false,
-      }),
-      view: new View({
-        center: fromLonLat([111.717911, 27.415878]),
-        zoom: 6.7,
-        minZoom: 4,
-        maxZoom: 16,
-        //projection:'EPSG:3857',
-      }),
-    });
-    this.loadBoundary("hunan.kml");
+      
+      
+      this.createMap();
 
-    const mousePosition = new MousePosition({
-      coordinateFormat: createStringXY(6),
-      projection: "EPSG:4326",
-      //projection: 'EPSG:3857',
-      undefinedHTML: "",
-      className: "ol-mouse-position",
-      target: document.getElementById("main_page_map_latlon"),
-    });
-    this.map.addControl(mousePosition);
+      const tree=getCurrentTree();
+      if(tree&&tree.stations){
+        this.addTree(tree);
+      }
+      // put behind in order to prevent add twice.
+      this.topicToken.push(pubsub.subscribe(CmdDefineEnum.cmdGetTree,this.getTree)) ;
+      this.topicToken.push(pubsub.subscribe(CmdDefineEnum.cmdSignalByReasonChoosed,this.signalChoosed)) ;
+      
+    // let stationHtml = "";
+    // let stations = [];
+    // for (let i = 0; i < 10; i++) {
+    //   const station = new OverlayInfo();
+    //   station.id = "station_" + i.toString();
+    //   station.lat = 26.945 + i * 0.2;
+    //   station.lon = 111.166 + i * 0.2;
+    //   station.stopEventPropagation = false;
+    //   stationHtml += this.createStation(station.id);
+    //   stations.push(station);
+    // }
+    // document.getElementById("station_overlay").innerHTML = stationHtml;
 
+    // stations.forEach((sta) => {
+    //   this.insertOverLayer(sta);
+    // });
+  }
+/**
+ * 
+ * @param {string} msg 
+ * @param {Array<Issue>} data 
+ */
+  signalChoosed=(msg,data)=>{
+    this.mapStationAndSignal.clear();
+    data&&data.forEach(issue=>{
+      for(let i=0;i<issue.stations.length;i++){
+        if(!this.mapStationAndSignal.has(issue.stations[i])){
+          this.mapStationAndSignal.set(issue.stations[i],new StationContainSignal());
+        }
+        const temp=this.mapStationAndSignal.get(issue.stations[i]);
+        temp.frequencies.push(issue.frequency);
+        temp.maxLevel.push(issue.maxLevel[i]);
+        temp.occurTime.push(issue.occurTime[i]);
+        temp.reasons.push(issue.reason[i]);
+        temp.information.push(issue.information[i]);
+        temp.occupy.push(issue.occupy[i]);
+      }
+    });
+    //first,we should clear the last time information
+    this.hideAllCount();
+    this.mapStationAndSignal.forEach((value,key)=>{
+      this.updateStationSigCountInfo(key,value.frequencies.length);
+    });
+  }
+  /**
+   * 
+   * @param {CenterInfo} tree 
+   */
+  getTree=(msg,tree)=>{
+    
+    this.addTree(tree);
+    //this.map.clearOverLayers();
+  }
+  addTree(tree){
+    this.map.clearOverLayers();
+    if(!tree||!tree.stations){
+      return;
+    }
     let stationHtml = "";
-    let stations = [];
-    for (let i = 0; i < 10; i++) {
-      const station = new OverlayInfo();
-      station.id = "station_" + i.toString();
-      station.lat = 26.945 + i * 0.2;
-      station.lon = 111.166 + i * 0.2;
-      station.stopEventPropagation = false;
-      stationHtml += this.createStation(station.id);
-      stations.push(station);
-    }
-    document.getElementById("station_overlay").innerHTML = stationHtml;
-
-    stations.forEach((sta) => {
-      this.insertOverLayer(sta);
+      this.stationLay=tree.stations.map(station=>{
+      const ovInfo = new OverlayInfo();
+      ovInfo.id = station.id;
+      ovInfo.lat = station.lat;
+      ovInfo.lon = station.lon;
+      ovInfo.stopEventPropagation = false;
+      stationHtml += this.createStation(station.id,null);
+      return ovInfo;
     });
-
-    this.iconLayterSrc =
-      this.iconLayterSrc || new VectorSource({ wrapX: false });
-    if (!this.iconLayer) {
-      this.iconLayer = new VectorLayer({
-        style: function (feature) {
-          return feature.get("style");
-        },
-        source: this.iconLayterSrc,
-      });
-      this.map.addLayer(this.iconLayer);
-    }
-
-    const iconInfo = new IconInfo();
-    iconInfo.lon = 112.24;
-    iconInfo.lat = 27.06;
-    iconInfo.text = "stationx";
-    iconInfo.layer = this.iconLayer;
-    iconInfo.xOffset = -20;
-    iconInfo.yOffset = 25;
-    iconInfo.imgUrl = stationOffLineImg;
-    this.addIcon(iconInfo);
+    document.getElementById("station_overlay").innerHTML = stationHtml;
+    this.stationLay.forEach((sta) => {
+      this.map.insertOverLayer(sta);
+    });
   }
 
-  /**
-   * @Date: 2020-08-10 17:57:54
-   * @Description:
-   * @return {VectorLayer}
-   */
-  createVecLayer = () => {
-    const vecSrc = new VectorSource({
-      wrapX: false,
-    });
-    const vecLayer = new VectorLayer({
-      source: vecSrc,
-    });
-    this.map.addLayer(vecLayer);
-    return vecLayer;
-  };
-  /**
-   *
-   * @param {IconInfo} iconInfo
-   */
-  addIcon = (iconInfo) => {
-    function createStyle(url, img) {
-      return new Style({
-        //zIndex:1000,
-        image: new IconStyle({
-          anchor: [0.5, 0.5],
-          crossOrigin: "anonymous",
-          src: url,
-          img: img,
-          imgSize: img ? [img.width, img.height] : undefined,
-        }),
-        text: new Text({
-          font: "10px sans-serif",
-          text: iconInfo.text,
-          textBaseline: "center",
-          textAlign: "end",
-          offsetX: iconInfo.xOffset,
-          offsetY: iconInfo.yOffset,
-          fill: new Fill({
-            // transparent,do not use fill,or the text will have shadow
-            color: [0, 0, 0, 0],
-          }),
-          stroke: new Stroke({
-            color: "white",
-          }),
-        }),
-      });
-    }
-    let iconFeature = new Feature({
-      //geometry:new Point([0, 0]),
-      geometry: new Point(fromLonLat([iconInfo.lon, iconInfo.lat])),
-      name: "st1",
-    });
-    const styleTemp = createStyle(iconInfo.imgUrl, undefined);
-    iconFeature.set("style", styleTemp);
-
-    this.iconLayer.getSource().addFeature(iconFeature);
-  };
+  createMap(){
+    const iniMap=new MapInitInfo();
+    iniMap.centerPosition=new LonLat(MapConfig.centerLon,MapConfig.centerLat);
+    iniMap.targetId="main_page_map_container";
+    iniMap.layerVisible=false;
+    iniMap.url=MapConfig.url;
+    iniMap.zoom=MapConfig.zoom;
+    iniMap.mousePositionTargetId="main_page_map_latlon";
+    this.map=new BaseMap();
+    this.map.loadMap(iniMap,this.mapLoaded);
+    this.map.loadBoundary(MapConfig.kmlFileUrl,"#112CF8","transparent");
+  }
+  mapLoaded=()=>{
+    console.log("map loded");
+    // when the map first loaded, we need to updatesize,or the map will not be full of the container
+    this.map.updateSize();
+    this.map.removeLoadedCallBack(this.mapLoaded);
+}
+ 
   /**
    * @Date: 2020-08-10 09:36:42
    * @Description:
    * @param {string} id
    * @return {string}
    */
-  createStation = (id) => {
+  createStation = (id,level) => {
+    let showLeveCircle="none";
+    if(level!=null){
+      showLeveCircle="block";
+    }
     const imgStation = require("../../../../imgs/station/超短波一类固定站_空闲.png");
-    let stationHtml = `<div class='station_on_map' id=${id}>
+    let stationHtml = `<div class='station_on_map' id='${id}'>
         <img class="station_img"  src=${imgStation} alt=""></img>
-        <div class="out_flash_circle" ></div>
+        <div class="out_flash_with_level" style="display:${showLeveCircle}">${level}</div>
         </div>`;
     return stationHtml;
   };
-
-  /**
-     * @Date: 2020-08-10 08:31:10
-     * @Description: 
+  updateStationSigCountInfo(stationid,count){
     
-     * @param {OverlayInfo} lay
-     * @return {void} 
-     */
-  insertOverLayer = (lay) => {
-    let overLay = new Overlay({
-      id: lay.id,
-      position: fromLonLat([lay.lon, lay.lat]),
-      stopEvent: lay.stopEventPropagation || false,
-      element: lay.element || document.getElementById(lay.id),
-      positioning: OverlayPositioning.CENTER_CENTER,
-
-      insertFirst: false,
+    const stationDiv=document.getElementById(stationid);
+    const levelDivs=stationDiv.getElementsByClassName("out_flash_with_level");
+    //@ts-ignore
+    levelDivs[0].style.display="block";
+    levelDivs[0].innerHTML=count;
+  }
+  hideAllCount(){
+    this.stationLay.forEach(element => {
+      const stationDiv=document.getElementById(element.id);
+    const levelDivs=stationDiv.getElementsByClassName("out_flash_with_level");
+    //@ts-ignore
+    levelDivs[0].style.display="none";
     });
-    this.map.addOverlay(overLay);
-  };
-
-  loadBoundary = (url, stroke, fill) => {
-    const styles = new Style({
-      // zIndex: 9999,
-      fill: new Fill({
-        color: fill ? fill : "transparent",
-      }),
-      stroke: new Stroke({
-        color: stroke ? stroke : "#112CF8",
-        width: 1,
-      }),
-    });
-    const vectorSource2 = new VectorSource({
-      url: "/data//hunan.kml",
-      format: new KML({
-        // dataProjection: 'EPSG:4326',
-        // featureProjection: 'EPSG:3857',
-        extractStyles: false, //至关重要
-      }),
-      // projection: 'EPSG:3857'
-    });
-    const kmlLayer = new VectorLayer({
-      // zIndex: 9999,
-      source: vectorSource2,
-      style: styles,
-    });
-    this.map.addLayer(kmlLayer);
-    this.boundary = kmlLayer;
-  };
+  }
 
   //* @typedef {React.MouseEvent<HTMLDivElement, MouseEvent>} mouseEvent
 /**@typedef {React.MouseEvent<HTMLDivElement, MouseEvent>} mouseEvent

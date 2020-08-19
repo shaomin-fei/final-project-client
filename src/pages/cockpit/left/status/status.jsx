@@ -1,10 +1,11 @@
+//@ts-check
 /*
  * @Description: show the total statistic of the devices,like how many devices are working,idle,fault,shutdown
  * @version: 1.0
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:52:52
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 00:39:34
+ * @LastEditTime: 2020-08-18 11:13:11
  */
 import React,{useEffect,useContext,useRef} from "react";
 import ReactDom from "react-dom"
@@ -15,6 +16,8 @@ import NetOrder from "./net-order";
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
 import "./status.css";
 import {TreeContext} from "../../context"
+import Station from "../../../../common/data/station";
+import {DeviceStatusEnum} from "../../../../common/data/device";
 
 /**
  * @Date: 2020-08-18 00:34:06
@@ -22,24 +25,85 @@ import {TreeContext} from "../../context"
  *  /**
    * @typedef {import('../../../../common/data/center').default} CenterInfo   
  * @param {CenterInfo} tree
- * @return {Array<number>} total count of [woring idle fault shutdown]
+ * @return {Map<string,number>} total count of [woring idle fault shutdown]
  */
 function staticCount(tree){
-  const static=[0,0,0,0];
+  let staticCountMap=new Map();
+  staticCountMap=initStaticCount(staticCountMap);
   tree.stations&&tree.stations.forEach(station=>{
-    //switch(station.)
+    switch(station.status){
+      case DeviceStatusEnum.WORKING:
+        increasMapData(staticCountMap,DeviceStatusEnum.WORKING);
+        break;
+      case DeviceStatusEnum.SHUTDOWN:
+        increasMapData(staticCountMap,DeviceStatusEnum.SHUTDOWN);
+        break;
+      case DeviceStatusEnum.IDLE:
+        increasMapData(staticCountMap,DeviceStatusEnum.IDLE);
+        break;
+      case DeviceStatusEnum.FAULT:
+        increasMapData(staticCountMap,DeviceStatusEnum.FAULT);
+        break;
+      default:
+        break;
+    }
   });
+  return staticCountMap;
+}
+function increasMapData(mapData,key){
+  if(!mapData.has(key)){
+    mapData.set(key,0);
+  }
+  const count= mapData.get(key)+1;
+  mapData.set(key,count);
+}
+function initStaticCount(initCount){
+  if(!initCount){
+    initCount=new Map();
+  }
+  
+  initCount.set(DeviceStatusEnum.WORKING,0);
+  initCount.set(DeviceStatusEnum.IDLE,0);
+  initCount.set(DeviceStatusEnum.FAULT,0);
+  initCount.set(DeviceStatusEnum.SHUTDOWN,0);
+  return initCount;
+}
+/**
+ * @Date: 2020-08-18 08:07:30
+ * @Description: 
+ * @param {CenterInfo}  tree
+ * @return {Array<Station>|null} 
+ */
+function getNetLastFive(tree){
+  const stations=[...tree.stations];
+  if(!stations){
+    return null;
+  }
+  stations.sort((s1,s2)=>{
+    return s1.netSpeed-s2.netSpeed;
+  });
+  return stations;
 }
 export default function Status(props) {
+  /**
+   * @type {CenterInfo}
+   */
   const tree=useContext(TreeContext);
+  const statusCount=useRef(initStaticCount());
+  const netSort=useRef([]);
+  if(tree){
+    statusCount.current=staticCount(tree);
+    netSort.current=getNetLastFive(tree);
+  }
   console.log("status",tree);
-  useEffect(()=>ReactDom.render(
+  useEffect(()=>{
+    ReactDom.render(
     (<>
     <section className="status_amount mainpage_title_font_info">
-    <div className="status_working ">0</div>
-    <div className="status_idle">0</div>
-    <div className="status_fault">0</div>
-    <div className="status_shutdown">0</div>
+    <div className="status_working ">{statusCount.current.get(DeviceStatusEnum.WORKING)}</div>
+    <div className="status_idle">{statusCount.current.get(DeviceStatusEnum.IDLE)}</div>
+    <div className="status_fault">{statusCount.current.get(DeviceStatusEnum.FAULT)}</div>
+    <div className="status_shutdown">{statusCount.current.get(DeviceStatusEnum.SHUTDOWN)}</div>
   </section>
      
   {/* show description of each circle */}
@@ -54,18 +118,24 @@ export default function Status(props) {
       Net Speed Last 5
       <ArrowUpOutlined />
     </section>
-    <NetOrder />
+    <NetOrder lastFive={netSort.current}/>
   </section>
   </>
   
   )
   ,document.getElementById("status_content")
-  ),
-    []);
-
+  );
+  return ()=>{
     
+  };
+  
+},
+    [statusCount.current,netSort.current]);
+
+  
     return (
     <>
+      {/* @ts-ignore */}
       <MainPageStyleBox width="100%" height="70%" 
       title="Device Status" mountDivId="status_content" 
       mountDivHeight="calc(100% - 30px)"
