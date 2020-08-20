@@ -71,7 +71,7 @@ export default class SignalChart extends Component {
   triggerSelected=()=>{
     const transferData=[];
    this.showData.forEach(data=>{
-     if(data.selected){
+     if(data.selected&&data.signals){
        transferData.push(...data.signals);
      }
    });

@@ -1,0 +1,48 @@
+.line_separator_hr {
+  width: 100%;
+  height: var(--mainpageHrSeparatorHeight);
+  background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+}
+.page_container {
+  background-color: #06183d;
+  height: calc(100vh - 52px);
+  color: white;
+}
+#mainpage_station_signal_list {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 200px;
+  width: 200px;
+  background-color: #05173d;
+}
+#mainpage_station_signal_list .mainpage_map_signallist_header {
+  color: white;
+  font-weight: bold;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  margin-bottom: 1px;
+}
+#mainpage_station_signal_list .mainpage_map_signallist_header :first-child {
+  float: left;
+  margin-left: 5px;
+}
+#mainpage_station_signal_list .mainpage_map_signallist_header :last-child {
+  float: right;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  margin-right: 3px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+#mainpage_station_signal_list .signal_list_item {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid rgba(76, 205, 248, 0.6);
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+}

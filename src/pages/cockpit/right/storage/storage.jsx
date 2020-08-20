@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom"
+import {Provider} from "react-redux"
+import store from "../../../../redux/store"
 
 import {RouterEnum} from "../../../../config/define"
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
@@ -11,9 +13,10 @@ export default class Storage extends Component{
 
     componentDidMount(){
         ReactDOM.render(
-            (
+            (<Provider store={store}>
             <StorageChart>
             </StorageChart>
+            </Provider>
             ),
         document.getElementById("storage_content"));
     }

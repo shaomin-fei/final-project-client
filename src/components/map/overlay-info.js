@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-10 09:02:09
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-10 16:19:05
+ * @LastEditTime: 2020-08-19 13:08:21
  */
 export default class OverlayInfo{
     
@@ -29,11 +29,29 @@ export default class OverlayInfo{
        */
       element=null;
 
+      
       /*
        stopEventPropagation
        @type {boolean}
        */
       stopEventPropagation=false;
+/**
+ *  BOTTOM_LEFT = 'bottom-left',
+    BOTTOM_CENTER = 'bottom-center',
+    BOTTOM_RIGHT = 'bottom-right',
+    CENTER_LEFT = 'center-left',
+    CENTER_CENTER = 'center-center',
+    CENTER_RIGHT = 'center-right',
+    TOP_LEFT = 'top-left',
+    TOP_CENTER = 'top-center',
+    TOP_RIGHT = 'top-right',
+ */
+      position="center-center";
+/**
+ * extra information might be used
+ * @type {object}
+ */
+      tag=null;
 
   
 }

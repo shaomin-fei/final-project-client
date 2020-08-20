@@ -13,5 +13,7 @@ const  StationActionType={
     addStation:"addStation",
     // action type for current task
     currentTaskChange:"currentTaskChange",
+    //action for getStorageInfo
+    getStorageInfo:"getStorageInfo",
 }
 export default StationActionType;

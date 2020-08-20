@@ -1,11 +1,61 @@
+//@ts-check
 import React, { Component } from "react";
+import {connect} from "react-redux"
+
+
+import {getStorageInfoAsync} from "../../../../redux/actions/StationAction"
+import { string } from "prop-types";
 
 const echarts = require("echarts");
 
-export default class StorageChart extends Component {
+class StorageChart extends Component {
   chart = null;
+  option=null;
+  data = [
+    {
+      color: "#00a9ff",
+      text: "Spectrum",
+      percent: 10,
+      max: 200,
+    },
+    {
+      color: "#2ced99",
+      text: "IQ",
+      percent: 30,
+      max: 200,
+    },
+    {
+      color: "#fedb00",
+      text: "Audio",
+      percent: 12,
+      max: 1000,
+    },
+    {
+      color: "#ff7200",
+      text: "Level",
+      percent: 20,
+      max: 1,
+    },
+    {
+      color: "#00e4fe",
+      text: "ITU",
+      percent: 10,
+      max: 1,
+    },
+    {
+      color: "#00e4fe",
+      text: "Others",
+      percent: 80,
+      max: 8,
+    },
+  ];
+  values=this.data.map(dt=>{
+    return dt.max*dt.percent*0.01;
+  });
+
   componentDidMount() {
     this.createChart();
+    this.props.getStorageInfoAsync("/getStorageInfo");
   }
  componentWillUnmount(){
   window.removeEventListener("resize",this.resizeChart)
@@ -14,60 +64,13 @@ export default class StorageChart extends Component {
   this.chart&&this.chart.resize();
 }
   createChart = () => {
-    var bigfonts = 12;
-    //var nsum = 800;
-    //var fontS = 1em;
-    var dataAxis = [];
-    var radius = 60;
-    var data = [
-      {
-        color: "#00a9ff",
-        text: "Spectrum",
-        num: "134",
-        percent: 10,
-        max: 200,
-      },
-      {
-        color: "#2ced99",
-        text: "IQ",
-        num: "230",
-        percent: 30,
-        max: 200,
-      },
-      {
-        color: "#fedb00",
-        text: "Audio",
-        num: "136",
-        percent: 12,
-        max: 1000,
-      },
-      {
-        color: "#ff7200",
-        text: "Level",
-        num: "49",
-        percent: 20,
-        max: 1,
-      },
-      {
-        color: "#00e4fe",
-        text: "ITU",
-        num: "360",
-        percent: 10,
-        max: 1,
-      },
-      {
-        color: "#00e4fe",
-        text: "Others",
-        num: "360",
-        percent: 80,
-        max: 8,
-      },
-    ];
-
-    var option = {
+    let bigfonts = 12;
+    let radius = 60;
+    
+    this.option = {
       radar: [
         {
-          indicator: data,
+          indicator: this.data,
           radius: radius,
           startAngle: 60,
           //   how many circles are there
@@ -78,7 +81,7 @@ export default class StorageChart extends Component {
             formatter: function (value, indicator) {
               //   var npercent = indicator.num;
               //   var percent = (npercent / indicator.max) * 100;
-              return "{a|" + value + "}{b|\n10}{c|%}";
+              return "{a|" + value + "}{b|\n"+indicator.percent+"}{c|%}";
             },
             rich: {
               a: {
@@ -144,7 +147,7 @@ export default class StorageChart extends Component {
           },
           data: [
             {
-              value: [134, 80, 500, 0.3, 0.9, 5],
+              value: this.values,
               label: {
                 show: "true",
               },
@@ -153,9 +156,9 @@ export default class StorageChart extends Component {
         },
       ],
     };
-
+//@ts-ignore
     this.chart = echarts.init(document.getElementById("storage_chart_id"));
-    this.chart.setOption(option);
+    this.chart.setOption(this.option);
     
     window.addEventListener("resize",this.resizeChart)
    
@@ -165,6 +168,65 @@ export default class StorageChart extends Component {
     // );
   };
   render() {
+    /***
+     * @typedef {import("../../../../redux/reducers/storage-info-reducer").initState} initstate
+     * @type {initstate}
+     */
+    const storageInfo=this.props.storageInfo;
+    
+    if(storageInfo){
+      if(typeof(storageInfo)==="string"){
+        // setTimeout(()=>{
+        //   notification.open({
+        //     message: 'Error',
+        //     description:
+        //       {storageInfo},
+        //       duration:0,
+        //     onClick: () => {
+        //       //console.log('Notification Clicked!');
+        //     },
+        //   });
+        // },10);
+        
+      }else{
+        this.data[0].max= storageInfo.Spectrum.max;
+        this.data[0].percent=storageInfo.Spectrum.percent;
+  
+        this.data[1].max=storageInfo.IQ.max;
+        this.data[1].percent=storageInfo.IQ.percent;
+  
+        this.data[2].max=storageInfo.Audio.max;
+        this.data[2].percent=storageInfo.Audio.percent;
+  
+        this.data[3].max=storageInfo.Level.max;
+        this.data[3].percent=storageInfo.Level.percent;
+  
+        this.data[4].max=storageInfo.ITU.max;
+        this.data[4].percent=storageInfo.ITU.percent;
+  
+        this.data[5].max=storageInfo.Others.max;
+        this.data[5].percent=storageInfo.Others.percent;
+  
+        this.values=this.data.map(dt=>{
+          return dt.percent*dt.max*0.01;
+        });
+        const indicator=[...this.data];
+        const values=[...this.values];
+        this.chart&&this.chart.setOption({
+          radar:[{
+            indicator: indicator,
+          }],
+          series:[{
+            
+            data:[{
+              value:values,
+            }],
+          }]
+        });
+      }
+     
+    }
+    
     return (
       <div style={{ height: "100%", width: "100%" ,position:"relative"}}>
         <div id="storage_chart_id" style={{padding:"5px"}}></div>
@@ -173,3 +235,15 @@ export default class StorageChart extends Component {
     );
   }
 }
+const mapStateToProps=(state,ownProps)=>{
+  return {storageInfo:state.storageInfo};
+}
+//包装一下action，使其可以被diaptch
+const mapDipatchToProps=(dispatch,ownProps)=>{
+  return {getStorageInfoAsync};
+}
+export default connect(
+  mapStateToProps,
+  {getStorageInfoAsync}
+
+)(StorageChart);

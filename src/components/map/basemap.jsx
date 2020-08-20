@@ -43,10 +43,10 @@ export default class BaseMap extends Component{
        */
       this.map=null;
       /**
-       * @type {Array<Overlay>}
+       * @type {MapInitInfo}
        */
       //this.overLayLayers=[];
-      
+      this.iniInfo=null;
       
     }
     dispose(){
@@ -64,6 +64,7 @@ export default class BaseMap extends Component{
      */
     loadMap(initInfo,loadedCallBack){
        this.dispose();
+       this.iniInfo=initInfo;
        const source=new XYZ({
         wrapX:false,
         url:initInfo.url,
@@ -102,6 +103,7 @@ export default class BaseMap extends Component{
       this.map.on("rendercomplete",loadedCallBack);
 
       initInfo.mousePositionTargetId&&this.loadMousePosition(initInfo.mousePositionTargetId);
+      initInfo.onMapClick&&this.map.addEventListener("click",initInfo.onMapClick);
       
     }
     
@@ -172,7 +174,9 @@ export default class BaseMap extends Component{
         position: fromLonLat([lay.lon, lay.lat]),
         stopEvent: lay.stopEventPropagation || false,
         element: lay.element || document.getElementById(lay.id),
-        positioning: OverlayPositioning.CENTER_CENTER,
+        //@ts-ignore
+        positioning: lay.position,
+
   
         insertFirst: false,
       });
@@ -181,12 +185,31 @@ export default class BaseMap extends Component{
     clearOverLayers=()=>{
       this.map.getOverlays().clear();
     }
-  
+    panMap(newScreenOffsetX,newScreenOffsetY){
+      const centerPix=this.map.getPixelFromCoordinate(this.map.getView().getCenter());
+      centerPix[0]=centerPix[0]+newScreenOffsetX;
+      centerPix[1]=centerPix[1]+newScreenOffsetY;
+      const centerCor=this.map.getCoordinateFromPixel(centerPix);
+      this.map.getView().setCenter(centerCor);
+      
+    }
+    removeOverLay(id){
+      const temp=this.map.getOverlayById(id);
+      temp&&this.map.removeOverlay(temp);
+    }
+    getPixelFromCoordinate([lon,lat]){
+
+      return this.map.getPixelFromCoordinate([lon,lat]);
+    }
+    getCoordinateFromPixel([x,y]){
+      return this.map.getCoordinateFromPixel([x,y]);
+    }
     componentDidMount(){
       //this.loadMousePosition(this.mousePositionContainerID);
     }
     componentWillUnmount(){
       window.removeEventListener("resize",this.updateSize);
+      this.iniInfo&&this.iniInfo.onMapClick&&this.map.removeEventListener("click",this.iniInfo.onMapClick);
     }
 
     render(){

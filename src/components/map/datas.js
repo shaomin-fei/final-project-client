@@ -68,4 +68,9 @@ export class MapInitInfo{
      */
 
     layerVisible=true;
+/**
+ * call back when map clicked
+ * 
+ */
+    onMapClick=null;
 }
