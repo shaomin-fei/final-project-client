@@ -8,7 +8,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 02:43:31
+ * @LastEditTime: 2020-08-20 11:55:51
  */
 
 import React, { Component } from "react";
@@ -149,6 +149,9 @@ export default class CenterMap extends Component {
     this.InitmapBottomContainerTop = this.bottomContainer.getBoundingClientRect().top;
     this.InitmapBottomContainerBottom = this.bottomContainer.getBoundingClientRect().bottom;
     this.InitmapContainerHeight = this.mapContainer.clientHeight;
+    console.log("InitmapBottomContainerTop,InitmapBottomContainerBottom,InitmapContainerHeight",
+    this.InitmapBottomContainerTop,this.InitmapBottomContainerBottom,this.InitmapContainerHeight);
+
   }
   restoreMapHeighToOriginal=()=>{
     this.usePercent=true;
@@ -157,6 +160,9 @@ export default class CenterMap extends Component {
     mapHeightPercent:"85%",
     // "calc(15% - 10px)"
     mapBottomPercent:"calc(15% - 10px)",
+    mapContainerHeight: 0,
+    mapBottomContainerTop: 0,
+    
     })
     this.getInitSize();
   }
@@ -544,6 +550,7 @@ export default class CenterMap extends Component {
               ? null
               : {
                   top: mapBottomContainerTop,
+                  
                   height:
                     this.InitmapBottomContainerBottom -
                     this.InitmapBottomContainerTop +
