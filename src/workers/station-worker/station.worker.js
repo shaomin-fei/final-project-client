@@ -45,7 +45,7 @@ const getStations=async (url)=>{
         //console.log("get",strNowTree);
         if(strNowTree!==stationString){
             stationString=strNowTree;
-            console.log("post");
+            //console.log("post");
             if(!signalByReason){
                 //the first time to get the signal,must after the stations get value;
                 getSignalByReason(APIConfigEnum.getSignalStaticByReason);
@@ -58,7 +58,7 @@ const getStations=async (url)=>{
             if(tasks!==currentTaskStatic)
             {
                 currentTaskStatic=tasks;
-                console.log("find current task change",currentTaskStatic);
+                //console.log("find current task change",currentTaskStatic);
                   //@ts-ignore
                 postMessage(new WorkerParam(CmdDefineEnum.cmdCurrentTaskChange,currentTaskStatic));
             }
@@ -143,7 +143,7 @@ async function  getSignalByReason(url){
     
 }
 onmessage=(e)=>{
-     console.log(e.data);
+     //console.log(e.data);
      switch(e.data.cmd){
          case CmdDefineEnum.cmdIniWorker:{
              //const {httpUrl,wsUrl}=e.data.arg;

@@ -158,9 +158,10 @@ export default class NetOrder extends Component{
         this.chart&&this.chart.setOption(option);
     }
     render(){
+        console.log("net order called");
         const {lastFive}=this.props;
         if(lastFive&&lastFive.length>0){
-            console.log("lastfive",lastFive);
+            //console.log("lastfive",lastFive);
             this.setData(lastFive);
         }
 

@@ -1,0 +1,9 @@
+.ant-tree-indent-unit {
+  width: 10px;
+}
+.ant-tree .ant-tree-node-content-wrapper:hover {
+  background-color: rgba(38, 164, 241, 0.3);
+}
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: rgba(38, 164, 241, 0.5);
+}

@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-11 07:57:25
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-13 20:03:11
+ * @LastEditTime: 2020-08-20 16:18:41
  */
 
 import React from "react";
@@ -33,7 +33,9 @@ const MainPageStyleBox = function (props) {
         <section className="right_img"></section>
       </section>
       <section className="line_separator"></section>
-      <section id={mountDivId} style={{height:mountDivHeight}}></section>
+      <section id={mountDivId} style={{height:mountDivHeight}}>
+        {props.children}
+      </section>
       
       {/* show highlight corner */}
       <section className="corner_left_top"></section>

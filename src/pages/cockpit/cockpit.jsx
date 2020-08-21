@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 08:42:12
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 12:52:37
+ * @LastEditTime: 2020-08-20 12:19:05
  */
 import React from "react";
 import {connect} from "react-redux"
@@ -29,6 +29,7 @@ const CockPit = function (props) {
    * @type {CenterInfo} tree
    */
   const tree=props.tree;  
+  console.log("cockpit render");
   return (
     <TreeContext.Provider value={tree}>
     <div className="cockPit">

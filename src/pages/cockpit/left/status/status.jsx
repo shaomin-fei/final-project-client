@@ -5,11 +5,12 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:52:52
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 11:13:11
+ * @LastEditTime: 2020-08-20 16:19:23
  */
 import React,{useEffect,useContext,useRef} from "react";
 import ReactDom from "react-dom"
 import { ArrowUpOutlined } from "@ant-design/icons";
+import ReactDOMServer from "react-dom/server";
 
 import {RouterEnum} from "../../../../config/define"
 import NetOrder from "./net-order";
@@ -95,36 +96,65 @@ export default function Status(props) {
     statusCount.current=staticCount(tree);
     netSort.current=getNetLastFive(tree);
   }
-  console.log("status",tree);
-  useEffect(()=>{
-    ReactDom.render(
-    (<>
-    <section className="status_amount mainpage_title_font_info">
-    <div className="status_working ">{statusCount.current.get(DeviceStatusEnum.WORKING)}</div>
-    <div className="status_idle">{statusCount.current.get(DeviceStatusEnum.IDLE)}</div>
-    <div className="status_fault">{statusCount.current.get(DeviceStatusEnum.FAULT)}</div>
-    <div className="status_shutdown">{statusCount.current.get(DeviceStatusEnum.SHUTDOWN)}</div>
-  </section>
-     
-  {/* show description of each circle */}
-  <section className="status_description mainpage_title_font_info">
-    <div className="des_working">Working</div>
-    <div className="des_idle">Idle</div>
-    <div className="des_fault">Fault</div>
-    <div className="des_shutdown">Shutdown</div>
-  </section>
-  <section className="net_condition">
-    <section className="mainpage_title_font_info">
-      Net Speed Last 5
-      <ArrowUpOutlined />
+  const getChildren=()=>{
+
+    return (<>
+      <section className="status_amount mainpage_title_font_info">
+      <div className="status_working ">{statusCount.current.get(DeviceStatusEnum.WORKING)}</div>
+      <div className="status_idle">{statusCount.current.get(DeviceStatusEnum.IDLE)}</div>
+      <div className="status_fault">{statusCount.current.get(DeviceStatusEnum.FAULT)}</div>
+      <div className="status_shutdown">{statusCount.current.get(DeviceStatusEnum.SHUTDOWN)}</div>
     </section>
-    <NetOrder lastFive={netSort.current}/>
-  </section>
-  </>
+       
+    {/* show description of each circle */}
+    <section className="status_description mainpage_title_font_info">
+      <div className="des_working">Working</div>
+      <div className="des_idle">Idle</div>
+      <div className="des_fault">Fault</div>
+      <div className="des_shutdown">Shutdown</div>
+    </section>
+    <section className="net_condition">
+      <section className="mainpage_title_font_info">
+        Net Speed Last 5
+        <ArrowUpOutlined />
+      </section>
+      <NetOrder lastFive={netSort.current}/>
+    </section>
+    </>
+    
+    )
+  }
+  //console.log("status",tree);
+  useEffect(()=>{
+ 
+  //   ReactDom.render(
+  //   (<>
+  //   <section className="status_amount mainpage_title_font_info">
+  //   <div className="status_working ">{statusCount.current.get(DeviceStatusEnum.WORKING)}</div>
+  //   <div className="status_idle">{statusCount.current.get(DeviceStatusEnum.IDLE)}</div>
+  //   <div className="status_fault">{statusCount.current.get(DeviceStatusEnum.FAULT)}</div>
+  //   <div className="status_shutdown">{statusCount.current.get(DeviceStatusEnum.SHUTDOWN)}</div>
+  // </section>
+     
+  // {/* show description of each circle */}
+  // <section className="status_description mainpage_title_font_info">
+  //   <div className="des_working">Working</div>
+  //   <div className="des_idle">Idle</div>
+  //   <div className="des_fault">Fault</div>
+  //   <div className="des_shutdown">Shutdown</div>
+  // </section>
+  // <section className="net_condition">
+  //   <section className="mainpage_title_font_info">
+  //     Net Speed Last 5
+  //     <ArrowUpOutlined />
+  //   </section>
+  //   <NetOrder lastFive={netSort.current}/>
+  // </section>
+  // </>
   
-  )
-  ,document.getElementById("status_content")
-  );
+  // )
+  // ,document.getElementById("status_content")
+  // );
   return ()=>{
     
   };
@@ -139,8 +169,10 @@ export default function Status(props) {
       <MainPageStyleBox width="100%" height="70%" 
       title="Device Status" mountDivId="status_content" 
       mountDivHeight="calc(100% - 30px)"
-      linkedPath={RouterEnum.StationManage}
-      />
+      linkedPath={RouterEnum.StationManage}>
+         {getChildren()}
+      </MainPageStyleBox>
+     
       
          {/* show amount in circle button */}
          

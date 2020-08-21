@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:59:16
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 14:29:37
+ * @LastEditTime: 2020-08-20 12:52:42
  */
 import React from 'react';
 import { connect} from "react-redux"
@@ -19,7 +19,7 @@ const DailyMonitor=function(props){
         props.history.replace("/realtime");
     }
     const {currentTask}=props;
-    console.log("currentTask",currentTask,props);
+    console.log("DailyMonitor render");
     return (
         <section className="daily_task_container">
             <div className="daily_task_title" onClick={redirectToRealTimePage}>

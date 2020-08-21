@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 21:05:14
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-17 23:52:46
+ * @LastEditTime: 2020-08-20 12:29:47
  */
 import StationActionType from "../action-types/action-types"
 import { act } from "react-dom/test-utils";
@@ -26,7 +26,7 @@ const stationReducer=function(state=null,action){
         case StationActionType.deleteStation:
             break;
         case StationActionType.getTree:
-            console.log("reducer get tree",action.data);
+            //console.log("reducer get tree",action.data);
             return {...action.data};
         default:
             return state;

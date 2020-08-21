@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-17 14:58:27
+ * @LastEditTime: 2020-08-20 19:33:11
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -58,6 +58,11 @@ npm install worker-loader --save-dev 安装 插件
 18 不用work-loader:
 https://segmentfault.com/a/1190000020299095?utm_source=tag-newest
 19 file-loader版本有问题会导致图片加载不对 package-lock.json中可以查看执行脚本react-scripts的版本依赖
+20 setstate 调用顺序问题，
+https://www.tangshuang.net/3784.html
+
+21 clone link from git
+git clone https://github.com/tupes/comit-react-color-organizer.git
 
 16  Reactjs code snippets
 Reactjs

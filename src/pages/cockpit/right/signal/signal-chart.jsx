@@ -64,7 +64,7 @@ export default class SignalChart extends Component {
     this.pubToken&&pubsub.unsubscribe(this.pubToken);
   }
   signalStaticByReason=(msg,data)=>{
-    console.log("receive signalStaticByReason",data);
+    //console.log("receive signalStaticByReason",data);
     this.setChartData(data);
     this.triggerSelected();
   }

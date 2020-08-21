@@ -173,6 +173,7 @@ class StorageChart extends Component {
      * @type {initstate}
      */
     const storageInfo=this.props.storageInfo;
+    console.log("storage chart render");
     
     if(storageInfo){
       if(typeof(storageInfo)==="string"){

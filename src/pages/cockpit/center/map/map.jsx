@@ -8,7 +8,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 11:55:51
+ * @LastEditTime: 2020-08-20 12:06:15
  */
 
 import React, { Component } from "react";
@@ -149,8 +149,8 @@ export default class CenterMap extends Component {
     this.InitmapBottomContainerTop = this.bottomContainer.getBoundingClientRect().top;
     this.InitmapBottomContainerBottom = this.bottomContainer.getBoundingClientRect().bottom;
     this.InitmapContainerHeight = this.mapContainer.clientHeight;
-    console.log("InitmapBottomContainerTop,InitmapBottomContainerBottom,InitmapContainerHeight",
-    this.InitmapBottomContainerTop,this.InitmapBottomContainerBottom,this.InitmapContainerHeight);
+    // console.log("InitmapBottomContainerTop,InitmapBottomContainerBottom,InitmapContainerHeight",
+    // this.InitmapBottomContainerTop,this.InitmapBottomContainerBottom,this.InitmapContainerHeight);
 
   }
   restoreMapHeighToOriginal=()=>{
@@ -194,7 +194,7 @@ export default class CenterMap extends Component {
       });
     //first,we should clear the last time information
     this.hideAllCount();
-    console.log("handle signal clicked");
+    //console.log("handle signal clicked");
 
     this.mapStationAndSignal.forEach((value, key) => {
       this.updateStationSigCountInfo(key, value.frequencies.length);
@@ -280,7 +280,7 @@ export default class CenterMap extends Component {
     if (!this.mapStationAndSignal.has(stationid)) {
       return;
     }
-    console.log("stationid,frequency", stationid, frequency);
+    //console.log("stationid,frequency", stationid, frequency);
     const info = this.mapStationAndSignal.get(stationid);
     let index = 0;
     let isFind = false;
@@ -308,7 +308,7 @@ export default class CenterMap extends Component {
     }
   };
   closeSignalDetailDiag = () => {
-    console.log("closesignaldetail");
+    //console.log("closesignaldetail");
     this.map.removeOverLay("mainpage_station_signal_list");
     this.signalListDlg = null;
     this.signalListInfo.closeElement = null;
@@ -515,7 +515,7 @@ export default class CenterMap extends Component {
       mapContainerHeight: mapContainerHeight + offsetY,
       mapBottomContainerTop: mapBottomContainerTop + offsetY,
     });
-    console.log("offsety", offsetY, mapBottomContainerTop);
+    //console.log("offsety", offsetY, mapBottomContainerTop);
   };
   /**
    * @Date: 2020-08-10 23:12:40
@@ -527,7 +527,7 @@ export default class CenterMap extends Component {
     this.isResizing = false;
   };
   render() {
-    //console.log("render map.jsx");
+    console.log("render map.jsx");
     const { mapContainerHeight, mapBottomContainerTop } = this.state;
     return (
       <>
