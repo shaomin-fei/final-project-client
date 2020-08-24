@@ -7,3 +7,61 @@
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: rgba(38, 164, 241, 0.5);
 }
+.task_section_list {
+  color: white;
+  height: calc(100% - 5px);
+  margin-right: 5px;
+  border: none;
+}
+.task_section_list .ant-list-header {
+  height: 20%;
+  text-align: center;
+  font-weight: bold;
+  line-height: 10px;
+}
+.task_section_list .ant-list-item-meta-avatar {
+  margin-right: 0px;
+}
+.task_section_list .ant-list-item {
+  display: flex;
+  justify-content: center;
+  padding: 5px 5px;
+}
+.task_section_list .task_operation_span {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  left: 10px;
+  padding: 3px;
+}
+.task_section_list .task_operation_span a {
+  padding: 5px;
+  color: wheat;
+  text-decoration-line: underline;
+}
+.task_section_list .ant-spin-nested-loading {
+  height: 80%;
+}
+.task_section_list .ant-spin-nested-loading .ant-spin-container {
+  height: 100%;
+}
+.task_section_list .ant-spin-nested-loading .ant-spin-container .ant-list-item-meta-title {
+  color: white;
+  text-align: left;
+}
+.task_section_list .ant-spin-nested-loading .ant-spin-container .ant-list-empty-text {
+  height: 100%;
+}
+.task_section_list .ant-spin-nested-loading .ant-spin-container .ant-list-empty-text .ant-empty {
+  height: 100%;
+}
+.task_section_list .ant-spin-nested-loading .ant-spin-container .ant-list-empty-text .ant-empty-normal {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.task_section_list p {
+  color: wheat;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 3px;
+}

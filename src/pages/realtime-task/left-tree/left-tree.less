@@ -7,3 +7,68 @@
   .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
     background-color: rgba(38, 164, 241, 0.5);
   }
+  .task_section_list{
+    color:white;
+    height: calc(100% - 5px);
+    margin-right: 5px;
+    border: none;
+    .ant-list-header{
+      height: 20%;
+      text-align: center;
+      font-weight: bold;
+      line-height: 10px;
+    }
+    .ant-list-item-meta-avatar{
+      margin-right: 0px;
+    }
+    .ant-list-item{
+      display: flex;
+      justify-content: center;
+      //border:1px solid green;
+      padding:5px 5px;
+    }
+    .task_operation_span{
+      display: flex;
+      justify-content: center;
+      font-weight: bold;
+      left: 10px;
+      padding:3px;
+      //border:1px solid red;
+      a{
+        padding:5px;
+        color: wheat;
+        text-decoration-line: underline;
+      }
+    }
+    .ant-spin-nested-loading{
+      height: 80%;
+      .ant-spin-container{
+        height: 100%;
+        .ant-list-item-meta-title{
+          color:white;
+          text-align: left;
+        }
+        //border:2px white solid;
+        .ant-list-empty-text{
+          height: 100%;
+          //border:1px solid red;
+          .ant-empty{
+            height: 100%;
+            //border:1px solid red;
+          }
+          .ant-empty-normal{
+            //border:1px solid yellow;
+            margin-top:0px;
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
+    p{
+      color:wheat;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 3px;
+      //border: 1px solid red;
+    }
+  }

@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 12:02:32
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 14:15:57
+ * @LastEditTime: 2020-08-23 23:50:44
  */
 //import WorkerStation from './station-worker/station.worker';
 
@@ -64,9 +64,10 @@ class StationWorkInfo extends WorkInfo{
             }
             case CmdDefineEnum.cmdCurrentTaskChange:{
                 ///console.log("current task change",data.arg);
-                pubsub.publish(data.cmd,data.arg);
+                
                 const tasks=JSON.parse(data.arg);
                 StationWorkInfo.currentTasks=tasks;
+                pubsub.publish(data.cmd,tasks);
                 //debugger
                 const taskChange=(dispatch)=>{
                     dispatch(currentTaskChange(tasks));

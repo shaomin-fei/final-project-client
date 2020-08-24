@@ -73,4 +73,9 @@ export class MapInitInfo{
  * 
  */
     onMapClick=null;
+    /**
+     * custom controls that will be added to the map
+     * 
+     */
+    controls=[];
 }

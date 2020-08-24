@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 19:33:11
+ * @LastEditTime: 2020-08-22 20:37:40
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -63,6 +63,9 @@ https://www.tangshuang.net/3784.html
 
 21 clone link from git
 git clone https://github.com/tupes/comit-react-color-organizer.git
+22 a标签执行onclick的写法：
+{/* href 中执行js代码，;表示执行空代码，这样onclick才会响应 */}
+                 <a style={linkStyleStart} href="javascript:;" onClick={(e,item)=>this.handleLinkClick(e,item,"start")}> Start</a>
 
 16  Reactjs code snippets
 Reactjs

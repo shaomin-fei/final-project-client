@@ -86,7 +86,7 @@ export default class BaseMap extends Component{
           controls:defaultControls({
             attribution:false,
             zoom:false,
-          }),
+          }).extend(initInfo.controls),
           view:new View({
             center:fromLonLat([initInfo.centerPosition.lon,initInfo.centerPosition.lat]),
             maxZoom:initInfo.maxZoom,
@@ -204,6 +204,7 @@ export default class BaseMap extends Component{
     getCoordinateFromPixel([x,y]){
       return this.map.getCoordinateFromPixel([x,y]);
     }
+   
     componentDidMount(){
       //this.loadMousePosition(this.mousePositionContainerID);
     }

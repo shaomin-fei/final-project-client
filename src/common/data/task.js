@@ -4,12 +4,12 @@
  * @Author: shaomin fei
  * @Date: 2020-08-16 14:05:48
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 12:03:10
+ * @LastEditTime: 2020-08-21 21:51:34
  */
 export const TaskType={
     auto:"Auto",
-    fixed:"Fixed",
-    scan:"Scan",
+    realtime:"RealTime",
+    schedule:"Schedule",
 }
 export class RunningTask{
     id="";

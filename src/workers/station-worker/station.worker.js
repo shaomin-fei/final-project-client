@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 11:34:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-19 00:44:06
+ * @LastEditTime: 2020-08-23 23:46:52
  */
 let temp=0;
 temp=temp+1;
@@ -94,16 +94,13 @@ function staticCurrentTask(tree){
                     //debugger
                     const runningTasks=dev.runningTasks;
                     runningTasks.forEach(task=>{
-                        switch(task.type){
-                            case TaskType.auto:
-                                autoCount++;
-                                break;
-                            case TaskType.fixed:
-                                fixCount++;
-                                break;
-                            case TaskType.scan:
-                                scanCount++;
-                                break;
+                        // be careful,only auto task used task.type to compare,others use task.name
+                        if(task.type===TaskType.auto){
+                            autoCount++;
+                        }else if(task.name==="FIXFQ"){
+                            fixCount++;
+                        }else if(task.name==="Scan"){
+                            scanCount++;
                         }
                     });
                 }
@@ -116,9 +113,9 @@ function staticCurrentTask(tree){
     // mapTasks.set(TaskType.scan,scanCount);
     // result=JSON.stringify(mapTasks);
     const tasks={
-        [TaskType.auto]:autoCount,
-        [TaskType.fixed]:fixCount,
-        [TaskType.scan]:scanCount,
+        Auto:autoCount,
+        Fixed:fixCount,
+        Scan:scanCount,
     }
     result=JSON.stringify(tasks);
     return result;

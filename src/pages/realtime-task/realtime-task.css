@@ -10,7 +10,7 @@
   color: white;
 }
 .content_layout {
-  height: calc(100vh - 59px);
+  height: calc(100vh - 52px);
   background-color: #06183d;
   padding: 5px;
 }
@@ -38,7 +38,8 @@
 }
 .left_task_section {
   margin-top: 2px;
-  height: calc(30% - 2px);
+  height: calc(30% - 5px);
+  color: white;
 }
 ::-webkit-scrollbar {
   width: 10px;

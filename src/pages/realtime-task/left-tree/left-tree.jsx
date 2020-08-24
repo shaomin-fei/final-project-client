@@ -8,9 +8,14 @@ import StatusEnum from "../../../common/data/status";
 import CmdDefineEnum from "../../../workers/cmd-define";
 import { getCurrentTree } from "../../../workers/workers-manage";
 import CenterInfo from "../../../common/data/center";
+import TaskSection from "./task-section"
 import "../realtime-task.css";
 import "./left-tree.css";
 import { DeviceInfo } from "../../../common/data/device";
+
+import ColorCircle from "../circle";
+
+import centerIcon from "../../../imgs/station/省中心.png";
 
 const { Search } = Input;
 
@@ -35,6 +40,10 @@ class LeftTree extends Component {
     searchValue: "",
     autoExpandParent: true,
     treeData:[],
+    tasks:[],
+    runningTasks:[],
+    currentDevice:null,
+    //currentStation:null
   };
 
   onExpand = (expandedKeys) => {
@@ -72,9 +81,12 @@ class LeftTree extends Component {
     const tree = getCurrentTree();
     tree && this.handleTree(tree);
     //subscribe
-    pubsub.subscribe(CmdDefineEnum.cmdGetTree, (message,center) => {
+    this.subscribeToken= pubsub.subscribe(CmdDefineEnum.cmdGetTree, (message,center) => {
       this.handleTree(center);
     });
+  }
+  componentWillUnmount(){
+    pubsub.unsubscribe(this.subscribeToken);
   }
 
   onSelect=(selectedKeys, info)=>{
@@ -88,6 +100,14 @@ class LeftTree extends Component {
        * @type {DeviceInfo}
        */
       const tag=info.node.tag;
+      const tasks=tag.abilities.map(task=>{
+        return task.name;
+      })
+      const runningTasks=tag.runningTasks&&tag.runningTasks.map(run=>{
+        return run.name;
+      })
+      this.setState({tasks,runningTasks,currentDevice:tag});
+      //show task below
     }else{
       // folder or unfolder
       this.expandOrUnexpandNode(info);
@@ -112,6 +132,20 @@ class LeftTree extends Component {
     }
     this.setState({expandedKeys:[...expandedKeys], autoExpandParent: index===-1?true:false,});
   }
+
+  getIconByStatus=(status)=>{
+    if(status===StatusEnum.IDLE){
+      return (<ColorCircle color={"rgba(0,254,228,0.7)"}></ColorCircle>)
+    }else if(status===StatusEnum.WORKING){
+      return (<ColorCircle color={"rgba(53,255,0,0.7)"}></ColorCircle>)
+    }
+  else if(status===StatusEnum.FAULT){
+    return (<ColorCircle color={"rgba(255,0,0,0.7)"}></ColorCircle>)
+  }
+else if(status===StatusEnum.SHUTDOWN){
+  return (<ColorCircle color={"rgba(180,180,180,0.7)"}></ColorCircle>)
+}
+  }
   /**
    * convert data to the form that tree can show
    * @param {CenterInfo} tree
@@ -129,6 +163,7 @@ class LeftTree extends Component {
     const center=new TreeNodeData();
     center.key=tree.id;
     center.title=tree.name;
+    center.icon=<img src={centerIcon} style={{width:"24px",height:"24px"}}/>;
     //center.selectable=false;
     expandKeys.push(center.key);
     tree.stations&&tree.stations.forEach(tr=>{
@@ -138,6 +173,7 @@ class LeftTree extends Component {
       station.title=tr.name;
       station.status=tr.status;
       station.tag=tr;
+      station.icon=this.getIconByStatus(station.status);
       //station.selectable=false;
       tr.devices&&tr.devices.forEach(dev=>{
         const deviceNode=new TreeNodeData();
@@ -146,6 +182,7 @@ class LeftTree extends Component {
         deviceNode.title=dev.name;
         deviceNode.status=dev.status;
         deviceNode.tag=dev;
+        deviceNode.icon=this.getIconByStatus(deviceNode.status);
         station.children.push(deviceNode);
       });
       center.children.push(station);
@@ -156,40 +193,7 @@ class LeftTree extends Component {
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
     const {treeData}=this.state;
-    const loop = (data) =>
-      data.map((item) => {
-        const index = item.title.indexOf(searchValue);
-        const beforeStr = item.title.substr(0, index);
-        const afterStr = item.title.substr(index + searchValue.length);
-        const title =
-          index > -1 ? (
-            <span>
-              {beforeStr}
-              <span className="site-tree-search-value">{searchValue}</span>
-              {afterStr}
-            </span>
-          ) : (
-            <span>{item.title}</span>
-          );
-        if (item.children) {
-          return { title, key: item.key, 
-            children: loop(item.children),
-            selectable:item.selectable,
-            disabled:item.disabled,
-            icon:item.icon,
-            tag:item.tag 
-           };
-        }
-
-        return {
-          title,
-          key: item.key,
-          selectable:item.selectable,
-          disabled:item.disabled,
-          icon:item.icon,
-          tag:item.tag  
-        };
-      });
+    
     return (
       <div className="left_tree_container">
         <div className="left_tree_section">
@@ -213,7 +217,12 @@ class LeftTree extends Component {
           />
         </div>
         <div className="line_separator_hr"></div>
-        <div className="left_task_section"></div>
+        <div className="left_task_section">
+          <TaskSection tasks={this.state.tasks} 
+          runningTasks={this.state.runningTasks}
+          device={this.state.currentDevice}
+          />
+        </div>
       </div>
     );
   }
