@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 14:15:40
- * @LastEditTime: 2020-08-18 14:13:28
+ * @LastEditTime: 2020-08-24 11:02:05
  * @LastEditors: shaomin fei
  * @Description:
  * @FilePath: \rms-ui\src\index.js
@@ -38,7 +38,10 @@ const render=()=>{
         Routers.map((router,index) => {
           // exact={true}要求必须完全匹配，cockpit/ss将认为匹配不成功，否则会匹配到cockpit 页面
           return (
-            <Route  key={index} path={router.path} exact={true} component={router.component} ></Route>
+            <Route  
+            key={index} path={router.path} exact={router.exact} component={router.component} >
+
+            </Route>
           );
         })
         }

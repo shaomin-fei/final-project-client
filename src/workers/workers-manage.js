@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 12:02:32
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-23 23:50:44
+ * @LastEditTime: 2020-08-27 02:19:41
  */
 //import WorkerStation from './station-worker/station.worker';
 
@@ -109,7 +109,7 @@ export default class WorkersManage{
         // const worker=new StationWorkInfo(new Worker(path+"station.worker.js"),"station-worker") ;
         const worker=new StationWorkInfo(new WorkerStation(),"station-worker") ;
         this.workers.push(worker);
-        worker.worker.postMessage( new WorkerParam(CmdDefineEnum.cmdIniWorker,null
+        worker.worker.postMessage( new WorkerParam(CmdDefineEnum.cmdIniWorker,"i'm worker manager"
         //     {
         //     httpUrl:APIConfigEnum.getStations,
         //     wsUrl:APIConfigEnum.stationChange,
@@ -124,6 +124,13 @@ export default class WorkersManage{
         });
     }
 }
+/**
+ * @Date: 2020-08-25 23:34:44
+ * @Description: 
+ * @typedef {import("../common/data/center").default} CenterInfo
+ * 
+ * @return {CenterInfo} 
+ */
 export function getCurrentTree(){
     return StationWorkInfo.tree;
 }

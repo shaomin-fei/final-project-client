@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-15 11:17:58
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 10:22:39
+ * @LastEditTime: 2020-08-25 23:21:40
  */
 import {DeviceStatusEnum,DeviceInfo} from "./device";
 class Station{
@@ -21,6 +21,10 @@ class Station{
      * realtime speed from station to center,usually test five times and calculate the average.,KB/s
      */
     netSpeed=500
+     /**
+     * websocket address
+     */
+    url="";
     /**
     *@type {Array<DeviceInfo>}
      * 

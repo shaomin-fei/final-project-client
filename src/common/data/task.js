@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-16 14:05:48
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-21 21:51:34
+ * @LastEditTime: 2020-08-24 09:31:24
  */
 export const TaskType={
     auto:"Auto",
@@ -12,6 +12,8 @@ export const TaskType={
     schedule:"Schedule",
 }
 export class RunningTask{
+    stationId="";
+    deviceId="";
     id="";
     name="";
     param="";

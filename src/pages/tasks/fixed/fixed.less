@@ -1,0 +1,25 @@
+.execute_task_layout{
+    height: calc(100vh - 1px);
+    background-color: #06183d;
+    padding: 5px;
+    //border:1px solid red;
+    .site-layout-background{
+        margin-top: 5px;
+        //border: 1px solid red;
+        min-height: 280px;
+    }
+    .left_sider{
+        .ant-layout-sider-zero-width-trigger-left{
+            // 覆盖掉原来top设置
+            top:auto;
+            bottom:3px;
+        }
+    }
+    .right_sider{
+        .ant-layout-sider-zero-width-trigger-right{
+            // 覆盖掉原来top设置
+            top:auto;
+            bottom:3px;
+        }
+    }
+}

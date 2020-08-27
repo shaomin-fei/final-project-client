@@ -1,0 +1,35 @@
+.graph_content {
+  width: 100%;
+  height: calc(100% - 40px);
+}
+.graph_content .content_up {
+  width: 100%;
+  height: calc(70% - 5px);
+  display: flex;
+}
+.graph_content .content_up .content_spectrum {
+  width: 70%;
+  flex-flow: 7;
+  height: 100%;
+}
+.graph_content .content_up .content_level {
+  width: 30%;
+  flex-flow: 3;
+  height: 100%;
+}
+.graph_content .content_down {
+  width: 100%;
+  height: calc(30% + 5px);
+  display: flex;
+}
+.graph_content .content_down .content_iq {
+  width: 70%;
+  height: 100%;
+  flex-grow: 7;
+}
+.graph_content .content_down .content_itu {
+  width: calc(30% - 10px);
+  height: 100%;
+  flex-flow: 3;
+  margin-left: 10px;
+}

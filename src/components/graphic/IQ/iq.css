@@ -1,0 +1,15 @@
+.iq_graph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.iq_graph .iq_realtime {
+  width: 50%;
+  height: 100%;
+  flex-grow: 1;
+}
+.iq_graph .iq_star {
+  width: 50%;
+  height: 100%;
+  flex-grow: 1;
+}

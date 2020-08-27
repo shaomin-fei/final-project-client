@@ -4,10 +4,10 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 20:58:04
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 01:37:03
+ * @LastEditTime: 2020-08-24 10:01:52
  */
 import { notification } from 'antd';
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 
 import StationActionType from "../action-types/action-types";
 import ActionParam from "../action-param";

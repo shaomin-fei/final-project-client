@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 11:34:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-23 23:46:52
+ * @LastEditTime: 2020-08-26 15:16:50
  */
 let temp=0;
 temp=temp+1;
@@ -38,6 +38,7 @@ const getStations=async (url)=>{
     try{
         const result= await axios.get(url);
         const centerTree=result.data;
+        //console.log("get tree",centerTree);
         if(!centerTree){
             return;
         }

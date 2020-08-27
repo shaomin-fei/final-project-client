@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Layout,Divider} from "antd";
 
-import LeftTree from './left-tree/left-tree';
+import LeftTree from '../../components/left-tree/left-tree';
 import CenterMap from './center-map/center-map';
 import "./realtime-task.css";
 import MainNavgationBar from "../../components/main-nav/main-nav";
@@ -33,7 +33,7 @@ class RealtimeTask extends Component {
 
   render() {
     
-
+    //console.log("realtiem props",this.props);
     return (
       <>
         <MainNavgationBar />

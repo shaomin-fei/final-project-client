@@ -3,7 +3,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-23 14:35:31
- * @LastEditTime: 2020-07-29 02:55:31
+ * @LastEditTime: 2020-08-25 10:25:09
  * @LastEditors: shaomin fei
  * @Description: capsule the basic spctrum diagram
  * @FilePath: \rms-ui\src\components\spectrum\temple.jsx

@@ -52,72 +52,72 @@ import { SpectrumUtils } from "./utils";
 //   }
 //   return ret;
 // }
-function translateColors (series,points) {
-                
-  var  nullColor = series.options.nullColor, 
-                colorAxis = series.colorAxis, 
-                colorKey = series.colorKey;
-                points.forEach(function (point) {
-                    var value = point.getNestedProperty(colorKey), color;
-                    color = point.options.color ||
-                        (point.isNull || point.value === null ?
-                            nullColor :
-                            (colorAxis && typeof value !== 'undefined') ?
-                                colorAxis.toColor(value, point) :
-                                point.color || series.color);
-                    if (color && point.color !== color) {
-                        point.color = color;
-                        if (series.options.legendType === 'point' && point.legendItem) {
-                            series.chart.legend.colorizeItem(point, point.visible);
-                        }
-                    }
-                });
-            }
-function arrayMax(data) {
-  var i = data.length,
-    max = data[0];
-  while (i--) {
-    if (data[i] > max) {
-      max = data[i];
+  function translateColors (series,points) {
+                  
+    var  nullColor = series.options.nullColor, 
+                  colorAxis = series.colorAxis, 
+                  colorKey = series.colorKey;
+                  points.forEach(function (point) {
+                      var value = point.getNestedProperty(colorKey), color;
+                      color = point.options.color ||
+                          (point.isNull || point.value === null ?
+                              nullColor :
+                              (colorAxis && typeof value !== 'undefined') ?
+                                  colorAxis.toColor(value, point) :
+                                  point.color || series.color);
+                      if (color && point.color !== color) {
+                          point.color = color;
+                          if (series.options.legendType === 'point' && point.legendItem) {
+                              series.chart.legend.colorizeItem(point, point.visible);
+                          }
+                      }
+                  });
+              }
+  function arrayMax(data) {
+    var i = data.length,
+      max = data[0];
+    while (i--) {
+      if (data[i] > max) {
+        max = data[i];
+      }
     }
+    return max;
   }
-  return max;
-}
-function calculateShapes(points,hasRegularShape){
-  points.forEach(function (point) {
-    var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
-        x: Math.min(cellAttr.x1, cellAttr.x2),
-        y: Math.min(cellAttr.y1, cellAttr.y2),
-        width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
-        height: Math.max(Math.abs(cellAttr.y2 - cellAttr.y1), 0)
-    };
-   
-    // If marker shape is regular (symetric), find shorter
-    // cell's side.
-    if (hasRegularShape) {
-        sizeDiff = Math.abs(shapeArgs.width - shapeArgs.height);
-        shapeArgs.x = Math.min(cellAttr.x1, cellAttr.x2) +
-            (shapeArgs.width < shapeArgs.height ? 0 : sizeDiff / 2);
-        shapeArgs.y = Math.min(cellAttr.y1, cellAttr.y2) +
-            (shapeArgs.width < shapeArgs.height ? sizeDiff / 2 : 0);
-        shapeArgs.width = shapeArgs.height =
-            Math.min(shapeArgs.width, shapeArgs.height);
-    }
-    pointAttr = {
-        plotX: (cellAttr.x1 + cellAttr.x2) / 2,
-        plotY: (cellAttr.y1 + cellAttr.y2) / 2,
-        clientX: (cellAttr.x1 + cellAttr.x2) / 2,
-        shapeType: 'path',
-        shapeArgs:shapeArgs
-        //  shapeArgs: merge(true, shapeArgs, {
-        //      d: symbols[shape](shapeArgs.x, shapeArgs.y, shapeArgs.width, shapeArgs.height)
-        //  })
-    };
+  function calculateShapes(points,hasRegularShape){
+    points.forEach(function (point) {
+      var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
+          x: Math.min(cellAttr.x1, cellAttr.x2),
+          y: Math.min(cellAttr.y1, cellAttr.y2),
+          width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
+          height: Math.max(Math.abs(cellAttr.y2 - cellAttr.y1), 0)
+      };
     
-    extend(point, pointAttr);
-   
-});
-}
+      // If marker shape is regular (symetric), find shorter
+      // cell's side.
+      if (hasRegularShape) {
+          sizeDiff = Math.abs(shapeArgs.width - shapeArgs.height);
+          shapeArgs.x = Math.min(cellAttr.x1, cellAttr.x2) +
+              (shapeArgs.width < shapeArgs.height ? 0 : sizeDiff / 2);
+          shapeArgs.y = Math.min(cellAttr.y1, cellAttr.y2) +
+              (shapeArgs.width < shapeArgs.height ? sizeDiff / 2 : 0);
+          shapeArgs.width = shapeArgs.height =
+              Math.min(shapeArgs.width, shapeArgs.height);
+      }
+      pointAttr = {
+          plotX: (cellAttr.x1 + cellAttr.x2) / 2,
+          plotY: (cellAttr.y1 + cellAttr.y2) / 2,
+          clientX: (cellAttr.x1 + cellAttr.x2) / 2,
+          shapeType: 'path',
+          shapeArgs:shapeArgs
+          //  shapeArgs: merge(true, shapeArgs, {
+          //      d: symbols[shape](shapeArgs.x, shapeArgs.y, shapeArgs.width, shapeArgs.height)
+          //  })
+      };
+      
+      extend(point, pointAttr);
+    
+  });
+  }
 export default class WaterFall extends Component {
   constructor(props) {
     super(props);

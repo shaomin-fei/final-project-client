@@ -1,0 +1,8 @@
+.execute_realtime_toolbar {
+  height: 40px;
+  width: 100%;
+  border: 1px solid green;
+}
+.execute_realtime_toolbar .header_always_exist {
+  float: right;
+}

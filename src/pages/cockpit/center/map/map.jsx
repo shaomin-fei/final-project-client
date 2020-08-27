@@ -8,7 +8,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 12:06:15
+ * @LastEditTime: 2020-08-26 11:27:48
  */
 
 import React, { Component } from "react";
@@ -79,7 +79,7 @@ export default class CenterMap extends Component {
     this.topicToken.forEach((token) => {
       pubsub.unsubscribe(token);
     });
-    this.stationLay.forEach((sta) => {
+    this.stationLay&&this.stationLay.forEach((sta) => {
       sta.element &&
         sta.element.removeEventListener("click", this.onStationClick);
     });

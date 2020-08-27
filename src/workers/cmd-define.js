@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 19:35:17
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 23:55:48
+ * @LastEditTime: 2020-08-26 08:51:37
  */
 const CmdDefineEnum={
     // msg from workers-manage.js
@@ -16,5 +16,13 @@ const CmdDefineEnum={
     // msg from signal-chart.jsx
     // this msg send to the centermap of cockpit ,to tell the map show level of the stations
     cmdSignalByReasonChoosed:"cmdSignalByReasonChoosed",
+    //real time task
+    cmdStartRealtime:"startRealtime",
+    cmdStartTaskSucceed:"startTaskSucceed",
+    cmdStopRealtime:"stopRealtime",
+    cmdStopTaskSucceed:"stopTaskSucceed",
+    cmdDataCome:"dataCome",
+    cmdAudioCome:"audioCome",
+    cmdSocketError:"socketError",
 }
 export default CmdDefineEnum;

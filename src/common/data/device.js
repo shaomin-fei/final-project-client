@@ -16,6 +16,7 @@ export const DeviceStatusEnum={
     SHUTDOWN:"shutdown"
 }
 export class DeviceInfo{
+    stationId="";
     id="";
     name="";
     status=DeviceStatusEnum.WORKING;

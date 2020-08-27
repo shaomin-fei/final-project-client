@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-13 01:26:50
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-17 15:39:34
+ * @LastEditTime: 2020-08-26 13:39:17
  */
 const { override, addWebpackAlias, addWebpackModuleRule, addWebpackExternals} = require('customize-cra')
 const path = require('path')
@@ -18,6 +18,13 @@ module.exports = override(
         test:/\.worker\.js$/,
         use:{
             loader:'worker-loader',
+            options:{
+                // inline:"no-fallback",
+                filename: '[name].bundle.js',
+                chunkFilename: "[name].chunk.[chunkhash:8].js",
+                
+            }
+            
         }
     }),  
     // addWebpackExternals({

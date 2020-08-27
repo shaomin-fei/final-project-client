@@ -1,21 +1,23 @@
 //@ts-check
 import React, { Component } from "react";
-import { Layout, Tree, Input } from "antd";
+import { Tree, Input } from "antd";
 import pubsub from "pubsub-js";
 import "antd/dist/antd.css";
 
-import StatusEnum from "../../../common/data/status";
-import CmdDefineEnum from "../../../workers/cmd-define";
-import { getCurrentTree } from "../../../workers/workers-manage";
-import CenterInfo from "../../../common/data/center";
+import StatusEnum from "../../common/data/status";
+import CmdDefineEnum from "../../workers/cmd-define";
+import { getCurrentTree } from "../../workers/workers-manage";
+import CenterInfo from "../../common/data/center";
 import TaskSection from "./task-section"
-import "../realtime-task.css";
+
+//import "../realtime-task.css";
 import "./left-tree.css";
-import { DeviceInfo } from "../../../common/data/device";
+import { DeviceInfo } from "../../common/data/device";
 
-import ColorCircle from "../circle";
+import ColorCircle from "../../pages/realtime-task/circle";
 
-import centerIcon from "../../../imgs/station/省中心.png";
+import centerIcon from "../../imgs/station/省中心.png";
+
 
 const { Search } = Input;
 
@@ -35,6 +37,14 @@ class TreeNodeData {
 }
 
 class LeftTree extends Component {
+  // when triggered into this component ,and it's the first time  to render
+  firstRenderWhenTriggered=true;
+   selectedInfo={
+    currentStationId:"",
+    currentDeviceId:"",
+    currentTask:""
+  }
+  
   state = {
     expandedKeys: [],
     searchValue: "",
@@ -43,16 +53,20 @@ class LeftTree extends Component {
     tasks:[],
     runningTasks:[],
     currentDevice:null,
+    //useTaskInfo:true,
     //currentStation:null
   };
-
+  //selectedStationUrl="";
+  getSelectedStationInfo(){
+    return this.selectedInfo;
+    //return this.getUrlByStationId(this.currentStationId);
+  }
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
       autoExpandParent: false,
     });
   };
-
   getKeys(data,expandKeys,searchInfo){
     if(data.title.indexOf(searchInfo)!=-1){
       expandKeys.push(data.key);
@@ -84,6 +98,7 @@ class LeftTree extends Component {
     this.subscribeToken= pubsub.subscribe(CmdDefineEnum.cmdGetTree, (message,center) => {
       this.handleTree(center);
     });
+    
   }
   componentWillUnmount(){
     pubsub.unsubscribe(this.subscribeToken);
@@ -93,7 +108,8 @@ class LeftTree extends Component {
     /**
      * @type {Array<string>}
      */
-    console.log("onselect",info)
+    //console.log("onselect",info)
+    this.firstRenderWhenTriggered=false;
     if(!info.node.children||info.node.children.length===0){
       //slect device ,then we need to show task below
       /**
@@ -107,12 +123,28 @@ class LeftTree extends Component {
         return run.name;
       })
       this.setState({tasks,runningTasks,currentDevice:tag});
+      this.selectedInfo.currentStationId=tag.stationId;
+      this.selectedInfo.currentDeviceId=tag.id;
+      this.selectedInfo.currentTask=info.node.title;
+     //this.selectedStationUrl=this.getUrlByStationId(tag.stationId);
+      //notify to change params
+      //this.props.treeSelectedChange({stationid:tag.stationId,deviceid:tag.id,taskname:info.node.title});
       //show task below
     }else{
       // folder or unfolder
       this.expandOrUnexpandNode(info);
     }
     
+  }
+  getUrlByStationId=(stationId)=>{
+    const tree = getCurrentTree();
+    if(!tree){
+      return "";
+    }
+    const selectedStation=tree.stations.find(sta=>{
+      return sta.id===stationId;
+    })
+    return selectedStation?selectedStation.url:"";
   }
   expandOrUnexpandNode=(info)=>{
     const expandedKeys=this.state.expandedKeys;
@@ -145,6 +177,37 @@ class LeftTree extends Component {
 else if(status===StatusEnum.SHUTDOWN){
   return (<ColorCircle color={"rgba(180,180,180,0.7)"}></ColorCircle>)
 }
+  }
+  /**
+   * @Date: 2020-08-24 13:21:24
+   * @Description: 
+   * @param {string} deviceId
+   * @return {DeviceInfo} 
+   */
+  getDeviceById=(deviceId)=>{
+    /**
+     * @type {CenterInfo}
+     */
+    const tree=getCurrentTree();
+    let device=null;
+    if(tree){
+      if (tree.stations&&tree.stations.length>0){
+        for(let i=0;i<tree.stations.length;i++){
+          const station=tree.stations[i];
+          if(!station.devices||station.devices.length===0){
+            continue;
+          }
+          device=station.devices.find(dev=>{
+            return dev.id===deviceId
+          });
+          if(device){
+            break;
+          }
+        }
+        
+      }
+    }
+    return device;
   }
   /**
    * convert data to the form that tree can show
@@ -191,8 +254,34 @@ else if(status===StatusEnum.SHUTDOWN){
     this.setState({treeData:treeData,expandedKeys:expandKeys});
   };
   render() {
-    const { searchValue, expandedKeys, autoExpandParent } = this.state;
+    let { searchValue, expandedKeys, autoExpandParent } = this.state;
     const {treeData}=this.state;
+    const {taskInfo}=this.props;
+    const selectedKeys=[];
+    let currentDevice=this.state.currentDevice;
+    let tasks=this.state.tasks ;
+    let selectedTask=null;
+    /**
+     * 
+     */
+    if(taskInfo&&this.firstRenderWhenTriggered){
+      //触发任务，默认选中触发过来的设备和任务
+      // 只有第一次渲染才做此操作，否则树形列表其他选择都会失效
+      this.selectedInfo.currentStationId=taskInfo.stationId;
+      this.selectedInfo.currentDeviceId=taskInfo.deviceId;
+      this.selectedInfo.currentTask=taskInfo.tasktype;
+      expandedKeys=[];
+      expandedKeys.push(taskInfo.stationId);
+      expandedKeys.push(taskInfo.deviceId);
+      autoExpandParent=true;
+      selectedTask=taskInfo.tasktype;
+      selectedKeys.push(taskInfo.deviceId);
+      currentDevice=this.getDeviceById(taskInfo.deviceId);
+      
+      tasks=currentDevice?currentDevice.abilities.map(ability=>{
+        return ability.name;
+      }):[];
+    }
     
     return (
       <div className="left_tree_container">
@@ -213,14 +302,16 @@ else if(status===StatusEnum.SHUTDOWN){
             defaultExpandAll={true}
             onSelect={this.onSelect}
             treeData={treeData}
+            selectedKeys={selectedKeys}
              //treeData={loop(treeData)}
           />
         </div>
         <div className="line_separator_hr"></div>
         <div className="left_task_section">
-          <TaskSection tasks={this.state.tasks} 
+          <TaskSection tasks={tasks} 
           runningTasks={this.state.runningTasks}
-          device={this.state.currentDevice}
+          device={currentDevice}
+          selectedTask={selectedTask}
           />
         </div>
       </div>
