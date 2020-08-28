@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-26 22:50:45
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 02:06:39
+ * @LastEditTime: 2020-08-27 14:14:51
  */
 import Utils from "../../utils/utils"
 export class SpectrumData{
@@ -30,19 +30,24 @@ export class SpectrumData{
     data=null;
 
 }
-export function parseSpectrum(array,offset){
+export function parseSpectrum(array,offset,factor=0.1,original=true){
     const spectrum=new SpectrumData();
-    const dataView=new DataView(array,offset);
+    let dataView=null;
+    if(array instanceof Int8Array){
+        dataView=new DataView(array.buffer,offset);
+    }else{
+        dataView=new DataView(array,offset);
+    }
     let index=0;
     spectrum.type=dataView.getInt8(index);
     index+=1;
     if(spectrum.type===1){
-        spectrum.centerFreqHz=dataView.getBigUint64(index,true);
+        spectrum.centerFreqHz=(dataView.getBigUint64(index,true));
         index+=8;
         spectrum.span=dataView.getInt32(index,true);
         index+=4;
     }else if(spectrum.type===0){
-        spectrum.startFreqHz=dataView.getBigUint64(index,true);
+        spectrum.startFreqHz=(dataView.getBigUint64(index,true)) ;
         index+=8;
         spectrum.step=dataView.getInt32(index,true);
         index+=4;
@@ -57,7 +62,20 @@ export function parseSpectrum(array,offset){
     index+=4;
     spectrum.currentCount=dataView.getInt32(index,true);
     index+=4;
-    spectrum.data=new Int16Array(array,offset+index,spectrum.currentCount);
+    spectrum.data=new Int16Array(spectrum.currentCount);
+    //debugger
+    if(original){//设备直接来的数据
+        for(let i=0;i<spectrum.currentCount;i++){
+            spectrum.data[i]=dataView.getInt16(index,true)*factor;
+            index+=2;
+        }
+    }else{
+        //已经转过了，可以直接拷贝
+        const temp=new Int16Array(array.buffer,index+offset,spectrum.currentCount);
+        spectrum.data=temp.subarray(0,spectrum.currentCount);
+        //spectrum.data=temp.copyWithin(spectrum.currentCount,)
+    }
+    
     return spectrum;
 }
 /**
@@ -73,26 +91,27 @@ export function pack(spectrum,desArray,offset){
     dataView.setInt8(index,spectrum.type);
     index+=1;
     if(spectrum.type===0){
-        dataView.setBigInt64(index,spectrum.startFreqHz);
+        
+        dataView.setBigInt64(index,(spectrum.startFreqHz),true);
         index+=8;
-        dataView.setInt32(index,spectrum.step);
+        dataView.setInt32(index,spectrum.step,true);
         index+=4;
     }else if(spectrum.type===1){
-        dataView.setBigInt64(index,spectrum.centerFreqHz);
+        dataView.setBigInt64(index,(spectrum.centerFreqHz),true);
         index+=8;
-        dataView.setInt32(index,spectrum.span);
+        dataView.setInt32(index,spectrum.span,true);
         index+=4;
     }
    
-    dataView.setInt16(index,spectrum.segmentCount);
+    dataView.setInt16(index,spectrum.segmentCount,true);
     index+=2;
     dataView.setInt8(index,spectrum.isOver);
     index+=1;
-    dataView.setInt32(index,spectrum.totalLen);
+    dataView.setInt32(index,spectrum.totalLen,true);
     index+=4;
-    dataView.setInt32(index,spectrum.startIndex);
+    dataView.setInt32(index,spectrum.startIndex,true);
     index+=4;
-    dataView.setInt32(index,spectrum.currentCount);
+    dataView.setInt32(index,spectrum.currentCount,true);
     index+=4;
     //copy spectrum.data to array, place from the position "index" of array
     const arrayInt16=new Int16Array(array,index);
@@ -105,11 +124,11 @@ export function packSpectrumToCommon(spectrum,type){
     const dataView=new DataView(arrayBuf);
     const array=new Int8Array(arrayBuf);
     let index=0;
-    dataView.setUint32(index,arrayBuf.byteLength);
+    dataView.setUint32(index,arrayBuf.byteLength,true);
     index+=4;
     const szType=Utils.str2ArrayBuf(type);
     array.set(szType,index);
     index+=20;
     pack(spectrum,arrayBuf,index);
-    return arrayBuf;
+    return array;
 }

@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:24:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 02:16:01
+ * @LastEditTime: 2020-08-27 14:37:02
  */
 import RealtimeTaskBase from "../realtime-task-base";
 import CmdDefineEnum from "../../../../workers/cmd-define";
@@ -36,8 +36,9 @@ class FixedTask extends RealtimeTaskBase {
    */
   handleBusinessData (type, array, offset,dataLen) {
     if (type === "Spectrum") {
-        this.realSpectrum=new Int8Array(array,offset,dataLen);
+        //this.realSpectrum=new Int8Array(array,offset,dataLen);
         const specData=parseSpectrum(array,offset+24);
+        this.realSpectrum=specData;
         if(!this.maxSpectrum){
             this.maxSpectrum={...specData};
             this.minSpectrum={...specData};
@@ -70,9 +71,18 @@ class FixedTask extends RealtimeTaskBase {
     }
   };
   timeTriggered () {
-      let maxArray,minArray,avgArray;
+      let realArray,maxArray,minArray,avgArray;
       let totalLen=0;
       let dataTemp=[];
+      if(!this.realSpectrum){
+        return;
+      }
+      //debugger
+      if(this.realSpectrum){
+        realArray=packSpectrumToCommon(this.realSpectrum,"Spectrum");
+        totalLen+=realArray.byteLength;
+        dataTemp.push(realArray);
+      }
       if(this.maxSpectrum){
         maxArray=packSpectrumToCommon(this.maxSpectrum,"maxspectrum");
         totalLen+=maxArray.byteLength;
@@ -88,10 +98,7 @@ class FixedTask extends RealtimeTaskBase {
         totalLen+=avgArray.byteLength;
         dataTemp.push(avgArray);
       }
-      if(this.realSpectrum){
-          totalLen+=this.realSpectrum.length;
-          dataTemp.push(this.realSpectrum);
-      }
+      
       if(this.iq){
           totalLen+=this.iq.length;
           dataTemp.push(this.iq);
@@ -112,7 +119,7 @@ class FixedTask extends RealtimeTaskBase {
           index+=temp.byteLength;
       });
       //@ts-ignore
-      postMessage(data);
+      postMessage(data,[data.buffer]);
   };
 }
 const fixedTask = new FixedTask();

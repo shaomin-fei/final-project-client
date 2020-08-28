@@ -15,8 +15,10 @@ import highchartsHeatmap from "highcharts/modules/heatmap";
 
 import Boost from "highcharts/modules/boost";
 import Exporting from "highcharts/modules/exporting";
+import {DataTypeEnum} from "../../../common/data/realtime/parse-data"
 
 import "./spectrum.css";
+import { SpectrumData } from "../../../common/data/realtime/Spectrum";
 
 // Initialize exporting module.
 Exporting(Highcharts);
@@ -58,12 +60,14 @@ function ZoomXaxis(event) {
   console.log("zoomxaxix",event);
   const [min, max] = SpectrumUtils.ZoomXaxies(
     event,
+    //@ts-ignore
     chart.xAxis[0].tickInterval
   );
   chartHeatMap && chartHeatMap.ChangeExtremes(min, max);
   return false;
 }
 function waterFallXaxisZoomedCallback(min, max){
+  //@ts-ignore
     chart.xAxis[0].setExtremes(min, max);
   };
 function setOptions(props) {
@@ -116,19 +120,27 @@ function setOptions(props) {
           style:{
             color: "#ffffff",
 
-          },format: '{value} km',
+          },
         formatter: function () {
-          console.log("this value",this.value);
-          let temp =
-            this.chart.XRangeMHz.startMHz +
+          //console.log("this value",this.value);
+          let temp ="";
+          if(!this.chart.XRangeMHz.isCenter){
+            temp= this.chart.XRangeMHz.startMHz +
+            //@ts-ignore
             this.chart.XRangeMHz.stepMHz * this.value;
+          }else{
+            temp=(this.chart.XRangeMHz.startMHz-0.5*this.chart.XRangeMHz.stepMHz)+ 
+            (this.chart.XRangeMHz.stepMHz/this.chart.XRangeMHz.yDataLen) * this.value;
+          }
+          //@ts-ignore
+           
           const strTemp = temp.toFixed(3);
           const tempInit = parseInt(strTemp);
           const tempFloat = parseFloat(strTemp);
           if (Math.abs(tempInit - tempFloat) < 0.000001) {
             return tempInit.toString();
           }
-          console.log("x fromater",tempFloat,tempInit);
+          //console.log("x fromater",tempFloat,tempInit);
           return tempFloat.toString();
         },
       },
@@ -168,6 +180,7 @@ function setOptions(props) {
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
         //boost模式下，线宽等属性不生效
+        //@ts-ignore
         kdNow: true,
         data: [],
       },
@@ -184,6 +197,7 @@ function setOptions(props) {
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
         //boost模式下，线宽等属性不生效
+        //@ts-ignore
         kdNow: true,
         data: [],
       },
@@ -200,6 +214,7 @@ function setOptions(props) {
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
         //boost模式下，线宽等属性不生效
+        //@ts-ignore
         kdNow: true,
         data: [],
       },
@@ -216,6 +231,7 @@ function setOptions(props) {
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
         //boost模式下，线宽等属性不生效
+        //@ts-ignore
         kdNow: true,
         data: [],
       },
@@ -236,6 +252,7 @@ function setOptions(props) {
       useGPUTranslations: true,
     },
   };
+//@ts-ignore
   chart = Highcharts.chart(
     container,
     //@ts-ignore
@@ -260,6 +277,7 @@ function addMeasureCount() {
 }
 //添加图表lable
 function addLable(html, left, top, classname) {
+  //@ts-ignore
   return chart.renderer
     .label(html, left, top, null, null, null, true, false, classname)
     .css({
@@ -269,41 +287,63 @@ function addLable(html, left, top, classname) {
     })
     .add();
 }
-function updateX(props) {
+/**
+ * 
+ * @param {SpectrumData} data 
+ */
+function updateX(data) {
     let update = true;
-  if (props.specAttr) {
-    const { yData, freqMHz, freqStepMHz, isCenterFrq } = props.specAttr;
+  if (data) {
+    const  yData=data.data;
+     let freqMHz=data.centerFreqHz*0.000001;
+     let freqStepMHz=data.span*0.000001;
+     if(data.type===0){
+      freqMHz=data.startFreqHz*0.000001;
+      freqStepMHz=data.step*0.000001;
+     }
+      const isCenterFrq  = data.type;
     if (chart) {
       
       if (
+        //@ts-ignore
         chart.XRangeMHz.startMHz === freqMHz &&
+       //@ts-ignore
         chart.XRangeMHz.stepMHz === freqStepMHz &&
+        //@ts-ignore
         chart.XRangeMHz.isCenter === (isCenterFrq ? true : false) &&
+       //@ts-ignore
         chart.XRangeMHz.yDataLen === yData?.length
       ) {
         //console.log("updatex  ");
         update = false;
       }
+      //@ts-ignore
       chart.XRangeMHz.startMHz = freqMHz || chart.XRangeMHz.startMHz;
+      //@ts-ignore
       chart.XRangeMHz.stepMHz = freqStepMHz || chart.XRangeMHz.stepMHz;
+      //@ts-ignore
       chart.XRangeMHz.isCenter = isCenterFrq || chart.XRangeMHz.isCenter;
+      //@ts-ignore
       chart.XRangeMHz.yDataLen = yData?.length;
     }
   }
   if (update&&chart) {
+    //@ts-ignore
     chart.xAxis[0].update({
       tickPositioner: function () {
-        console.log("auto",this.tickPositions);
+        //console.log("auto",this.tickPositions);
         //let position = [88, 90, 92, 94,96,98,100,102, 104,106];
         let position = [88, 92, 96, 100, 104, 108];
+        //@ts-ignore
         if (!chart.XRangeMHz) {
-          console.log("xposition",position);
+          //console.log("xposition",position);
           return position;
         }
+        //@ts-ignore
         const { yDataLen } = chart.XRangeMHz;
         if (!yDataLen) {
           position=[0,1,2,3,4,5,6,7,8,9]
-          console.log("xposition",position);
+          //console.log("xposition",position);
           return position;
         }
         let interval = (yDataLen - 1) / 10;
@@ -313,7 +353,7 @@ function updateX(props) {
           //const temp=parseFloat((i*interval).toFixed(3));
           result.push(i * interval);
         }
-        console.log("xposition",result);
+        //console.log("xposition",result);
         return result;
       },
     });
@@ -326,6 +366,7 @@ const Spectrum = function (props) {
     addMeasureCount();
     setTimeout(()=>{
         // 延迟后在reflow，估计有动画啥的，如果不延迟，估计容器尺寸还没有完全更改
+        //@ts-ignore
         chart&&chart.reflow();
     },10);
     
@@ -333,7 +374,7 @@ const Spectrum = function (props) {
     
   }, [spectrumHeight]);
 
-  const showWaterfall=false;
+  const showWaterfall=true;
 
   spectrumHeight="100%";
   if(showWaterfall){
@@ -356,6 +397,44 @@ const Spectrum = function (props) {
 };
 export default Spectrum;
 export function resizeChart(){
+  //@ts-ignore
   chart&&chart.reflow();
-  chartHeatMap&&chartHeatMap.reflow();
+  chartHeatMap&&chartHeatMap.resizeChart();
+}
+/**
+ * 
+ * @param {Map<string,SpectrumData>} data 
+ */
+export function setData(data){
+  if(!chart){
+    return;
+  }
+  let real,max,min,avg;
+  //debugger
+  if(data.has(DataTypeEnum.Spectrum)){
+    real=data.get(DataTypeEnum.Spectrum);
+    real.centerFreqHz=Number(real.centerFreqHz);
+    updateX(real);
+    //@ts-ignore
+    chart.get("real-line").setData(real.data);
+  }
+  if(data.has(DataTypeEnum.MaxSpectrum)){
+    max=data.get(DataTypeEnum.MaxSpectrum);
+    max.centerFreqHz=Number(real.centerFreqHz);
+     //@ts-ignore
+    chart.get("max-line").setData(max.data);
+  }
+  if(data.has(DataTypeEnum.MinSpectrum)){
+    min=data.get(DataTypeEnum.MinSpectrum);
+    min.centerFreqHz=Number(real.centerFreqHz);
+     //@ts-ignore
+    chart.get("min-line").setData(min.data);
+  }
+  if(data.has(DataTypeEnum.AvgSpectrum)){
+    avg=data.get(DataTypeEnum.AvgSpectrum);
+    avg.centerFreqHz=Number(real.centerFreqHz);
+     //@ts-ignore
+    chart.get("aveage-line").setData(avg.data);
+  }
+  chartHeatMap&&chartHeatMap.setData(real.data,true);
 }

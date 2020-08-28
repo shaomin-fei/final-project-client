@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:22:38
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 02:17:07
+ * @LastEditTime: 2020-08-27 11:33:10
  */
 import socketIOClient from "socket.io-client"
 
@@ -91,17 +91,19 @@ export default class RealtimeTaskBase{
     callbackDatacome=(data)=>{
         let index=0;
         while(index<data.byteLength){
+            let currentPackageIndex=0;
             const dataView=new DataView(data,index);
-            const len=dataView.getInt32(index,true);
-            index+=4;
-            const szType=data.slice(index,20);
+            const len=dataView.getInt32(currentPackageIndex,true);
+            currentPackageIndex+=4;
+            const szType=data.slice(index+currentPackageIndex,index+currentPackageIndex+20);
             let type=Utils.arrayBuf2Utf8(szType);
             const indexOf=type.indexOf("\0");
             type=type.substring(0,indexOf);
             //console.log("data type",type,indexOf,type.length);
-            index+=20;
-            this.handleBusinessData(type,data,index-24,len);//带完整头穿过去
-            index+=(len-24);
+            currentPackageIndex+=20;
+            this.handleBusinessData(type,data,index,len);//带完整头穿过去
+            //currentPackageIndex+=(len-24);
+            index+=len;
             // if(type==="Spectrum"){
 
             // }else if(type==="IQ"){

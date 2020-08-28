@@ -1,10 +1,11 @@
+//@ts-check
 import React from "react";
 
 import CommonToolbar from "../../toolbars/common-toolbar";
-import Spectrum,{resizeChart as resizeSpectrumChart} from "../../../../components/graphic/spectrum/spectrum";
-import LevelGraph,{resizeChart as resizeLevelChart}  from "../../../../components/graphic/level/level";
-import IQGraph,{resizeChart as resizeIQChart} from "../../../../components/graphic/IQ/iq";
-import ITUGraph from "../../../../components/graphic/itu/itu";
+import Spectrum,{resizeChart as resizeSpectrumChart,setData as setSpecData} from "../../../../components/graphic/spectrum/spectrum";
+import LevelGraph,{resizeChart as resizeLevelChart,setData as setLevelData}  from "../../../../components/graphic/level/level";
+import IQGraph,{resizeChart as resizeIQChart,setData as setIQData} from "../../../../components/graphic/IQ/iq";
+import ITUGraph,{setData as setITUData} from "../../../../components/graphic/itu/itu";
 import "./realtime-content.css"
 
 export function resizeChart(){
@@ -13,6 +14,18 @@ export function resizeChart(){
     resizeLevelChart();
     resizeIQChart();
 
+}
+/**
+ * @Date: 2020-08-27 08:18:55
+ * @Description: 
+ * @param {Map<string,object>} data
+ * @return {void} 
+ */
+export function setData(data){
+    setSpecData(data);
+    setLevelData(data);
+    setIQData(data);
+    setITUData(data);
 }
 const RealTimeContent =function(props){
 

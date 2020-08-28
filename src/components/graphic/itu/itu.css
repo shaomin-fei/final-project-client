@@ -4,6 +4,7 @@
   background-color: #06183d;
   color: white;
   border: 1px solid #ccc;
+  overflow: auto;
 }
 .tab_container thead {
   width: 100%;

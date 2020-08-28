@@ -93,6 +93,15 @@ export default class Waterfall extends Component {
   }
   resizeChart(){
     this.chartHeatMap&&this.chartHeatMap.reflow();
+    this.updateSymbolHeight();
+    // if(this.chartHeatMap){
+    //   setTimeout(() => {
+    //     const series= this.chartHeatMap.get("waterfall");
+    //     series.resetCanvasSize(series);
+    //   }, 320);
+     
+    // }
+    
   }
   
   // 用箭头函数，否则需要绑定this
@@ -211,11 +220,14 @@ export default class Waterfall extends Component {
     ExtendChart();
     setTimeout(()=>{
         this.chartHeatMap&&this.chartHeatMap.reflow();
-        this.chartHeatMap.legend.update(
-            { symbolHeight: this.chartHeatMap?.plotHeight },
-            true
-          );
+        this.updateSymbolHeight();
     },10);
+  }
+  updateSymbolHeight(){
+    this.chartHeatMap.legend.update(
+      { symbolHeight: this.chartHeatMap?.plotHeight },
+      true
+    );
   }
   /*****
    * @param {number} min
@@ -251,8 +263,8 @@ export default class Waterfall extends Component {
             display: "none",
           },
         },
-        //borderWidth: 1,
-        //borderColor: "red",
+        borderWidth: 1,
+        borderColor: "red",
         // height: (9 / 16) * 100 + "%", // 16:9 ratio
       },
       boost: {
@@ -295,7 +307,7 @@ export default class Waterfall extends Component {
       xAxis: {
         categories: [],
         tickInterval: 10,
-        visible: true,
+        visible: false,
 
         // sync X to spectrum
         event: {
@@ -535,6 +547,20 @@ const ExtendChart = () => {
       this.image.attr({ href: this.waterFallCanvas.toDataURL("image/png") });
     };
 
+    Series.prototype.resetCanvasSize=function(series){
+     
+      //debugger
+      var { ctx, waterFallCtx } = this.getContext();
+      console.log("reset cnavas before",waterFallCtx.canvas.width,waterFallCtx.canvas.height);
+      waterFallCtx.canvas.setAttribute("width", this.chart.chartWidth);
+      waterFallCtx.canvas.setAttribute("height", this.chart.chartHeight);
+
+      ctx.canvas.setAttribute("width", this.chart.chartWidth);
+      ctx.canvas.setAttribute("height", this.chart.chartHeight);
+
+      console.log("reset cnavas after",waterFallCtx.canvas.width,waterFallCtx.canvas.height);
+      series.reDrawImg(series);
+    };
     Series.prototype.reDrawImg= function (series){
     const symbol=series.options.marker;
     const symbols=series.chart.renderer.symbols;
@@ -616,6 +642,7 @@ const ExtendChart = () => {
             // 将已生成的图像向下移动一个点的位置
           
           const pt=pointNew[0];
+          //console.log("draw img",this.waterFallCanvas.width,this.waterFallCanvas.height);
           this.waterFallCtx.drawImage(
             this.waterFallCtx.canvas,
             0,

@@ -6,6 +6,7 @@ import Exporting from "highcharts/modules/exporting";
 import "./iq.css"
 
 import { SpectrumUtils } from "../utils";
+import { DataTypeEnum } from "../../../common/data/realtime/parse-data";
 
 Exporting(Highcharts);
 Boost(Highcharts);
@@ -98,7 +99,7 @@ const optionRealtime={
         {
           id: "qdata",
           name: "qdata",
-          visible: false,
+          visible: true,
           animation: false,
           type: "line",
           color: "red",
@@ -146,7 +147,8 @@ const optionStar={
         // height:100
     },
     boost: {
-        seriesThreshold: 20,
+      enabled:true,
+         seriesThreshold: 1,
         useGPUTranslations: true,
         usePreallocated: true
     },
@@ -164,6 +166,8 @@ const optionStar={
         maxPadding: 0
     },
     yAxis: {
+        // min:-20000,
+        // max:20000,
         visible: false,
         lineWidth: 1,
         startOnTick: false,
@@ -175,12 +179,18 @@ const optionStar={
         enabled: false,
     },
     series: [{
+      id:"iqstar",
+      name:"iqstar",
         enableMouseTracking: false,//关闭鼠标跟踪行为 提升性能
         //showCheckbox: true,
         // name: '瞬时值',
         data: [],
-        shadow: true,
+        //shadow: true,
         color: '#30fa3e',
+        marker: {
+          // enabled:false,
+           radius: 1
+      },
         animation: false
     }],
     tooltip: {
@@ -202,6 +212,11 @@ function ZoomXaxis(event) {
 const IQGraph=function(props){
 
     useEffect(()=>{
+      //debugger
+      //@ts-ignore
+      if (!Highcharts.Series.prototype.renderCanvas) {
+        throw 'Module not loaded';
+    }
         chartIQRealtime = Highcharts.chart(
             containerRealtime,
             //@ts-ignore
@@ -239,4 +254,15 @@ export function resizeChart(){
 
     chartIQRealtime&&chartIQRealtime.reflow();
     chartIQStar&&chartIQStar.reflow();
+}
+export function setData(data){
+  if(data.has(DataTypeEnum.IQ)){
+    chartIQRealtime&&chartIQRealtime.get("idata").setData(data.get(DataTypeEnum.IQ).idata);
+    chartIQRealtime&&chartIQRealtime.get("qdata").setData(data.get(DataTypeEnum.IQ).qdata);
+    let starData=[];
+    for(let i=0;i<data.get(DataTypeEnum.IQ).IQCount;i++){
+      starData.push([data.get(DataTypeEnum.IQ).idata[i],data.get(DataTypeEnum.IQ).qdata[i]]);
+    }
+    chartIQStar&&chartIQStar.get("iqstar").setData(starData);
+  }
 }

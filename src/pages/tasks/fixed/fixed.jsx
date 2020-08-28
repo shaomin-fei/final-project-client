@@ -3,7 +3,7 @@ import React, { useReducer } from "react";
 import { Layout,message } from "antd";
 
 import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../tasks-common";
-import RealTimeContent,{resizeChart} from "./content/realtime-content";
+import RealTimeContent,{resizeChart,setData as setGraphicData} from "./content/realtime-content";
 import ParamsList,{getParams,changeParams} from "../../../components/params-list/params-list";
 import {ExecuteTask} from "../tasks-common";
 import LeftTree from "../../../components/left-tree/left-tree";
@@ -13,6 +13,7 @@ import FixWorker from "../webworkers/fixed/fixedtask.worker";
 import WorkerParam from "../../../config/worker-param";
 import CmdDefineEnum from '../../../workers/cmd-define'
 import {serverWSAddr} from "../../../config/api-config"
+import {parseData} from "../../../common/data/realtime/parse-data";
 
 const { Header, Sider, Content } = Layout;
 const iniSiderbarState={
@@ -68,13 +69,27 @@ function stopTask(){
   }
   console.log("stop");
 }
+/**
+ * @Date: 2020-08-27 07:57:34
+ * @Description: 
+ * @param {Int8Array} data
+ * @return {void} 
+ */
+function handleRealTaskData(data){
+  const reslut=parseData(data,1,false);
+  if(reslut&&reslut.size>0){
+    setGraphicData(reslut);
+  }
+}
 function workerMessage(e){
 /**
  * @type {WorkerParam}
  */
 //console.log("xxx got int8 array",e);
  if(e.data instanceof ArrayBuffer||e.data instanceof Int8Array){
-   console.log("xxx got int8 array",e);
+   //console.log("xxx got int8 array",e);
+   //debugger
+   handleRealTaskData(e.data);
    return;
  }
   const data=e.data;
@@ -134,7 +149,7 @@ const FixedTask = (props) => {
     });
     setTimeout(() => {
       resizeChart();
-    }, 100);
+    }, 310);
     
   }
 
