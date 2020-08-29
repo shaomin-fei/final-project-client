@@ -2,11 +2,14 @@
 import React, { Component } from "react";
 
 
-import Highcharts,{extend} from "highcharts";
+//import Highcharts,{extend} from "highcharts";
 
+import Highcharts,{merge,extend,fireEvent} from "../../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js";
+import highchartsHeatmap from "../../../thirdparty/Highcharts-8.1.2/code/modules/heatmap.src.js";
 
 import { SpectrumUtils } from "../utils";
 
+highchartsHeatmap(Highcharts);
 /**
  * This plugin extends Highcharts in two ways:
  * - Use HTML5 canvas instead of SVG for rendering of the heatmap squares. Canvas
@@ -94,13 +97,12 @@ export default class Waterfall extends Component {
   resizeChart(){
     this.chartHeatMap&&this.chartHeatMap.reflow();
     this.updateSymbolHeight();
-    // if(this.chartHeatMap){
-    //   setTimeout(() => {
-    //     const series= this.chartHeatMap.get("waterfall");
-    //     series.resetCanvasSize(series);
-    //   }, 320);
+    if(this.chartHeatMap){
+      const series= this.chartHeatMap.get("waterfall");
+      series.resetCanvasSize(series);
+      series.reDrawImg(series);
      
-    // }
+    }
     
   }
   
@@ -540,6 +542,7 @@ const ExtendChart = () => {
       return { ctx: this.ctx, waterFallCtx: this.waterFallCtx };
     };
 
+   
     /**
      * Draw the canvas image inside an SVG image
      */
@@ -549,17 +552,10 @@ const ExtendChart = () => {
 
     Series.prototype.resetCanvasSize=function(series){
      
+      this.canvas=null;
+      this.getContext();
       //debugger
-      var { ctx, waterFallCtx } = this.getContext();
-      console.log("reset cnavas before",waterFallCtx.canvas.width,waterFallCtx.canvas.height);
-      waterFallCtx.canvas.setAttribute("width", this.chart.chartWidth);
-      waterFallCtx.canvas.setAttribute("height", this.chart.chartHeight);
-
-      ctx.canvas.setAttribute("width", this.chart.chartWidth);
-      ctx.canvas.setAttribute("height", this.chart.chartHeight);
-
-      console.log("reset cnavas after",waterFallCtx.canvas.width,waterFallCtx.canvas.height);
-      series.reDrawImg(series);
+      
     };
     Series.prototype.reDrawImg= function (series){
     const symbol=series.options.marker;
@@ -699,7 +695,9 @@ const ExtendChart = () => {
               0, 0, this.waterFallCanvas.width, this.waterFallCanvas.height,
               0, 0,
               this.canvas.width, this.canvas.height)
-              //console.log("drawImage",Date.now()-dateIn);
+              console.log("drawImage",this.canvas.width, this.canvas.height);
+              console.log("watercaval",this.waterFallCanvas.width, this.waterFallCanvas.height);
+              console.log("watercontex canvas",this.waterFallCtx.canvas.width,this.waterFallCtx.canvas.height);
 
           }
 
