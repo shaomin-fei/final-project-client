@@ -173,9 +173,10 @@ const FixedTask = (props) => {
       type: type,
       collapsed: collapsed,
     });
+    //resizeChart();
     setTimeout(() => {
       resizeChart();
-    }, 310);
+    }, 300);
     
   }
 
@@ -184,7 +185,7 @@ const FixedTask = (props) => {
   return (
     <ToolbarCmdContext.Provider value={toolbarCmdCallback}>
     
-      <Layout className="execute_task_layout">
+      <Layout  className="execute_task_layout">
         {/* left tree */}
 
         <Sider

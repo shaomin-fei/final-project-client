@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:24:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-28 22:30:23
+ * @LastEditTime: 2020-08-29 01:29:06
  */
 import RealtimeTaskBase from "../realtime-task-base";
 import CmdDefineEnum from "../../../../workers/cmd-define";
@@ -73,7 +73,7 @@ class FixedTask extends RealtimeTaskBase {
         this.itu=new Int8Array(array,offset,dataLen);
     } else if (type === "Audio") {
         const audio=new Int8Array(array,offset,dataLen);
-        debugger
+        
         const audioTemp=parseRawAudio(audio,offset+24);
         this.audios.push(audioTemp);
         if(this.audios.length>=5){

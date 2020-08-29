@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:22:38
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 11:33:10
+ * @LastEditTime: 2020-08-29 01:40:16
  */
 import socketIOClient from "socket.io-client"
 
@@ -22,7 +22,7 @@ export default class RealtimeTaskBase{
     socketIO=null;
     currentParam=null;
     interval=null;
-    postTimeInterval=200;
+    postTimeInterval=300;
     /**
      * @Date: 2020-08-26 08:50:12
      * @Description: 

@@ -7,7 +7,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 22:41:27
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-28 22:23:49
+ * @LastEditTime: 2020-08-29 01:19:09
  */
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
@@ -123,7 +123,7 @@ export default class PlayAudio{
                 const lastSrc=this.sources[this.sources.length-1];
                 source.startTime=lastSrc.endTime;
                 source.endTime=source.startTime+source.buffer.duration;
-                source.start(lastSrc.endTime);
+                source.start(lastSrc.endTime-0.005);
                 this.sources.push(source);
             }
             
