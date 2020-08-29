@@ -40,7 +40,7 @@ let container = null;
 let chart = null;
 let chartHeatMap=null;
 
-const measureCount = 0;
+let measureCount = 0;
 
 const iniChart = {
   xTitle: "MHz",
@@ -58,6 +58,12 @@ let options = null;
 //@return: {boolean}
 function ZoomXaxis(event) {
   console.log("zoomxaxix",event);
+  if(chart.xAxis.length===0){
+    return false;
+  }
+  if(!event.xAxis||event.xAxis.length===0){
+    return false;
+  }
   const [min, max] = SpectrumUtils.ZoomXaxies(
     event,
     //@ts-ignore
@@ -175,7 +181,7 @@ function setOptions(props) {
         type: "line",
         color: "green",
         lineWidth: 2.5,
-        boostThreshold: 2000,
+        boostThreshold: 100,
         showInLegend: false,
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
@@ -192,7 +198,7 @@ function setOptions(props) {
         type: "line",
         color: "red",
         lineWidth: 2.5,
-        boostThreshold: 2000,
+        boostThreshold: 100,
         showInLegend: false,
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
@@ -209,7 +215,7 @@ function setOptions(props) {
         type: "line",
         color: "yellow",
         lineWidth: 2.5,
-        boostThreshold: 2000,
+        boostThreshold: 100,
         showInLegend: false,
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
@@ -226,7 +232,7 @@ function setOptions(props) {
         type: "line",
         color: "pink",
         lineWidth: 2.5,
-        boostThreshold: 2000,
+        boostThreshold: 100,
         showInLegend: false,
         //   非boost模式下，立即生成kdtree，
         //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
@@ -360,6 +366,7 @@ function updateX(data) {
   }
 }
 let spectrumHeight="60%";
+
 const Spectrum = function (props) {
   useEffect(() => {
     setOptions(props);
@@ -437,4 +444,9 @@ export function setData(data){
     chart.get("aveage-line").setData(avg.data);
   }
   chartHeatMap&&chartHeatMap.setData(real.data,true);
+  measureCount++;
+  document.getElementById("measureCount").innerHTML=measureCount.toString();
+}
+export function reset(){
+  measureCount=0;
 }

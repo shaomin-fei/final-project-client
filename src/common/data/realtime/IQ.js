@@ -43,7 +43,7 @@ export function parseIQ(array,offset){
     // index+=1;
     // iqData.IQCount=dataView.getUint32(index,true);
     // index+=4;
-    //debugger
+    
     if(iqData.type===0){
         
         iqData.idata=new Int16Array(iqData.IQCount);

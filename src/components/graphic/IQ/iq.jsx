@@ -104,7 +104,7 @@ const optionRealtime={
           type: "line",
           color: "red",
           lineWidth: 2.5,
-          boostThreshold: 800,
+          boostThreshold: 1,
           showInLegend: false,
           //   非boost模式下，立即生成kdtree，
           //否则鼠标吸附会有延迟，甚至不显示，因为默认是异步生成 kdtree,鼠标晃动结束，可能tree还没有生成成功
@@ -124,6 +124,7 @@ const optionRealtime={
       },
       boost: {
         enabled: true,
+        //seriesThreshold: 1,
         //  don't use this,when it's true,we will see a line from left to the right when we zoomed
         //usePreallocated:true,
         //useAlpha:false,
@@ -212,7 +213,7 @@ function ZoomXaxis(event) {
 const IQGraph=function(props){
 
     useEffect(()=>{
-      //debugger
+      //
       //@ts-ignore
       if (!Highcharts.Series.prototype.renderCanvas) {
         throw 'Module not loaded';

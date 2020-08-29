@@ -103,6 +103,10 @@ function setOptions() {
   //@ts-ignore
   chart = Highcharts.chart(container, options);
 }
+export function reset(){
+  levels.splice(0,levels.length);
+  chart&&chart.get("level").setData([]);
+}
 const LevelGraph = function (props) {
   useEffect(() => {
     setOptions();

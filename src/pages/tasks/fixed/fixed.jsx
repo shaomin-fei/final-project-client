@@ -3,7 +3,7 @@ import React, { useReducer } from "react";
 import { Layout,message } from "antd";
 
 import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../tasks-common";
-import RealTimeContent,{resizeChart,setData as setGraphicData} from "./content/realtime-content";
+import RealTimeContent,{resetChart,resizeChart,setData as setGraphicData} from "./content/realtime-content";
 import ParamsList,{getParams,changeParams} from "../../../components/params-list/params-list";
 import {ExecuteTask} from "../tasks-common";
 import LeftTree from "../../../components/left-tree/left-tree";
@@ -13,9 +13,13 @@ import FixWorker from "../webworkers/fixed/fixedtask.worker";
 import WorkerParam from "../../../config/worker-param";
 import CmdDefineEnum from '../../../workers/cmd-define'
 import {serverWSAddr} from "../../../config/api-config"
-import {parseData} from "../../../common/data/realtime/parse-data";
+import {parseData, DataTypeEnum} from "../../../common/data/realtime/parse-data";
+import PlayAudio from "../../../common/utils/playsound";
+//import {AudioData,WaveFormate,parseWaveFormate,parseAudio} from "../../../common/data/realtime/audio";
 
 const { Header, Sider, Content } = Layout;
+const playAudio=new PlayAudio();
+let isTaskStopped=true;
 const iniSiderbarState={
   left:false,
   right:false,
@@ -48,25 +52,31 @@ function startTask(){
     return;
   }
   stopTask();
+  resetChart();
   currentWorker=new FixWorker();
   currentWorker.onmessage=workerMessage;
   currentWorker.postMessage(new WorkerParam(CmdDefineEnum.cmdStartRealtime,param));
+  isTaskStopped=false;
   console.log("start");
 }
 toolbarCmdCallback.stopTaskCallback=stopTask;
 window.onclose=()=>{
   stopTask();
+
 }
 function stopTask(){
 
+  isTaskStopped=true;
   if(currentWorker){
     currentWorker.postMessage(new WorkerParam(CmdDefineEnum.cmdStopRealtime,"stop task"));
     setTimeout(() => {
-      currentWorker.terminate();
+      currentWorker&&currentWorker.terminate();
     currentWorker=null;
+    playAudio.stop();
     }, 500);
     
   }
+ 
   console.log("stop");
 }
 /**
@@ -76,8 +86,24 @@ function stopTask(){
  * @return {void} 
  */
 function handleRealTaskData(data){
+  if(isTaskStopped){
+    return;
+  }
   const reslut=parseData(data,1,false);
+  if(reslut&&reslut.has(DataTypeEnum.Audio)){
+    /**
+     * @type {import("../../../common/data/realtime/audio").AudioData}
+     */
+    const audio=reslut.get(DataTypeEnum.Audio);
+    if(!playAudio.hasInit){
+      playAudio.initPlay(audio.wf);
+      
+    }
+    playAudio.addData(audio.audioData);
+    reslut.delete(DataTypeEnum.Audio);
+  }
   if(reslut&&reslut.size>0){
+   
     setGraphicData(reslut);
   }
 }

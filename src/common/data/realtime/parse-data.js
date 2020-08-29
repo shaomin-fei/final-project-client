@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 07:59:32
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 20:29:04
+ * @LastEditTime: 2020-08-28 00:33:06
  */
   
   import {parseSpectrum} from "./Spectrum";
@@ -14,7 +14,11 @@
   import {parseLevel} from "./level";
   //import {playAudio} from
   import Utils from "../../utils/utils";
-import { map } from "highcharts";
+
+  import {AudioData,
+    parseAudio} from "./audio";
+import { map, offset } from "highcharts";
+
 
   export const DataTypeEnum={
       Spectrum:"Spectrum",
@@ -71,12 +75,13 @@ export function parseData(data,factor=0.1,original=true){
             type=type.substring(0,indexOf);
             currentPackageIndex+=20;
             if(type===DataTypeEnum.ITU){
-                //debugger
+                
                 let szITU=data.subarray(index,index+len);
                 const itu=Utils.arrayBuf2Gb(szITU);
                 mapData.set(DataTypeEnum.ITU,itu);
             }else if(type===DataTypeEnum.Audio){
-
+                const audioData=parseAudio(data,index+currentPackageIndex);
+                mapData.set(DataTypeEnum.Audio,audioData);
             }else if(type===DataTypeEnum.Level){
                 mapData.set(DataTypeEnum.Level,dataView.getInt16(currentPackageIndex,true)*0.1);
             }else {

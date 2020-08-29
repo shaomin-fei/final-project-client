@@ -18,7 +18,7 @@ const ITUGraph =function(props){
             <tbody >
                 {ituItems.map((item,index)=>{
                     return (
-                        <tr className="table_row">
+                        <tr key={index} className="table_row">
                     <td className="table_td">{item.name}</td>
                     <td className="table_td">{item.value}</td>
                 </tr>
@@ -35,7 +35,7 @@ export default ITUGraph;
 export function setData(data){
 
 if(data.has(DataTypeEnum.ITU)){
-    debugger
+    //
     /**
      * @type {string}
      */

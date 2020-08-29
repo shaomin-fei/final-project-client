@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 12:12:36
- * @LastEditTime: 2020-07-28 16:46:25
+ * @LastEditTime: 2020-08-27 14:12:35
  * @LastEditors: shaomin fei
  * @Description: 
  * @FilePath: \rms-ui\.eslintrc.js
@@ -20,6 +20,8 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+  
+    
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -39,6 +41,7 @@ module.exports = {
     "document": true,
     "localStorage": true,
     "window": true,
-    "Highcharts":true
+    "Highcharts":true,
+    "BigInt":true,
   }
 };

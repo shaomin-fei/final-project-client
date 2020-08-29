@@ -172,7 +172,7 @@ export default class Waterfall extends Component {
   async redraw(animation){
     await this.chartHeatMap.redraw(animation);
   }
-  setData(yData,bDraw) {
+   setData(yData,bDraw) {
     if (yData) {
       let data = [];
       let dataShow = [];

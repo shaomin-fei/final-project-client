@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @version: 1.0
+ * @Author: shaomin fei
+ * @Date: 2020-07-29 14:31:35
+ * @LastEditors: shaomin fei
+ * @LastEditTime: 2020-08-28 23:01:05
+ */
 /*******
  * @param {} event
  * @return {number[]} number[0] xAxis.min number[1] xAxis.max
@@ -5,7 +13,7 @@
 export class SpectrumUtils 
 {
     static ZoomXaxies(event,tick=10){
-        if (event.xAxis) {
+        if (event.xAxis&&event.xAxis.length>0) {
             let min = event.xAxis[0].min;
             let max = event.xAxis[0].max;
             let xdataL = Math.floor(event.target.series[0].xData.length / (10));

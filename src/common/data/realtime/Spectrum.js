@@ -63,7 +63,7 @@ export function parseSpectrum(array,offset,factor=0.1,original=true){
     spectrum.currentCount=dataView.getInt32(index,true);
     index+=4;
     spectrum.data=new Int16Array(spectrum.currentCount);
-    //debugger
+    //
     if(original){//设备直接来的数据
         for(let i=0;i<spectrum.currentCount;i++){
             spectrum.data[i]=dataView.getInt16(index,true)*factor;

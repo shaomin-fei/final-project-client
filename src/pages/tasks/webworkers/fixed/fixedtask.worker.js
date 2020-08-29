@@ -5,12 +5,16 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:24:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 14:37:02
+ * @LastEditTime: 2020-08-28 22:30:23
  */
 import RealtimeTaskBase from "../realtime-task-base";
 import CmdDefineEnum from "../../../../workers/cmd-define";
 import WorkerParam from "../../../../config/worker-param";
-import {SpectrumData,parseSpectrum,packSpectrumToCommon} from "../../../../common/data/realtime/Spectrum";
+import {parseSpectrum,packSpectrumToCommon} from "../../../../common/data/realtime/Spectrum";
+import { AudioData, parseRawAudio } from "../../../../common/data/realtime/audio";
+
+//import {parseData} from "../../../../common/data/realtime/parse-data";
+//import PlayAudio from "../../../../common/utils/playsound";
 class FixedTask extends RealtimeTaskBase {
 
     constructor(){
@@ -24,6 +28,11 @@ class FixedTask extends RealtimeTaskBase {
         this.itu=null;
         this.iq=null;
         this.count=1;
+
+        /**
+         * @type {Array<AudioData>}
+         */
+        this.audios=[]
     }
    
   /**
@@ -64,12 +73,48 @@ class FixedTask extends RealtimeTaskBase {
         this.itu=new Int8Array(array,offset,dataLen);
     } else if (type === "Audio") {
         const audio=new Int8Array(array,offset,dataLen);
-        //@ts-ignore
-        postMessage(audio,[audio.buffer]);
+        debugger
+        const audioTemp=parseRawAudio(audio,offset+24);
+        this.audios.push(audioTemp);
+        if(this.audios.length>=5){
+          let dataLen=0;//head len of the audio data
+          this.audios.forEach(ad=>{
+            dataLen+=ad.audioLen;
+          });
+           //re generate the buffer
+          const sendData=new Int8Array(24+22+dataLen);
+          let index=0;
+          //common header
+          const dataView=new DataView(sendData.buffer);
+          dataView.setUint32(index,sendData.length,true);
+          index+=4;
+          const type=audio.slice(index,index+20);
+          sendData.set(type,index);
+          index+=20;
+          //audio data,first waveformate
+          const wf=new Int8Array(array,offset+24,22);
+          sendData.set(wf,index);
+          index+=18;
+         //second,audio len
+          dataView.setUint32(index,dataLen,true);
+          index+=4;
+          //third combine audo data
+          this.audios.forEach(ad=>{
+            sendData.set(ad.audioData,index);
+            index+=ad.audioLen;
+          });
+         this.audios.splice(0,this.audios.length);
+          //@ts-ignore
+          postMessage(sendData,[sendData.buffer]);
+        }
+        
+       
     } else if (type === "Level") {
         this.level=new Int8Array(array,offset,dataLen);
     }
   };
+  
+
   timeTriggered () {
       let realArray,maxArray,minArray,avgArray;
       let totalLen=0;
