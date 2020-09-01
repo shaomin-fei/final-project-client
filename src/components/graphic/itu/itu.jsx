@@ -35,6 +35,9 @@ export default ITUGraph;
 export function setData(data){
 
 if(data.has(DataTypeEnum.ITU)){
+    if(!setItemState){
+        return;
+    }
     //
     /**
      * @type {string}

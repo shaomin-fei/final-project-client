@@ -2,11 +2,14 @@
 import React,{useReducer,useContext} from "react"
 import {Button} from "antd";
  
-import {ToolbarCmdContext} from "../tasks-common";
+import {ToolbarCmdContext} from "../../../common/data/realtime/tasks-common";
 import HeadRight from "../../../components/header-right/header-right"
 import "./common-toolbar.css";
 const iniStateOfToolbar={
     startButton:false,//when start, it's true
+}
+export function setImportantParam(param){
+    
 }
 
 const CommonToolbar = function(props){
@@ -51,6 +54,7 @@ const CommonToolbar = function(props){
                  size="small"
                  onClick={startBtnClick}
                  >{toolbarState.startButton?"Stop":"Start"}</Button>
+                 {props.children}
             </div>
         </div>
     );

@@ -2,10 +2,10 @@
 import React, { useReducer } from "react";
 import { Layout,message } from "antd";
 
-import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../tasks-common";
-import RealTimeContent,{resetChart,resizeChart,setData as setGraphicData} from "./content/realtime-content";
-import ParamsList,{getParams,changeParams} from "../../../components/params-list/params-list";
-import {ExecuteTask} from "../tasks-common";
+import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../../../common/data/realtime/tasks-common";
+import RealTimeContent,{startTask as startShow,stopTask as stopShow, getImportantParams,setImportantParamToToolbar,resetChart,resizeChart,setData as setGraphicData} from "./content/realtime-content";
+import ParamsList,{getParams} from "../../../components/params-list/params-list";
+import {ExecuteTask} from "../../../common/data/realtime/tasks-common";
 import LeftTree from "../../../components/left-tree/left-tree";
 import "./fixed.css";
 //@ts-ignore
@@ -15,6 +15,7 @@ import CmdDefineEnum from '../../../workers/cmd-define'
 import {serverWSAddr} from "../../../config/api-config"
 import {parseData, DataTypeEnum} from "../../../common/data/realtime/parse-data";
 import PlayAudio from "../../../common/utils/playsound";
+
 //import {AudioData,WaveFormate,parseWaveFormate,parseAudio} from "../../../common/data/realtime/audio";
 
 const { Header, Sider, Content } = Layout;
@@ -25,9 +26,8 @@ const iniSiderbarState={
   right:false,
 }
 let currentWorker=null;
-function treeSelectedChange({stationid,deviceid,taskname}){
-  changeParams({stationid,deviceid,taskname});
-}
+let isPlayAudio=true;
+
 const toolbarCmdCallback=new ToolbarCmdCallback();
 toolbarCmdCallback.startTaskCallback=startTask;
 function startTask(){
@@ -46,7 +46,12 @@ function startTask(){
     message.error("can not get url of the selected station");
     return;
   }
-  param.params=getParams();
+  const importantParam=getImportantParams();
+  if(importantParam.errorInfo){
+    message.error(importantParam.errorInfo);
+    return;
+  }
+  param.params=importantParam.importantParams+getParams();
   if(!param.params){
     message.error("can not get task params");
     return;
@@ -57,16 +62,30 @@ function startTask(){
   currentWorker.onmessage=workerMessage;
   currentWorker.postMessage(new WorkerParam(CmdDefineEnum.cmdStartRealtime,param));
   isTaskStopped=false;
+  startShow();
   console.log("start");
 }
 toolbarCmdCallback.stopTaskCallback=stopTask;
-window.onclose=()=>{
+window.addEventListener("close",()=>{
   stopTask();
 
+});
+toolbarCmdCallback.setImportantParam=(param)=>{
+  setImportantParamToToolbar(param);
+}
+toolbarCmdCallback.isPlayAudioChanged=(playAudioState)=>{
+  isPlayAudio=playAudioState;
+  if(!isPlayAudio){
+    playAudio.stop();
+  }
+  
 }
 function stopTask(){
-
+  if(isTaskStopped){
+    return;
+  }
   isTaskStopped=true;
+  stopShow();
   if(currentWorker){
     currentWorker.postMessage(new WorkerParam(CmdDefineEnum.cmdStopRealtime,"stop task"));
     setTimeout(() => {
@@ -91,6 +110,9 @@ function handleRealTaskData(data){
   }
   const reslut=parseData(data,1,false);
   if(reslut&&reslut.has(DataTypeEnum.Audio)){
+    if(!isPlayAudio){
+      return;
+    }
     /**
      * @type {import("../../../common/data/realtime/audio").AudioData}
      */
@@ -175,13 +197,14 @@ const FixedTask = (props) => {
     });
     //resizeChart();
     setTimeout(() => {
-      resizeChart();
+      resizeChart(collapsed);
     }, 300);
     
   }
 
    const {executeInfo}=props.match.params;
    const taskInfo=ExecuteTask.create(executeInfo);
+
   return (
     <ToolbarCmdContext.Provider value={toolbarCmdCallback}>
     
@@ -198,7 +221,7 @@ const FixedTask = (props) => {
             onCollapse(collapsed, "changeCollapseLeft")
           }
         >
-          <LeftTree taskInfo={taskInfo} ref={left=>leftTree=left} treeSelectedChange={treeSelectedChange}/>
+          <LeftTree taskInfo={taskInfo} ref={left=>leftTree=left}/>
         </Sider>
         {/* center */}
         <Layout className="site-layout">
@@ -214,7 +237,7 @@ const FixedTask = (props) => {
           collapsed={stateCollapse.right}
           onCollapse={(collapsed)=> onCollapse(collapsed, "changeCollapseRight")}
         >
-          <ParamsList />
+          <ParamsList taskInfo={taskInfo}/>
         </Sider>
       </Layout>
     </ToolbarCmdContext.Provider>

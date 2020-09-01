@@ -2,3 +2,36 @@
   width: 100%;
   height: 100%;
 }
+#play_spectrum_graphic {
+  width: 20px;
+  height: 20px;
+}
+#spectrum_toolbar {
+  border: 1px solid #ccc;
+  display: inline-block;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+#spectrum_toolbar span {
+  align-items: center;
+  display: inline-block;
+  margin-left: 5px;
+  height: 100%;
+}
+#spectrum_toolbar span label {
+  margin-left: 5px;
+  color: white;
+  font-weight: bold;
+  line-height: 24px;
+}
+#spectrum_toolbar span input {
+  align-items: center;
+  vertical-align: middle;
+}
+#spectrum_toolbar img {
+  width: 18px;
+  height: 18px;
+  margin-left: 5px;
+}

@@ -127,6 +127,9 @@ export function resizeChart() {
 }
 export function setData(data) {
         //debugger
+  if(!chart){
+    return;
+  }
   if (data.has(DataTypeEnum.Level)) {
     const level = data.get(DataTypeEnum.Level);
     if (levels.length >= showCount) {

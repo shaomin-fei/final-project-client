@@ -257,6 +257,9 @@ export function resizeChart(){
     chartIQStar&&chartIQStar.reflow();
 }
 export function setData(data){
+  if(!chartIQRealtime||!chartIQStar){
+    return;
+  }
   if(data.has(DataTypeEnum.IQ)){
     chartIQRealtime&&chartIQRealtime.get("idata").setData(data.get(DataTypeEnum.IQ).idata);
     chartIQRealtime&&chartIQRealtime.get("qdata").setData(data.get(DataTypeEnum.IQ).qdata);

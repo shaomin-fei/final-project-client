@@ -9,7 +9,7 @@
  */
 import socketIOClient from "socket.io-client"
 
-import {ExecuteParam} from "../tasks-common";
+import {ExecuteParam} from "../../../common/data/realtime/tasks-common";
 import WorkerParam from "../../../config/worker-param";
 import CmdDefineEnum from "../../../workers/cmd-define";
 import Utils from "../../../common/utils/utils";

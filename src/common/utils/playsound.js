@@ -7,7 +7,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 22:41:27
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-29 01:19:09
+ * @LastEditTime: 2020-08-31 19:01:05
  */
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
@@ -116,25 +116,31 @@ export default class PlayAudio{
                 startTime=0;
                 this.sources.push(source);
                 source.start(startTime);
+                //@ts-ignore
                 source.startTime=this.context.currentTime;
+                //@ts-ignore
                 source.endTime=source.startTime+source.buffer.duration;
                 this.isPlaying=true;
             }else{
                 const lastSrc=this.sources[this.sources.length-1];
+                //@ts-ignore
                 source.startTime=lastSrc.endTime;
+                //@ts-ignore
                 source.endTime=source.startTime+source.buffer.duration;
+                //@ts-ignore
                 source.start(lastSrc.endTime-0.005);
                 this.sources.push(source);
             }
             
             source.onended=(ev)=>{
-                console.log("end ev:",ev,this.sources.length);
+                //console.log("end ev:",ev,this.sources.length);
                 if(this.sources.length===0){
                     console.log("no data to play");
                     return;
                 }
                 
                 const index=this.sources.findIndex(src=>{
+                    //@ts-ignore
                     return src.startTime===ev.currentTarget.startTime
                 });
                 if(index>=0){

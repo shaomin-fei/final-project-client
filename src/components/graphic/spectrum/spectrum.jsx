@@ -19,6 +19,8 @@ import {DataTypeEnum} from "../../../common/data/realtime/parse-data"
 
 import "./spectrum.css";
 import { SpectrumData } from "../../../common/data/realtime/Spectrum";
+import play from "../../../imgs/icon/sgl/start.png";
+import pause from "../../../imgs/icon/sgl/pause.png";
 
 // Initialize exporting module.
 Exporting(Highcharts);
@@ -41,6 +43,7 @@ let chart = null;
 let chartHeatMap=null;
 
 let measureCount = 0;
+let isPlaying=false;
 
 const iniChart = {
   xTitle: "MHz",
@@ -276,10 +279,83 @@ function setOptions(props) {
     yDataLen: 0,
   };
 }
+function playGraphic(){
+if(isPlaying){
+  stopTask();
+}else {
+  startTask();
+}
+}
+/**
+ * @Date: 2020-08-31 22:16:57
+ * @Description: 
+ * @param {string} cmd
+ * @param {boolean} state 
+ * @return 
+ */
+function showLineChange(cmd,state){
+
+  if(!chart){
+    return;
+  }
+  if(cmd==="showMax"){
+      chart.get("max-line").setVisible(state,true);
+      
+  }else if(cmd==="showMin"){
+    chart.get("min-line").setVisible(state,true);
+  }else if(cmd==="showAvg"){
+    chart.get("aveage-line").setVisible(state,true);
+  }else if(cmd==="showReal"){
+    chart.get("real-line").setVisible(state,true);
+  }
+}
+function addToolbar(){
+  const html=`<span id=spectrum_toolbar><img id=play_spectrum_graphic src=${play} width=20px height=20px ></img>
+  <span id=show_max>
+  <label >Max</label>
+  <input id=checkbox_show_max type=checkbox></input>
+  </span>
+  <span id=show_min >
+  <label>Min</label>
+  <input id=checkbox_show_min type=checkbox></input>
+  </span>
+  <span id=show_avg>
+  <label>Average</label>
+  <input id=checkbox_show_avg type=checkbox></input>
+  </span>
+  <span id=show_real >
+  <label>Real</label>
+  <input id=checkbox_show_real type=checkbox>Real</input>
+  </span>
+  </span>`;
+  //@ts-ignore
+  chart.renderer.label(html,80,10,null, null, null, true, false, "").add();
+  document.getElementById("play_spectrum_graphic").onclick=playGraphic;
+  document.getElementById("checkbox_show_max").onchange=e=>{
+    showLineChange("showMax",e.target.checked);
+  }
+
+  
+  document.getElementById("checkbox_show_min").onchange=
+  e=>{
+   
+    showLineChange("showMin",e.target.checked);
+  }
+
+  document.getElementById("checkbox_show_avg").onchange=e=>{
+    showLineChange("showAvg",e.target.checked);
+  }
+
+  document.getElementById("checkbox_show_real").setAttribute("checked",true);
+  document.getElementById("checkbox_show_real").onchange=e=>{
+    showLineChange("showReal",e.target.checked);
+  }
+}
+
 function addMeasureCount() {
   const html =
     "<div id=measureDiv>Measure Count:<span id=measureCount></span></div>";
-  addLable(html, 200, 10);
+  addLable(html, 400, 15);
 }
 //添加图表lable
 function addLable(html, left, top, classname) {
@@ -288,7 +364,7 @@ function addLable(html, left, top, classname) {
     .label(html, left, top, null, null, null, true, false, classname)
     .css({
       color: "white",
-      fontSize: "14px",
+      // fontSize: "14px",
       fontWeight: "bold",
     })
     .add();
@@ -371,6 +447,7 @@ const Spectrum = function (props) {
   useEffect(() => {
     setOptions(props);
     addMeasureCount();
+    addToolbar();
     setTimeout(()=>{
         // 延迟后在reflow，估计有动画啥的，如果不延迟，估计容器尺寸还没有完全更改
         //@ts-ignore
@@ -416,6 +493,9 @@ export function setData(data){
   if(!chart){
     return;
   }
+  if(!isPlaying){
+    return;
+  }
   let real,max,min,avg;
   //debugger
   if(data.has(DataTypeEnum.Spectrum)){
@@ -423,25 +503,37 @@ export function setData(data){
     real.centerFreqHz=Number(real.centerFreqHz);
     updateX(real);
     //@ts-ignore
-    chart.get("real-line").setData(real.data);
+    if(chart.get("real-line").visible){
+      chart.get("real-line").setData(real.data);
+    }
+   
   }
   if(data.has(DataTypeEnum.MaxSpectrum)){
     max=data.get(DataTypeEnum.MaxSpectrum);
     max.centerFreqHz=Number(real.centerFreqHz);
      //@ts-ignore
-    chart.get("max-line").setData(max.data);
+     if(chart.get("max-line").visible){
+      chart.get("max-line").setData(max.data);
+     }
+    
   }
   if(data.has(DataTypeEnum.MinSpectrum)){
     min=data.get(DataTypeEnum.MinSpectrum);
     min.centerFreqHz=Number(real.centerFreqHz);
      //@ts-ignore
-    chart.get("min-line").setData(min.data);
+     if(chart.get("min-line").visible){
+      chart.get("min-line").setData(min.data);
+     }
+    
   }
   if(data.has(DataTypeEnum.AvgSpectrum)){
     avg=data.get(DataTypeEnum.AvgSpectrum);
     avg.centerFreqHz=Number(real.centerFreqHz);
      //@ts-ignore
-    chart.get("aveage-line").setData(avg.data);
+     if(chart.get("aveage-line").visible){
+      chart.get("aveage-line").setData(avg.data);
+     }
+    
   }
   chartHeatMap&&chartHeatMap.setData(real.data,true);
   measureCount++;
@@ -449,4 +541,13 @@ export function setData(data){
 }
 export function reset(){
   measureCount=0;
+}
+
+export function startTask(){
+ isPlaying=true;
+ document.getElementById("play_spectrum_graphic").setAttribute("src",pause);
+}
+export function stopTask(){
+  isPlaying=false;
+  document.getElementById("play_spectrum_graphic").setAttribute("src",play);
 }

@@ -13,6 +13,7 @@ const  APIConfigEnum={
     // http use proxy, so don't need to specify host. data come from proxy server
     getStations:"/getStations",
     getSignalStaticByReason:"/getSignalStaticByReason",
+    getTaskParams:"/getTaskParam",
     stationChange:serverWSAddr,
 }
 export default APIConfigEnum;

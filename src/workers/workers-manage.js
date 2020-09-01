@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 12:02:32
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 02:19:41
+ * @LastEditTime: 2020-08-31 13:22:41
  */
 //import WorkerStation from './station-worker/station.worker';
 
@@ -20,6 +20,8 @@ import WorkerParam from "../config/worker-param"
 import store from "../redux/store"
 
 import {getTree,currentTaskChange} from "../redux/actions/StationAction"
+import Axios from "axios";
+import XML2Json from "xml2js";
 
 class WorkInfo{
     worker=null;
@@ -139,4 +141,31 @@ export function getCurrentTasks(){
 }
 export function getSingalByReason(){
     return StationWorkInfo.signalByReason;
+}
+export async function getTaskParam({stationid,deviceid,taskname},contentCallback){
+
+    try{
+        const res= await Axios.get(APIConfigEnum.getTaskParams,{
+            params:{
+                stationid,
+                deviceid,
+                taskname
+            }
+        });
+        let data=res.data;
+        const xml2json=new XML2Json.Parser();
+        //data='<Params Type="0"><Param><Name>CenterFreq</Name><ShowName>Frequency</ShowName><MaxValue>6000.000000</MaxValue><MinValue>20.000000</MinValue><Type>Number</Type><Unit>MHz</Unit><Advanced>False</Advanced><SelectOnly>False</SelectOnly><IsSwitch>False</IsSwitch><DefaultValue>101.7</DefaultValue><Value>101.7</Value><Helper>中心频率设置,单位:MHz</Helper></Param></Params>';
+        xml2json.parseString(data,(err, result)=>{
+            console.log("get params",result);
+            contentCallback(result,res.data,err);
+            if(err){
+                console.log("convert to json error: ",err);
+            }
+        });
+       
+    }
+    catch(error){
+        contentCallback("","",error)
+    }
+    
 }

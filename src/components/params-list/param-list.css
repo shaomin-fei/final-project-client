@@ -1,0 +1,25 @@
+.paramList_container {
+  width: calc(100% - 2px);
+  height: calc(100% - 28px);
+  border: 1px solid #ccc;
+  color: white;
+  font-weight: bold;
+  overflow: auto;
+  background-color: #06183d;
+  margin-left: 2px;
+}
+.paramList_container li {
+  border-bottom: 1px solid #ccc;
+  margin-left: 10px;
+  display: flex;
+  position: relative;
+  text-align: center;
+  padding: 2px;
+}
+.paramList_container li .input_shape {
+  width: 55px;
+  right: 2px;
+  top: 3px;
+  position: absolute;
+  color: black;
+}

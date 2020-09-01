@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-24 12:54:23
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-26 10:34:53
+ * @LastEditTime: 2020-08-31 18:42:10
  */
 import React from "react";
 
@@ -47,6 +47,8 @@ export class ExecuteTask{
 export class ToolbarCmdCallback{
     startTaskCallback=null;
     stopTaskCallback=null;
+    setImportantParam=null;
+    isPlayAudioChanged=null;
 }
 export const ToolbarCmdContext=React.createContext(new ToolbarCmdCallback());
 
@@ -71,4 +73,34 @@ export class ExecuteParam{
     taskName="";
     params="";
     taskid="";//receive from server
+}
+
+export class TaskParamFromDevice{
+
+    Advanced=[];
+    DefaultValue=[];
+    Helper=[];
+    IsSwitch=[];//True,/False
+    MaxValue=[];
+    MinValue=[];
+    Name=[];
+    SelectOnly=[];//True,False
+    ShowName=[];
+    Type=[];
+    Unit=[];
+    Value=[];
+    EnumString=[];
+
+}
+export class Params{
+    /**
+     * @type {Array<TaskParamFromDevice>}
+     */
+    Param=[];
+}
+export class TaskParamListFromDevice{
+    /**
+     * @type {Params}
+     */
+    Params=null;
 }

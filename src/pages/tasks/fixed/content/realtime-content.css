@@ -33,3 +33,13 @@
   flex-flow: 3;
   margin-left: 10px;
 }
+.graph_show {
+  margin-left: 5px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 5px;
+}
+.graph_show input {
+  margin-left: 5px;
+  margin-right: 5px;
+}

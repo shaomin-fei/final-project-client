@@ -24,5 +24,7 @@ const CmdDefineEnum={
     cmdDataCome:"dataCome",
     cmdAudioCome:"audioCome",
     cmdSocketError:"socketError",
+    //drawing
+    cmdCouldSendData:"couldSendData",
 }
 export default CmdDefineEnum;

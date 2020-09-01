@@ -125,7 +125,7 @@ class LeftTree extends Component {
       this.setState({tasks,runningTasks,currentDevice:tag});
       this.selectedInfo.currentStationId=tag.stationId;
       this.selectedInfo.currentDeviceId=tag.id;
-      this.selectedInfo.currentTask=info.node.title;
+      //this.selectedInfo.currentTask=info.node.title;
      //this.selectedStationUrl=this.getUrlByStationId(tag.stationId);
       //notify to change params
       //this.props.treeSelectedChange({stationid:tag.stationId,deviceid:tag.id,taskname:info.node.title});

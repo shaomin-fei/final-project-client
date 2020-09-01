@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:24:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-29 01:29:06
+ * @LastEditTime: 2020-08-31 23:02:25
  */
 import RealtimeTaskBase from "../realtime-task-base";
 import CmdDefineEnum from "../../../../workers/cmd-define";
@@ -28,6 +28,7 @@ class FixedTask extends RealtimeTaskBase {
         this.itu=null;
         this.iq=null;
         this.count=1;
+        this.couldSendData=true;// after ui finish the drawing,then send data
 
         /**
          * @type {Array<AudioData>}
@@ -46,12 +47,16 @@ class FixedTask extends RealtimeTaskBase {
   handleBusinessData (type, array, offset,dataLen) {
     if (type === "Spectrum") {
         //this.realSpectrum=new Int8Array(array,offset,dataLen);
+        debugger
         const specData=parseSpectrum(array,offset+24);
         this.realSpectrum=specData;
         if(!this.maxSpectrum){
             this.maxSpectrum={...specData};
+            this.maxSpectrum.data=new Int16Array(specData.currentCount).fill(-10000);
             this.minSpectrum={...specData};
+            this.minSpectrum.data=new Int16Array(specData.currentCount).fill(10000);
             this.averageSpectrum={...specData};
+            //this.averageSpectrum.data=new Int16Array(specData.currentCount);
         }
         for(let i=0;i<specData.currentCount;i++){
             if(specData.data[i]>this.maxSpectrum.data[i]){
@@ -60,12 +65,19 @@ class FixedTask extends RealtimeTaskBase {
             if(specData.data[i]<this.minSpectrum.data[i]){
                 this.minSpectrum.data[i]=specData.data[i];
             }
-            this.averageSpectrum.data[i]=(this.averageSpectrum.data[i]*this.count+
-                this.averageSpectrum.data[i])/this.count++;
-            if(this.count<0){
-                this.count=1;
+            if(this.count===1){
+              this.averageSpectrum.data[i]=this.averageSpectrum.data[i];
+            }else{
+              this.averageSpectrum.data[i]=(this.averageSpectrum.data[i]*this.count+
+                this.averageSpectrum.data[i])/(this.count+1);
             }
+            
+            
         }
+        if(this.count<0){
+          this.count=1;
+      }
+      this.count++;
 
     } else if (type === "IQ") {
         this.iq=new Int8Array(array,offset,dataLen);
@@ -120,6 +132,9 @@ class FixedTask extends RealtimeTaskBase {
       let totalLen=0;
       let dataTemp=[];
       if(!this.realSpectrum){
+        return;
+      }
+      if(!this.couldSendData){
         return;
       }
       //debugger
@@ -187,6 +202,10 @@ onmessage = (ev) => {
     case CmdDefineEnum.cmdStop: {
       //the worker will be terminated by creator
       fixedTask.stop();
+      return;
+    }
+    case CmdDefineEnum.cmdCouldSendData:{
+      fixedTask.couldSendData=true;
       return;
     }
     default:

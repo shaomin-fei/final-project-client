@@ -265,8 +265,8 @@ export default class Waterfall extends Component {
             display: "none",
           },
         },
-        borderWidth: 1,
-        borderColor: "red",
+        //borderWidth: 1,
+        //borderColor: "red",
         // height: (9 / 16) * 100 + "%", // 16:9 ratio
       },
       boost: {
@@ -695,9 +695,9 @@ const ExtendChart = () => {
               0, 0, this.waterFallCanvas.width, this.waterFallCanvas.height,
               0, 0,
               this.canvas.width, this.canvas.height)
-              console.log("drawImage",this.canvas.width, this.canvas.height);
-              console.log("watercaval",this.waterFallCanvas.width, this.waterFallCanvas.height);
-              console.log("watercontex canvas",this.waterFallCtx.canvas.width,this.waterFallCtx.canvas.height);
+              // console.log("drawImage",this.canvas.width, this.canvas.height);
+              // console.log("watercaval",this.waterFallCanvas.width, this.waterFallCanvas.height);
+              // console.log("watercontex canvas",this.waterFallCtx.canvas.width,this.waterFallCtx.canvas.height);
 
           }
 
