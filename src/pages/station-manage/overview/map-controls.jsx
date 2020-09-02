@@ -116,9 +116,11 @@ export class WarnningControl extends Control{
         </div>
         </div>`;
         opt_options.element.innerHTML+=htmls;
-        document.getElementById("warnning_fatal_info").onclick=this.handleClick;
+        document.getElementById("warnning_fatal_info").onclick=e=>this.handleClick("fatal",e);
+        document.getElementById("warnning_serious_info").onclick=e=>this.handleClick("serious",e);
+        document.getElementById("warnning_general_info").onclick=e=>this.handleClick("general",e);
     }
-    handleClick=e=>{
+    handleClick=(cmd,e)=>{
         
     }
 }

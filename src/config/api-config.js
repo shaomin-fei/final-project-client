@@ -14,6 +14,7 @@ const  APIConfigEnum={
     getStations:"/getStations",
     getSignalStaticByReason:"/getSignalStaticByReason",
     getTaskParams:"/getTaskParam",
+    putPowerOperation:"/powerOperation",
     stationChange:serverWSAddr,
 }
 export default APIConfigEnum;

@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-10 09:02:09
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-19 13:08:21
+ * @LastEditTime: 2020-09-01 22:25:26
  */
 export default class OverlayInfo{
     
@@ -23,10 +23,9 @@ export default class OverlayInfo{
        @type {number}
        */
       lon=0;
-      /*
-       element
-       @type {HTMLElement|null}
-       */
+       /**
+         * @type {HTMLElement}
+         */
       element=null;
 
       

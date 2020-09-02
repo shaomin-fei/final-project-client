@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-12 23:23:21
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-01 14:23:06
+ * @LastEditTime: 2020-09-02 13:36:29
  */
 import React, { useState, useRef, useEffect } from "react";
 import { withRouter } from "react-router-dom";
@@ -63,7 +63,7 @@ const navBar = [
 ];
 
 const MainNavgationBar = function (props) {
-  console.log(props);
+  //console.log(props);
   let [items, setItems] = useState(navBar);
   let [sliderPos, setSliderPos] = useState({
     left: 0,

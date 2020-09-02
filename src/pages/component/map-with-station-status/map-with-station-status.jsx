@@ -16,12 +16,17 @@ import { MapInitInfo, LonLat } from "../../../components/map/datas";
 import OverlayInfo from "../../../components/map/overlay-info";
 import MapConfig from "../../../config/mapconfig";
 import centerIcon from "../../../imgs/station/省中心.png";
+import { stopTask } from "../../tasks/fixed/content/realtime-content";
 //import RigtTaskControl from "./right-task-list";
 class MapWithStationStatus extends Component {
 
   // state={
   //   currentTasks:null,
   // }
+  state={
+    showDlg:false,
+    currentStation:null
+  }
    constructor(props) {
     super(props);
     /**
@@ -33,6 +38,10 @@ class MapWithStationStatus extends Component {
     this.mousePositionContainerID = "realtime_mouseposition_container";
     this.stationOverlayId = "realtime_station_overlay";
     this.mapContainer = null;
+
+    this.dlgContainerID="dlg_on_map_container";
+    this.dlgContainer=null;
+    this.dlgCompnent=null;
     /**
      * @type {Array<OverlayInfo>}
      */
@@ -47,6 +56,8 @@ class MapWithStationStatus extends Component {
     this.mapControlContainer=null;
 
     this.showStations=this.showStations.bind(this);
+    this.handleStationClick=this.handleStationClick.bind(this);
+    this.dlgCloseCallback=this.dlgCloseCallback.bind(this);
     
   }
 
@@ -98,7 +109,26 @@ class MapWithStationStatus extends Component {
    * @param {CenterInfo} center
    */
   treeUpdate=(message, center)=> {
-    center && this.showStations(center);
+    if(center){
+      this.showStations(center);
+      if(this.state.currentStation){
+        let newStation=null;
+        if(center.stations.length>0){
+           newStation=center.stations.find(sta=>{
+            return sta.id===this.state.currentStation.id;
+          });
+        }
+        this.setState({currentStation:newStation});
+      }
+    } 
+    
+  }
+  clearStationOverlay=()=>{
+    if(this.stationLay&&this.stationLay.length>0){
+      this.stationLay.forEach(lay=>{
+        this.centerMap.removeOverLay(lay.id);
+      });
+    }
   }
   /**
    * convert data to the form that tree can show
@@ -109,7 +139,7 @@ class MapWithStationStatus extends Component {
       return;
     }
     let stationHtmls="";
-   
+    this.clearStationOverlay();
     this.stationLay = tree.stations.map((station) => {
       const ovInfo = new OverlayInfo();
       ovInfo.id = station.id;
@@ -137,9 +167,52 @@ class MapWithStationStatus extends Component {
     document.getElementById(this.stationOverlayId).innerHTML=stationHtmls;
     this.stationLay.forEach(sta=>{
         this.centerMap.insertOverLayer(sta);
+       
+        sta.element=document.getElementById(sta.id);
+        sta.element.onclick=e=>this.handleStationClick(e,sta);
+        //sta.element.addEventListener("click",e=>this.handleStationClick(e,sta));
+        
     });
   };
+  /**
+   * @Date: 2020-09-01 22:26:55
+   * @Description: 
+   * @param {OverlayInfo} staOverlay
+   * @return 
+   */
+  handleStationClick(e,staOverlay){
+    //console.log("station clicked",staOverlay);
+    //const html=this.createDlg();
+    const container=this.dlgContainer;
+    //container.innerHTML=html;
+    const station=staOverlay.tag.station;
+    const ovDlg=new OverlayInfo();
+    ovDlg.lon=station.lon;
+    ovDlg.element=this.dlgContainer;
+    ovDlg.lat=station.lat;
+    ovDlg.position="top-left";
+    ovDlg.stopEventPropagation=false;
+    ovDlg.id=this.dlgContainerID;
+    this.centerMap.insertOverLayer(ovDlg);
 
+    const mapRects = this.mapContainer
+      .getBoundingClientRect();
+    const diagWidth = this.dlgContainer.clientWidth;
+    //@ts-ignore
+    if (e.layerX + diagWidth > mapRects.width) {
+      //need to be paned
+      //@ts-ignore
+      this.centerMap.panMap(e.layerX + diagWidth - mapRects.width + 20, 0);
+    }
+    this.setState({showDlg:true,currentStation:{...station}});
+  }
+  /**
+   * todo, child implement
+   * @return {JSX.Element}
+   */
+  createDlg(station){
+    return null;
+  }
   updateSize() {
     this.centerMap && this.centerMap.updateSize();
   }
@@ -154,7 +227,15 @@ class MapWithStationStatus extends Component {
     pubsub.unsubscribe(this.subscribToken);
     pubsub.unsubscribe(this.currentTaskToken);
   }
+  dlgCloseCallback(clickedStation){
+
+    //console.log("close",clickedStation);
+    this.centerMap.removeOverLay(this.dlgContainerID);
+    this.setState({showDlg:false,currentStation:null});
+
+  }
   render() {
+    console.log("mat station render");
     return (
       <>
         <div id={this.mapContainerID} ref={(dv) => (this.mapContainer = dv)}>
@@ -162,6 +243,11 @@ class MapWithStationStatus extends Component {
         </div>
         <div id={this.stationOverlayId}></div>
         <div id={this.mapControlId} ref={dv=>this.mapControlContainer=dv}></div>
+        <div id={this.dlgContainerID} 
+        ref={dv=>this.dlgContainer=dv} 
+        style={{display:this.state.showDlg?"block":"none"}}>
+          {this.createDlg(this.state.currentStation)}
+        </div>
       </>
     );
   }

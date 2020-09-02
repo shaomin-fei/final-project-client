@@ -1,13 +1,21 @@
 //@ts-check
-import React from "react"
+import React from "react";
+import Axios from "axios";
+import {renderToString} from "react-dom/server";
 
+import APIConfigEnum from  "../../../config/api-config";
 import CenterInfo from "../../../common/data/center";
+import Station from "../../../common/data/station";
 import MapWithStationStatus from "../../component/map-with-station-status/map-with-station-status";
 import { LonLat } from "../../../components/map/datas";
 import VectorLayer from "ol/layer/Vector";
 
 import {NetLegend,StatusInfoControl,WarnningControl} from "./map-controls";
 import {initStaticCount,staticCount} from "../../../common/utils/station-status-static";
+import OverlayInfo from "../../../components/map/overlay-info";
+import StationInfoBox from "./station-info-box";
+import { DeviceStatusEnum } from "../../../common/data/device";
+import { message } from "antd";
 function getColorByNetSpeed(speed){
     if(speed<=0){
         return "grey";
@@ -21,6 +29,7 @@ function getColorByNetSpeed(speed){
     return "green";
 }
 export default class OverviewMap extends MapWithStationStatus{
+    
     constructor(props){
         super(props);
         /**
@@ -30,6 +39,13 @@ export default class OverviewMap extends MapWithStationStatus{
         this.mapLineVecLayer=new Map();
 
         this.statusControl=null;
+
+       
+        // this.dlgCompnent=<StationInfoBox 
+        // closeCallback={this.dlgCloseCallback}
+       
+        // />
+        this.dlgCompnent=null;
     }
     componentDidMount(){
         super.componentDidMount();
@@ -77,5 +93,66 @@ export default class OverviewMap extends MapWithStationStatus{
         controls.push(warnningControl);
         this.addControls(controls);
       }
-    
+    /**
+   * @Date: 2020-09-01 22:26:55
+   * @Description: 
+   * @param {OverlayInfo} staOverlay
+   * @return 
+   */
+  handleStationClick(e,staOverlay){
+      /**
+       * @type {CenterInfo}
+       */
+      const station=staOverlay.tag.station;
+      super.handleStationClick(e,staOverlay);
+    //   document.getElementById(IdGroup.closeId).onclick=e=>{
+    //       this.centerMap.removeOverLay(IdGroup.closeId);
+    //   }
+    //   document.getElementById(IdGroup.logId).onclick=e=>{this.showLogInfo(staOverlay.tag.station)};
+    //   document.getElementById(IdGroup.powerId).onclick=e=>{this.powerOperation(staOverlay.tag.station)}
+     
+}
+/**
+ * 
+ * @param {Station} station 
+ */
+showLogInfo(station){
+//console.log("showloginfo",station);
+
+}
+/**
+ * 
+ * @param {Station} station 
+ */
+async powerOperation(station,callback){
+    //console.log("powerOperation",station);
+    try{
+        const res=await Axios.put(APIConfigEnum.putPowerOperation,{
+            stationid:station.id,
+            value:station.status===DeviceStatusEnum.SHUTDOWN?"on":"off"
+        });
+        if(res.data==="ok"){
+           message.info("success");
+        }else{
+            message.error(res.data);
+        }
+    }catch(err){
+        message.error(err.message);
+    }finally{
+        callback();
+    }
+   
+}
+
+/**
+ * 
+ */
+createDlg=(station)=>{
+    return <StationInfoBox 
+    currentStation={station} 
+    closeCallback={this.dlgCloseCallback}
+    showLogCallback={this.showLogInfo}
+    powerCalback={this.powerOperation}
+    />;
+}
 }

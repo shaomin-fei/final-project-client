@@ -6,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 11:34:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-26 15:16:50
+ * @LastEditTime: 2020-09-02 16:11:53
  */
 let temp=0;
 temp=temp+1;
@@ -46,7 +46,7 @@ const getStations=async (url)=>{
         //console.log("get",strNowTree);
         if(strNowTree!==stationString){
             stationString=strNowTree;
-            //console.log("post");
+            console.log("tree changed,post");
             if(!signalByReason){
                 //the first time to get the signal,must after the stations get value;
                 getSignalByReason(APIConfigEnum.getSignalStaticByReason);
