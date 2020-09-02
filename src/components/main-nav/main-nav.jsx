@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-12 23:23:21
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-13 20:18:30
+ * @LastEditTime: 2020-09-01 14:23:06
  */
 import React, { useState, useRef, useEffect } from "react";
 import { withRouter } from "react-router-dom";
@@ -93,6 +93,7 @@ const MainNavgationBar = function (props) {
 
   const moveSliderToSelectedItem = (target) => {
     //const {itemSelected,sliderItem}=refInfo.current;
+    //debugger
     const clientRect = target.getBoundingClientRect();
     sliderPos.left = clientRect.left;
     sliderPos.width = clientRect.width;
@@ -138,9 +139,23 @@ const MainNavgationBar = function (props) {
     });
     return item ? item.select : false;
   };
+  /**
+   * @Date: 2020-09-01 11:30:35
+   * @Description: 
+   * @param {string} path 
+   * @return  
+   */
   const setSelectedItem = (path) => {
+    //可能有几级菜单，这里只判断第一级
+    
+    const szTemp=path.split("/");
+    let firstPath=path;
+    if(szTemp.length>1){
+      firstPath="/"+szTemp[1];
+    }
+    //console.log("xx",szTemp);
     navBar.forEach((nav) => {
-      if (nav.path === path) {
+      if (nav.path === firstPath) {
         nav.select = true;
       } else {
         nav.select = false;
@@ -151,13 +166,20 @@ const MainNavgationBar = function (props) {
     if (refInfo.current.itemSelected) {
       return null;
     } else {
-      if (props.location.pathname === relatedPath) {
+      let firstPath=props.location.pathname;
+      const szTemp=firstPath.split("/");
+    
+    if(szTemp.length>1){
+      firstPath="/"+szTemp[1];
+    }
+      if (firstPath === relatedPath) {
         refInfo.current.itemSelected = target;
       }
     }
   };
 
   useEffect(() => {
+    console.log("nav bar",props);
     setSelectedItem(props.location.pathname);
     moveSliderToSelectedItem(refInfo.current.itemSelected);
     //console.log("effect call");

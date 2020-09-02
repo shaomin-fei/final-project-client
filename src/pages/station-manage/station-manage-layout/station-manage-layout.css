@@ -8,3 +8,15 @@
   height: calc(100vh - 52px);
   color: white;
 }
+.station_manage_layout {
+  height: calc(100vh - 50px);
+  background-color: #06183d;
+  font-weight: bold;
+}
+.station_manage_layout .ant-layout-sider-children {
+  background-color: #06183d;
+}
+.station_manage_layout .ant-layout-content {
+  background-color: #06183d;
+  height: 100%;
+}

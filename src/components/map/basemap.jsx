@@ -1,23 +1,22 @@
 //@ts-check
 import React,{Component} from "react"
 import 'ol/ol.css';
-import {Map, View,Overlay} from 'ol';
-import OverlayPositioning from "ol/OverlayPositioning";
+import {Map, View,Overlay, Feature} from 'ol';
+
 import {fromLonLat} from 'ol/proj';
 import {
-  Heatmap as HeatmapLayer,
+  
   Tile as TileLayer,
   Vector as VectorLayer,
 } from "ol/layer.js";
 import { createStringXY } from "ol/coordinate.js";
 import KML from "ol/format/KML";
 import {
-  Circle as CircleStyle,
+  
   Fill,
   Stroke,
   Style,
-  Text,
-  Icon as IconStyle,
+  
 } from "ol/style.js";
 
 import {
@@ -28,11 +27,12 @@ import {
   MousePosition,
 } from "ol/control.js";
 
-import {MapInitInfo} from "./datas"
+import {MapInitInfo,LonLat} from "./datas"
 import { XYZ, Cluster, OSM, Vector as VectorSource } from "ol/source.js";
 
 import "./basemap.css"
 import OverLayInfo from "./overlay-info"
+import LineString from "ol/geom/LineString";
 
 export default class BaseMap extends Component{
 
@@ -106,7 +106,15 @@ export default class BaseMap extends Component{
       initInfo.onMapClick&&this.map.addEventListener("click",initInfo.onMapClick);
       
     }
-    
+    /**
+     * 
+     * @param {Array<Control>} controls 
+     */
+    addControls(controls){
+      this.map&&controls.forEach(element => {
+        this.map.addControl(element);
+      });
+    }
     removeLoadedCallBack(loadCallBack){
       if(loadCallBack){
         this.map.removeEventListener("rendercomplete",loadCallBack);
@@ -125,6 +133,41 @@ export default class BaseMap extends Component{
         target: targetId,
       });
       this.map.addControl(mousePosition);
+    }
+    /**
+     * @Date: 2020-09-01 14:53:44
+     * @Description: 
+     * @param {LonLat} startPointLonLat
+     * @param {LonLat} stopPointLonLat
+     * @return {VectorLayer}
+     */
+    addLine(startPointLonLat,stopPointLonLat,color="green"){
+      const feature=new Feature(
+        new LineString(
+          [
+            fromLonLat([startPointLonLat.lon,startPointLonLat.lat]),
+            fromLonLat([stopPointLonLat.lon,stopPointLonLat.lat]),
+          ],
+        )
+      );
+      const vecLayer=new VectorLayer({
+        source:new VectorSource({
+          features:[feature]
+        }),
+        style:new Style({
+          stroke:new Stroke({
+            width:2,
+            color:color,
+            lineDash:[6]
+          }),
+          fill:new Fill({
+          color:"transparent"
+          })
+        }),
+        
+      });
+      this.map&&this.map.addLayer(vecLayer);
+      return vecLayer;
     }
     /**
      * @Date: 2020-08-15 07:33:23

@@ -1,0 +1,171 @@
+#net_legend{
+    // position: relative;
+     
+    
+     right: 10px;
+     bottom: 10px;
+     //width: 400px;
+    // right: 200px;
+     //border:1px solid black;
+     position: absolute;   
+     label{
+         color:blue;
+     }
+}
+    #net_fast {
+
+        display: inline-block;
+        border:2px dashed green;
+        width: 30px;
+        height: 0px;
+        position: relative;
+        top:-2px;
+      }
+       #net_medium {
+        display: inline-block;
+        border:2px dashed orange;
+        width: 30px;
+        height: 0px;
+        position: relative;
+        top:-2px;
+      }
+       #net_low {
+        display: inline-block;
+        border:2px dashed red;
+        width: 30px;
+        height: 0px;
+        position: relative;
+        top:-2px;
+      }
+       #net_offline {
+        display: inline-block;
+        border:2px dashed gray;
+        width: 30px;
+        height: 0px;
+        position: relative;
+        top:-2px;
+      }
+      #status_control{
+        //  width: 100px;
+        //  height: 100px;
+         //border:1px solid red; 
+      }
+      #status_control{
+        //   margin:1px auto;
+          //background-color: rgba(76, 180, 255, 0.6);
+          display: flex;
+          justify-content: center;
+          margin-top:3px;
+        //   border:2px solid rgba(22, 130, 232,0.9);
+        //   border-radius: 8px;
+          >div{
+              width: 120px;
+              color:white;
+              font-weight: bold;
+              font-size: 1.2rem;
+              background-color: rgba(22, 130, 232);
+             height: 80px;
+              //border:1px solid red;
+              padding:10px;
+                 border:2px solid rgba(22, 130, 232,0.9);
+          border-radius: 8px;
+          border-right: 1px solid #ccc;
+
+              >div{
+                  margin:2px auto;
+                  //border:1px solid black;
+                  text-align: center;
+              }
+          }
+          #status_total_info{
+              color:white;
+          }
+          #status_work_info{
+              color:rgba(53, 255, 0, 1)
+          }
+          #status_idle_info{
+              color: rgba(0,254,228,1);
+          }
+          #status_fault_info{
+              color:rgba(255,0,0,1);
+          }
+          #status_shutdown_info{
+              color:rgba(180,180,180,1);
+          }
+          #status_total_count,#status_work_count,#status_idle_count,#status_fault_count,#status_shutdown_count{
+              font-size: 1.5rem;
+          }
+      }
+
+      #warnning_container{
+          display: flex;
+          flex-direction: column;
+          float: right;
+          border:3px solid rgba(43, 152, 253,1);
+          border-radius: 8px;
+          
+           margin-right: 10px;
+          >div{
+              color:white;
+              font-size: 1.2rem;
+              font-weight: bold;
+              width: 100px;
+              height: 100px;
+              background-color: rgba(1, 23, 68,0.8);
+              text-align: center;
+              border-bottom: 1px solid #ccc;
+              //border-radius:5px ;
+              
+
+          }
+          #warnning_general_info{
+              border:none;
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              >div:first-child{
+                  background-color: rgba(255,254,1,0.8);
+                  width: 80px;
+                  margin:2px auto;
+                  color:black;
+                  border-radius: 5px;
+              }
+              >div:last-child{
+                  color:yellow;
+                  font-size: 1.5rem;
+              }
+          }
+          #warnning_serious_info{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+              >div:first-child{
+                  background-color: rgba(233,144,2,0.8);
+                  width: 80px;
+                  margin:2px auto;
+                  color:black;
+                  border-radius: 5px;
+              }
+              >div:last-child{
+                color:rgba(233,144,2,0.8);
+                font-size: 1.5rem;
+            }
+          }
+          #warnning_fatal_info{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+              >div:first-child{
+                  background-color: rgba(255,0,0,0.8);
+                  width: 80px;
+                  margin:2px auto;
+                  color:black;
+                  border-radius: 5px;
+              }
+              >div:last-child{
+                color:rgba(255,0,0,0.8);
+                font-size: 1.5rem;
+            }
+          }
+      }

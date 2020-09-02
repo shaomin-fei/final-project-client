@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:52:52
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-20 16:19:23
+ * @LastEditTime: 2020-09-01 19:12:08
  */
 import React,{useEffect,useContext,useRef} from "react";
 import ReactDom from "react-dom"
@@ -19,56 +19,41 @@ import "./status.css";
 import {TreeContext} from "../../context"
 import Station from "../../../../common/data/station";
 import {DeviceStatusEnum} from "../../../../common/data/device";
+import {staticCount,initStaticCount} from "../../../../common/utils/station-status-static";
+import CenterInfo from "../../../../common/data/center";
 
-/**
- * @Date: 2020-08-18 00:34:06
- * @Description: 
- *  /**
-   * @typedef {import('../../../../common/data/center').default} CenterInfo   
- * @param {CenterInfo} tree
- * @return {Map<string,number>} total count of [woring idle fault shutdown]
- */
-function staticCount(tree){
-  let staticCountMap=new Map();
-  staticCountMap=initStaticCount(staticCountMap);
-  tree.stations&&tree.stations.forEach(station=>{
-    switch(station.status){
-      case DeviceStatusEnum.WORKING:
-        increasMapData(staticCountMap,DeviceStatusEnum.WORKING);
-        break;
-      case DeviceStatusEnum.SHUTDOWN:
-        increasMapData(staticCountMap,DeviceStatusEnum.SHUTDOWN);
-        break;
-      case DeviceStatusEnum.IDLE:
-        increasMapData(staticCountMap,DeviceStatusEnum.IDLE);
-        break;
-      case DeviceStatusEnum.FAULT:
-        increasMapData(staticCountMap,DeviceStatusEnum.FAULT);
-        break;
-      default:
-        break;
-    }
-  });
-  return staticCountMap;
-}
-function increasMapData(mapData,key){
-  if(!mapData.has(key)){
-    mapData.set(key,0);
-  }
-  const count= mapData.get(key)+1;
-  mapData.set(key,count);
-}
-function initStaticCount(initCount){
-  if(!initCount){
-    initCount=new Map();
-  }
-  
-  initCount.set(DeviceStatusEnum.WORKING,0);
-  initCount.set(DeviceStatusEnum.IDLE,0);
-  initCount.set(DeviceStatusEnum.FAULT,0);
-  initCount.set(DeviceStatusEnum.SHUTDOWN,0);
-  return initCount;
-}
+
+// function staticCount(tree){
+//   let staticCountMap=new Map();
+//   staticCountMap=initStaticCount(staticCountMap);
+//   tree.stations&&tree.stations.forEach(station=>{
+//     switch(station.status){
+//       case DeviceStatusEnum.WORKING:
+//         increasMapData(staticCountMap,DeviceStatusEnum.WORKING);
+//         break;
+//       case DeviceStatusEnum.SHUTDOWN:
+//         increasMapData(staticCountMap,DeviceStatusEnum.SHUTDOWN);
+//         break;
+//       case DeviceStatusEnum.IDLE:
+//         increasMapData(staticCountMap,DeviceStatusEnum.IDLE);
+//         break;
+//       case DeviceStatusEnum.FAULT:
+//         increasMapData(staticCountMap,DeviceStatusEnum.FAULT);
+//         break;
+//       default:
+//         break;
+//     }
+//   });
+//   return staticCountMap;
+// }
+// function increasMapData(mapData,key){
+//   if(!mapData.has(key)){
+//     mapData.set(key,0);
+//   }
+//   const count= mapData.get(key)+1;
+//   mapData.set(key,count);
+// }
+
 /**
  * @Date: 2020-08-18 08:07:30
  * @Description: 

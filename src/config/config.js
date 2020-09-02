@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 09:08:35
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-24 11:21:54
+ * @LastEditTime: 2020-09-01 11:22:46
  */
 
  import React from "react";
@@ -39,7 +39,7 @@
     new RouterInfo(RouterEnum.RealTimeTask,RealTimeTask),
     new  RouterInfo(RouterEnum.SignalManage,SignalManage),
     new  RouterInfo(RouterEnum.DataManage,DataManage),
-    new  RouterInfo(RouterEnum.StationManage,StationManage),
+    new  RouterInfo(RouterEnum.StationManage,StationManage,false),
     new  RouterInfo(RouterEnum.ExecuteRealtimeTask,ExecuteRealtimeTaskIndex,false),
 
 

@@ -45,8 +45,21 @@ if(data.has(DataTypeEnum.ITU)){
     const itu=data.get(DataTypeEnum.ITU);
     const szSplit=itu.split(";");
     const result=[];
+    let index=0;
     szSplit.forEach(split=>{
         const content=split.split("=");
+        if(index===0){
+            content[0]="Freq Differ"
+        }else if(index===1){
+            content[0]="Freq Offset"
+        }else if(index===2){
+            content[0]="Positive Freq Offset"
+        }else if(index===3){
+            content[0]="Negative Freq Offset"
+        }else if(index===4){
+            content[0]="XDB BW"
+        }
+        index++;
         const data={
             name:content[0],
             value:content[1]

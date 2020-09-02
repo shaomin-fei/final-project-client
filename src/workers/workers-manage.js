@@ -169,3 +169,7 @@ export async function getTaskParam({stationid,deviceid,taskname},contentCallback
     }
     
 }
+
+export function getStaticStationStatus(){
+    
+}
