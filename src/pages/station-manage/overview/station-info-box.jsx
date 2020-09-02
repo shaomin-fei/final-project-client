@@ -73,7 +73,7 @@ const StationInfoBox = function (props) {
         <Button type="primary" 
         size="small" 
         icon={<FileTextOutlined />}
-        onClick={e=>props.showLogInfo(currentStation)}
+        onClick={e=>props.showLogCallback(currentStation)}
         >Log</Button>
         </span>
         <span>
