@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 08:56:20
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-02 17:30:04
+ * @LastEditTime: 2020-09-02 18:00:26
 -->
 1 url:
 front-end url:
@@ -30,7 +30,6 @@ click "Device Status" on the cockpit page will enter the station manage page. Cl
 click "Running Task" title will enter the realtime task page. The left of the page show the tree-structure of our monitor network. The leaf of the tree is a device.Click device, there will be a task-list show below,click start button will enter the task page. When you enter the task page, click "start" button to start the task. Then the page will draw graphics dynamically. click checkbox "level","IQ","ITU" to choose what kind of graphic you want to show. click checkbox "Audio" to decide if you want to hear the audio. 
 
       
-
 
 
 
