@@ -234,4 +234,213 @@
              
           }
       }
-      
+    //   style for statu-log
+    .status_log_container{
+        background-color: rgba(5, 23, 61, 0.8);
+        width: 850px;
+        height: 350px;
+        margin:auto;
+        //border:1px solid red;
+        position: fixed;
+        top:0px;
+        right: 0px;
+        left: 0px;
+        bottom: 0px;
+        padding:0px;
+        
+        .status_header{
+            height: 30px;
+            background-color:rgba(0,141,255,0.9);
+            margin-top: 0px;
+            
+            color: white;
+            font-weight: bold;
+            line-height: 30px;
+            >span:first-child{
+                float: left;
+                margin-left: 5px;
+                
+            }
+            >span:last-child{
+                float: right;
+                margin-right: 5px;
+            }
+        }
+        .status_info{
+            width: 35%;
+            height: calc(100% - 31px);
+            border-right: 1px solid #ccc;
+            float:left;
+            .status_basic_info{
+                width: 100%;
+                height: 40%;
+                border-bottom: 1px solid #ccc;
+                table{
+                    color:white;
+                    td{
+                        padding:5px ;
+                    }
+                }
+            }
+            .status_basic_pie{
+                width: 100%;
+                height: calc(60% - 1px);
+                //border:1px solid red;
+                .status_static_pie_container{
+                    width:100%;
+                    height: 100%;
+                    //border:1px solid green;
+                }
+            }
+        }
+        .status_static_daily{
+            width: calc(65% - 1px);
+            height: calc(100% - 31px);
+            //border:1px solid yellowgreen;
+            float: right;
+            position: relative;
+            .status_log_daily_chart_container{
+                width:100%;
+                height: 100%;
+                position: relative;
+                //border:1px solid red;
+                // >div:first-child{
+                //     cursor: default;
+                //     border:1px solid red;
+                // }
+                >div>canvas:hover{
+                    cursor: default;
+                }
+            }
+           
+            .choose_date_up{
+                position: absolute;
+                left:11px;
+                top:105px;
+                color:gold;
+                font-weight: bold;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+            .choose_date_down{
+                position: absolute;
+                left:11px;
+                top:215px;
+                color:gold;
+                font-weight: bold;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+        }
+    }
+
+    // warning list
+    .warning_list_container{
+        width: 800px;
+        height: 350px;
+        top:0px;
+        left:0px;
+        right: 0px;
+        bottom: 0px;
+        margin:auto;
+        background-color: rgba(5, 23, 61, 0.8);
+        position: fixed;
+        .warning_list_head{
+            width: 100%;
+            height: 30px;
+            background-color:rgba(0,141,255,0.9);
+            margin-top: 0px;
+            
+            color: white;
+            font-weight: bold;
+            line-height: 30px;
+            >span:first-child{
+                float: left;
+                margin-left:5px;
+            }
+            >span:last-child{
+                float: right;
+                margin-right: 5px;
+                line-height: 30px;
+                margin-top:-2px
+            }
+        }
+        .warning_list_query_condition{
+            width: 100%;
+            box-sizing:border-box;
+            -moz-box-sizing:border-box; /* Firefox */
+            -webkit-box-sizing:border-box; /* Safari */
+             height: 80px;
+             //border:1px solid red;
+            margin-top: 10px;
+            padding-left: 20px;
+            border-bottom: 1px solid #ccc;
+            .ant-select-selector{
+               background-color: rgba(5, 23, 61, 0.8); 
+            }
+            .warnning_list_query_date{
+              
+                background-color: rgba(5, 23, 61, 0.8);
+                color:white;
+                text-decoration-color: white;
+                width: 640px;
+                margin-top: 10px;
+            }
+            label{
+                color:white;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+                .ant-picker-input > input{
+                    color:white;
+                }
+                .ant-picker-input-active>input{
+                    color:white;
+                }
+                .ant-picker-separator{
+                    color:rgba(255,255,255,0.8);
+                }
+                .ant-picker-suffix{
+                    color:rgba(255,255,255,0.8);
+                }
+                // 修改清楚日期内容样式，首先将x的背景设置成div背景，在修改fill颜色，使其区别与背景
+                .ant-picker-clear{
+                 background-color:  rgba(5, 23, 61, 0.8);
+                 svg{
+                     fill: red;
+                 }
+            }
+            }
+           
+           .warning_list_results{
+               width: 100%;
+               height: calc(100% - 110px);
+               overflow: auto;
+               .talbe_detail{
+                   width: 100%;
+                   height: 100%;
+                
+               
+
+                .ant-table{
+                    background-color:  rgba(5, 23, 61, 0.6);
+                    color: white;
+                }
+                .ant-table-thead > tr > th{
+                    background-color:  rgba(5, 23, 61, 0.6);
+                    color: white;
+                }
+                .ant-table-tbody > tr.ant-table-row:hover > td{
+                    background-color: rgba(0,141,255,0.6);
+                }
+                .ant-pagination-item{
+                    background-color: transparent;
+                }
+                .ant-pagination-item a{
+                    color:white;
+                }
+               }
+           }
+            
+            
+    }

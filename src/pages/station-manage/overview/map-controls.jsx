@@ -5,6 +5,7 @@ import Control from 'ol/control/Control';
 import { DeviceStatusEnum} from "../../../common/data/device";
 
 import "./overview-map.css";
+import { Component } from "react";
 
 export class NetLegend extends Control{
     constructor(opt_options){
@@ -99,29 +100,69 @@ export class WarnningControl extends Control{
     constructor(opt_options){
         super(opt_options);
         this.element=opt_options.element;
-        const htmls=`<div id=warnning_container>
-        <div id=warnning_fatal_info>
-        <div>Fatal</div>
-        <div id=fatal_count>0</div>
-        </div>
+        // const htmls=`<div id=warnning_container>
+        // <div id=warnning_fatal_info>
+        // <div>Fatal</div>
+        // <div id=fatal_count>0</div>
+        // </div>
 
-        <div id=warnning_serious_info>
-        <div>Serious</div>
-        <div id=serious_count>0</div>
-        </div>
+        // <div id=warnning_serious_info>
+        // <div>Serious</div>
+        // <div id=serious_count>0</div>
+        // </div>
 
-        <div id=warnning_general_info>
-        <div>General</div>
-        <div id=general_count>0</div>
-        </div>
-        </div>`;
-        opt_options.element.innerHTML+=htmls;
-        document.getElementById("warnning_fatal_info").onclick=e=>this.handleClick("fatal",e);
-        document.getElementById("warnning_serious_info").onclick=e=>this.handleClick("serious",e);
-        document.getElementById("warnning_general_info").onclick=e=>this.handleClick("general",e);
+        // <div id=warnning_general_info>
+        // <div>General</div>
+        // <div id=general_count>0</div>
+        // </div>
+        // </div>`;
+        // opt_options.element.innerHTML+=htmls;
+        // document.getElementById("warnning_fatal_info").onclick=e=>this.handleClick("fatal",e);
+        // document.getElementById("warnning_serious_info").onclick=e=>this.handleClick("serious",e);
+        // document.getElementById("warnning_general_info").onclick=e=>this.handleClick("general",e);
     }
-    handleClick=(cmd,e)=>{
+    // handleClick=(cmd,e)=>{
         
+    // }
+    
+}
+export class WarningControlComponent extends Component{
+
+    container=null;
+     handleClick=(cmd,e)=>{
+         this.props.handleWarningClick(cmd);
+        // switch(cmd){
+        //     case "fatal":
+        //         break;
+        //     case "serious":
+        //         break;
+        //     case "general":
+        //         break;
+        //     default:
+        //     break;
+        // }
+    }
+    render(){
+        return (
+            <>
+            <div id="warnning_container" ref={dv=>this.container=dv}>
+        <div id="warnning_fatal_info" onClick={e=>this.handleClick("Fatal",e)}>
+        <div>Fatal</div>
+        <div id="fatal_count">0</div>
+        </div>
+
+        <div id="warnning_serious_info" onClick={e=>this.handleClick("Serious",e)}>
+        <div>Serious</div>
+        <div id="serious_count">0</div>
+        </div>
+
+        <div id="warnning_general_info" onClick={e=>this.handleClick("General",e)}>
+        <div>General</div>
+        <div id="general_count">0</div>
+        </div>
+        </div>
+            </>
+        );
     }
 }
 

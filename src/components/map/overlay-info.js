@@ -28,6 +28,7 @@ export default class OverlayInfo{
          */
       element=null;
 
+      insertFirst=false;
       
       /*
        stopEventPropagation

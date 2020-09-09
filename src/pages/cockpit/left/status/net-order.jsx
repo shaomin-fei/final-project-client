@@ -5,15 +5,15 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 const echarts = require('echarts');
 
-var speed = [0.8, 0.7, 0.4,0.2, 0.1]//current net speed, percentage of the total band
-var realSpeed=[0,0,0,0,0];
+let speed = [0.8, 0.7, 0.4,0.2, 0.1]//current net speed, percentage of the total band
+let realSpeed=[0,0,0,0,0];
 //var dataCost = [10.01,200,200,1000.01,200000]//真是的金额
-var total = [ 1,1,1,1,1]//比例综合
-var idealBand = [10, 10, 10,10, 8]//ideal net band
-var stations = ['station1','station2','station3','station4','station5', ]
-var myColor = ["#F57474",'#F8B448','#1089E7','#56D0E3','#21BF57'];//[,  , ,'', ];
+let total = [ 1,1,1,1,1]//比例综合
+let idealBand = [10, 10, 10,10, 8]//ideal net band
+let stations = ['station1','station2','station3','station4','station5', ]
+let myColor = ["#F57474",'#F8B448','#1089E7','#56D0E3','#21BF57'];//[,  , ,'', ];
 
-var data = {
+let data = {
     stations: stations,
     speed: speed,
     total: total,

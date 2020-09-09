@@ -10,12 +10,15 @@ import MapWithStationStatus from "../../component/map-with-station-status/map-wi
 import { LonLat } from "../../../components/map/datas";
 import VectorLayer from "ol/layer/Vector";
 
-import {NetLegend,StatusInfoControl,WarnningControl} from "./map-controls";
+import {NetLegend,StatusInfoControl,WarnningControl,WarningControlComponent} from "./map-controls";
 import {initStaticCount,staticCount} from "../../../common/utils/station-status-static";
 import OverlayInfo from "../../../components/map/overlay-info";
 import StationInfoBox from "./station-info-box";
 import { DeviceStatusEnum } from "../../../common/data/device";
+import StatusLog from "./status-log";
+import WarningList,{WarningQueryCondition} from "./warning-list";
 import { message } from "antd";
+import { startTask } from "../../../components/graphic/spectrum/spectrum";
 function getColorByNetSpeed(speed){
     if(speed<=0){
         return "grey";
@@ -28,24 +31,27 @@ function getColorByNetSpeed(speed){
     }
     return "green";
 }
+
 export default class OverviewMap extends MapWithStationStatus{
     
     constructor(props){
-        super(props);
+        super(props,{isShowLog:false,isShowWarning:false,warningQueryCondition:null});
         /**
          * @type {Map<string,VectorLayer>}
          * key is station id
          */
         this.mapLineVecLayer=new Map();
 
-        this.statusControl=null;
-
-       
+        this.statusControl=null;    
         // this.dlgCompnent=<StationInfoBox 
         // closeCallback={this.dlgCloseCallback}
        
         // />
         this.dlgCompnent=null;
+
+        this.statusLog=null;
+
+        this.warningControlContainer=null;
     }
     componentDidMount(){
         super.componentDidMount();
@@ -88,11 +94,17 @@ export default class OverviewMap extends MapWithStationStatus{
         controls.push(statusControl);
 
         const warnningControl=new WarnningControl({
-            element:this.getMapElement()
+            element:this.warningControlContainer.container
         });
         controls.push(warnningControl);
         this.addControls(controls);
       }
+      getExtralControls(){
+          return ( <WarningControlComponent 
+            ref={dv=>this.warningControlContainer=dv}
+            handleWarningClick={this.handleWarningClick}
+            />);
+    }
     /**
    * @Date: 2020-09-01 22:26:55
    * @Description: 
@@ -116,9 +128,10 @@ export default class OverviewMap extends MapWithStationStatus{
  * 
  * @param {Station} station 
  */
-showLogInfo(station){
+showLogInfo=(station)=>{
 //console.log("showloginfo",station);
-
+this.setState({...this.state,isShowLog:true});
+this.dlgCloseCallback(station);
 }
 /**
  * 
@@ -155,4 +168,24 @@ createDlg=(station)=>{
     powerCalback={this.powerOperation}
     />;
 }
+handleWarningClick=(cmd)=>{
+    this.setState({...this.state,isShowWarning:true,warningQueryCondition:new WarningQueryCondition({warningLevel:cmd})});
+}
+render() {
+    //console.log("mat station render");
+    
+    return (
+      <>
+      {super.render()}
+      {this.state.isShowLog?<StatusLog closeCallback={e=>this.setState({...this.state,isShowLog:false})}/>:null}
+      
+     
+     {this.state.isShowWarning?<WarningList 
+     warningQueryCondition={this.state.warningQueryCondition}
+     closeCallback={()=>this.setState({...this.state,isShowWarning:false})}
+     />:
+     null}
+      </>
+    );
+  }
 }

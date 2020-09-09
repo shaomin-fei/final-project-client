@@ -106,6 +106,13 @@ export default class BaseMap extends Component{
       initInfo.onMapClick&&this.map.addEventListener("click",initInfo.onMapClick);
       
     }
+    addEventListener(cmd,callback){
+      this.map&&this.map.addEventListener(cmd,callback);
+      
+    }
+    removeEventListener(cmd,callback){
+      this.map&&this.map.removeEventListener(cmd,callback);
+    }
     /**
      * 
      * @param {Array<Control>} controls 
@@ -219,9 +226,9 @@ export default class BaseMap extends Component{
         element: lay.element || document.getElementById(lay.id),
         //@ts-ignore
         positioning: lay.position,
-
+        //autoPan:true,
   
-        insertFirst: false,
+        insertFirst: lay.insertFirst,
       });
       this.map.addOverlay(overLay);
     };

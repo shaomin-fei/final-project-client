@@ -200,3 +200,189 @@
 .stationinfo_box_content table td {
   padding: 5px;
 }
+.status_log_container {
+  background-color: rgba(5, 23, 61, 0.8);
+  width: 850px;
+  height: 350px;
+  margin: auto;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  padding: 0px;
+}
+.status_log_container .status_header {
+  height: 30px;
+  background-color: rgba(0, 141, 255, 0.9);
+  margin-top: 0px;
+  color: white;
+  font-weight: bold;
+  line-height: 30px;
+}
+.status_log_container .status_header > span:first-child {
+  float: left;
+  margin-left: 5px;
+}
+.status_log_container .status_header > span:last-child {
+  float: right;
+  margin-right: 5px;
+}
+.status_log_container .status_info {
+  width: 35%;
+  height: calc(100% - 31px);
+  border-right: 1px solid #ccc;
+  float: left;
+}
+.status_log_container .status_info .status_basic_info {
+  width: 100%;
+  height: 40%;
+  border-bottom: 1px solid #ccc;
+}
+.status_log_container .status_info .status_basic_info table {
+  color: white;
+}
+.status_log_container .status_info .status_basic_info table td {
+  padding: 5px ;
+}
+.status_log_container .status_info .status_basic_pie {
+  width: 100%;
+  height: calc(60% - 1px);
+}
+.status_log_container .status_info .status_basic_pie .status_static_pie_container {
+  width: 100%;
+  height: 100%;
+}
+.status_log_container .status_static_daily {
+  width: calc(65% - 1px);
+  height: calc(100% - 31px);
+  float: right;
+  position: relative;
+}
+.status_log_container .status_static_daily .status_log_daily_chart_container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.status_log_container .status_static_daily .status_log_daily_chart_container > div > canvas:hover {
+  cursor: default;
+}
+.status_log_container .status_static_daily .choose_date_up {
+  position: absolute;
+  left: 11px;
+  top: 105px;
+  color: gold;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.status_log_container .status_static_daily .choose_date_down {
+  position: absolute;
+  left: 11px;
+  top: 215px;
+  color: gold;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.warning_list_container {
+  width: 800px;
+  height: 350px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: auto;
+  background-color: rgba(5, 23, 61, 0.8);
+  position: fixed;
+}
+.warning_list_container .warning_list_head {
+  width: 100%;
+  height: 30px;
+  background-color: rgba(0, 141, 255, 0.9);
+  margin-top: 0px;
+  color: white;
+  font-weight: bold;
+  line-height: 30px;
+}
+.warning_list_container .warning_list_head > span:first-child {
+  float: left;
+  margin-left: 5px;
+}
+.warning_list_container .warning_list_head > span:last-child {
+  float: right;
+  margin-right: 5px;
+  line-height: 30px;
+  margin-top: -2px;
+}
+.warning_list_container .warning_list_query_condition {
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */
+  -webkit-box-sizing: border-box;
+  /* Safari */
+  height: 80px;
+  margin-top: 10px;
+  padding-left: 20px;
+  border-bottom: 1px solid #ccc;
+}
+.warning_list_container .warning_list_query_condition .ant-select-selector {
+  background-color: rgba(5, 23, 61, 0.8);
+}
+.warning_list_container .warning_list_query_condition .warnning_list_query_date {
+  background-color: rgba(5, 23, 61, 0.8);
+  color: white;
+  text-decoration-color: white;
+  width: 640px;
+  margin-top: 10px;
+}
+.warning_list_container .warning_list_query_condition label {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.warning_list_container .warning_list_query_condition .ant-picker-input > input {
+  color: white;
+}
+.warning_list_container .warning_list_query_condition .ant-picker-input-active > input {
+  color: white;
+}
+.warning_list_container .warning_list_query_condition .ant-picker-separator {
+  color: rgba(255, 255, 255, 0.8);
+}
+.warning_list_container .warning_list_query_condition .ant-picker-suffix {
+  color: rgba(255, 255, 255, 0.8);
+}
+.warning_list_container .warning_list_query_condition .ant-picker-clear {
+  background-color: rgba(5, 23, 61, 0.8);
+}
+.warning_list_container .warning_list_query_condition .ant-picker-clear svg {
+  fill: red;
+}
+.warning_list_container .warning_list_results {
+  width: 100%;
+  height: calc(100% - 110px);
+  overflow: auto;
+}
+.warning_list_container .warning_list_results .talbe_detail {
+  width: 100%;
+  height: 100%;
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-table {
+  background-color: rgba(5, 23, 61, 0.6);
+  color: white;
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-table-thead > tr > th {
+  background-color: rgba(5, 23, 61, 0.6);
+  color: white;
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: rgba(0, 141, 255, 0.6);
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-pagination-item {
+  background-color: transparent;
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-pagination-item a {
+  color: white;
+}
