@@ -1,3 +1,5 @@
+
+@bkcolor: rgba(5, 23, 61,1);
 #realtime_center_map_container{
     width: 100%;
     height: 100%;
@@ -71,4 +73,86 @@
         right: 2px;
     }
     
+}
+
+.realtime_stationinfo_box_container{
+    width: 300px;
+    height: 150px;
+    border:1px solide red;
+    background-color: @bkcolor;
+    border-radius: 8px;
+    .stationinfo_header{
+        height: 30px;
+        width: 100%;
+        >span:first-child{
+            float: left;
+            margin-left: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        >span:last-child{
+            float: right;
+            margin-right: 10px;
+            color:white;
+        }
+    }
+    .line_separator_hr {
+        width: 100%;
+        height: 2px;
+        background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+      }
+}
+.realtime_device_task{
+    //border:1px solid red;
+   
+.ant-collapse{
+    background-color: @bkcolor;
+    color:white;
+    height: 32px;
+    border-left: none;
+        border-right: none;
+    .ant-collapse-item{
+        height: 32px;
+        color:white;
+        line-height: 32px;
+        
+        .ant-collapse-header{
+            height: 32px;
+        color:white;
+        line-height: 10px;
+        background-color: @bkcolor;
+        
+        }
+    }
+    .ant-collapse-content{
+        background-color: @bkcolor;
+        .single_task_small{
+            width: 48px;
+                height: 48px;
+                border-radius: 24px;
+                position: relative;
+                border:1px solid rgba(0,120,235,1);
+                background-image: linear-gradient(to top,rgba(0,120,235,1)2%,rgba(0,228,254,1));
+                //text-align: center;
+                //line-height: 100px;
+                //margin-bottom: 20px;
+                margin-top:-3px;
+                cursor: pointer;
+                .single_task_img_small{
+                    
+                    margin-left:12px;
+                    margin-top:12px;
+                     width:24px;
+                     height: 24px;
+                     //border:1px solid red;
+                }
+                .task_name_small{
+                    color:white;
+                    font-weight: bold;
+                    margin-left:5px;
+                    margin-top:5px;
+                }
+        }
+    }
+}    
 }

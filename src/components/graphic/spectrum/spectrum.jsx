@@ -537,7 +537,11 @@ export function setData(data){
   }
   chartHeatMap&&chartHeatMap.setData(real.data,true);
   measureCount++;
-  document.getElementById("measureCount").innerHTML=measureCount.toString();
+  const countElement=document.getElementById("measureCount");
+  if(countElement){
+    countElement.innerHTML=measureCount.toString();
+  }
+  
 }
 export function reset(){
   measureCount=0;

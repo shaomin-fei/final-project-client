@@ -90,6 +90,7 @@ export class TaskParamFromDevice{
     Unit=[];
     Value=[];
     EnumString=[];
+    Visible=true;
 
 }
 export class Params{

@@ -10,7 +10,7 @@ const StationOperationForm =function(props){
     return (
         <div id="station-operation-form">
             <div className="station-operation-form-head">
-                <span>Add Station</span>
+                <span>{props.title}</span>
                 <span>
                     <CloseOutlined onClick={props.closeCallback}/>
                 </span>

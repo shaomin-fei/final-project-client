@@ -51,6 +51,8 @@ export default class BaseMap extends Component{
     }
     dispose(){
       if(this.map){
+        this.map.getControls().clear();
+        this.clearOverLayers();
         this.map.dispose();
         this.map=null;
       }

@@ -52,3 +52,73 @@
   top: 1px;
   right: 2px;
 }
+.realtime_stationinfo_box_container {
+  width: 300px;
+  height: 150px;
+  border: 1px solide red;
+  background-color: #05173d;
+  border-radius: 8px;
+}
+.realtime_stationinfo_box_container .stationinfo_header {
+  height: 30px;
+  width: 100%;
+}
+.realtime_stationinfo_box_container .stationinfo_header > span:first-child {
+  float: left;
+  margin-left: 10px;
+  color: white;
+  font-weight: bold;
+}
+.realtime_stationinfo_box_container .stationinfo_header > span:last-child {
+  float: right;
+  margin-right: 10px;
+  color: white;
+}
+.realtime_stationinfo_box_container .line_separator_hr {
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
+}
+.realtime_device_task .ant-collapse {
+  background-color: #05173d;
+  color: white;
+  height: 32px;
+  border-left: none;
+  border-right: none;
+}
+.realtime_device_task .ant-collapse .ant-collapse-item {
+  height: 32px;
+  color: white;
+  line-height: 32px;
+}
+.realtime_device_task .ant-collapse .ant-collapse-item .ant-collapse-header {
+  height: 32px;
+  color: white;
+  line-height: 10px;
+  background-color: #05173d;
+}
+.realtime_device_task .ant-collapse .ant-collapse-content {
+  background-color: #05173d;
+}
+.realtime_device_task .ant-collapse .ant-collapse-content .single_task_small {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  position: relative;
+  border: 1px solid #0078eb;
+  background-image: linear-gradient(to top, #0078eb 2%, #00e4fe);
+  margin-top: -3px;
+  cursor: pointer;
+}
+.realtime_device_task .ant-collapse .ant-collapse-content .single_task_small .single_task_img_small {
+  margin-left: 12px;
+  margin-top: 12px;
+  width: 24px;
+  height: 24px;
+}
+.realtime_device_task .ant-collapse .ant-collapse-content .single_task_small .task_name_small {
+  color: white;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-top: 5px;
+}

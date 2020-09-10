@@ -16,7 +16,7 @@ export default class RigtTaskControl extends Control{
          */
         this.element=opt_options.element;
         const strHtml=renderToString(<RightTaskList/>);
-        opt_options.element.innerHTML=strHtml;
+        opt_options.element.innerHTML+=strHtml;
     }
 
     updateTaskCount(currentTask){

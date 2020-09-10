@@ -14,6 +14,7 @@ import CmdDefineEnum from "../../../../workers/cmd-define";
 
 let importantParams="";
 let dispatchCmd=null;
+let currentCenterFreq=0;
 const initState={
     checkLevel:false,
     checkIQ:false,
@@ -74,7 +75,7 @@ export function getImportantParams(){
     if(!importantParams){
         errorInfo="please input center freq";
     }
-    return {errorInfo,importantParams};
+    return {errorInfo,importantParams,currentCenterFreq};
 }
 export function startTask(){
     startShow();
@@ -90,8 +91,10 @@ function dispatcher(state,action){
             {
                 if(action.data){
                     importantParams="CenterFreq="+action.data+";";
+                    currentCenterFreq=action.data;
                 }else{
                     importantParams="";
+                    currentCenterFreq=0;
                 }
                 
                 return {...state,centerFreq:action.data};

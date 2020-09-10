@@ -154,7 +154,7 @@ if(device){
           let info= item.device?`stationid=${item.device.stationId}&&deviceid=${item.device.id}&&tasktype=${item.title}`:"";
           strExecute+=info;
           const runningId=item.getRunntaskId(item.title);
-          if(!runningId){
+          if(runningId){
             strWatch+=`&&taskid=${runningId}`;
           }
         

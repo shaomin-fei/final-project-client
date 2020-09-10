@@ -61,9 +61,14 @@ function setParmFrom(taskInfo){
     }
     
   }
-  
+/**
+ * @Date: 2020-09-09 23:39:44
+ * @Description: 
+ * 
+ * @return {TaskParamListFromDevice} 
+ */  
 export function getParams(){
-    return "CenterFreq=101.7;bw=120;";
+    return currentParam;
 }
 /**
  * @Date: 2020-08-31 11:15:39
@@ -72,14 +77,18 @@ export function getParams(){
  * @return 
  */
 export function setParams(content){
+  content.Params.Param.forEach(par=>{
+    par.Visible=true;
+  })
   const indexOfCenterFreq=content.Params.Param.findIndex(param=>{
     return param.Name[0]==="CenterFreq";
   });
   if(indexOfCenterFreq>=0){
     if(toolbarCmdContext.setImportantParam!=null){
+      content.Params.Param[indexOfCenterFreq].Visible=false;
        toolbarCmdContext.setImportantParam(content.Params.Param[indexOfCenterFreq]);
     }
-    content.Params.Param.splice(indexOfCenterFreq,1);
+    //content.Params.Param.splice(indexOfCenterFreq,1);
   }
   
    setParamsList(content);
@@ -93,10 +102,15 @@ let setParamsList=null;
  * @type {ToolbarCmdCallback}
  */
 let toolbarCmdContext=null;
+/**
+ * @type {TaskParamListFromDevice}
+ */
+let currentParam=null;
 const ParamsList =function(props){
     toolbarCmdContext=useContext(ToolbarCmdContext);
     const [paramList,setParamFunc]=useState(initParamList);
     setParamsList=setParamFunc;
+    currentParam=paramList;
     useEffect(()=>{
         const {taskInfo}=props;
         if(!taskInfo){
@@ -110,7 +124,9 @@ const ParamsList =function(props){
     if(!paramList.Params||paramList.Params.Param.length===0){
       return null;
     }
-   
+    const showParams=paramList.Params.Param.filter(param=>{
+      return param.Visible;
+    });
     return (
       <>
       <div style={{color:"wheat",fontWeight:"bold",textAlign:"center",
@@ -119,7 +135,7 @@ const ParamsList =function(props){
           
           <ul>
           {
-          paramList.Params.Param.map(element => {
+          showParams.map(element => {
             return (<li key={element.Name[0]}>
           <label className="param_name">{element.Name[0]}</label>
            {

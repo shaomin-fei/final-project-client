@@ -1,11 +1,11 @@
 //@ts-check
-import React, { useReducer } from "react";
+import React, { useReducer,useEffect } from "react";
 import { Layout,message } from "antd";
 
 import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../../../common/data/realtime/tasks-common";
 import RealTimeContent,{startTask as startShow,stopTask as stopShow, getImportantParams,setImportantParamToToolbar,resetChart,resizeChart,setData as setGraphicData} from "./content/realtime-content";
 import ParamsList,{getParams} from "../../../components/params-list/params-list";
-import {ExecuteTask} from "../../../common/data/realtime/tasks-common";
+import {ExecuteTask,TaskParamListFromDevice} from "../../../common/data/realtime/tasks-common";
 import LeftTree from "../../../components/left-tree/left-tree";
 import "./fixed.css";
 //@ts-ignore
@@ -51,11 +51,21 @@ function startTask(){
     message.error(importantParam.errorInfo);
     return;
   }
-  param.params=importantParam.importantParams+getParams();
-  if(!param.params){
+  const temp=getParams();
+  if(!temp){
     message.error("can not get task params");
     return;
   }
+  const indexOfCenterFreq=temp.Params.Param.findIndex(param=>{
+    return param.Name[0]==="CenterFreq";
+  });
+  if(indexOfCenterFreq>=0){
+    temp.Params.Param[indexOfCenterFreq].Value[0]=(importantParam.currentCenterFreq);
+  }
+  const key=param.stationId+"+"+param.deviceId+"+"+param.taskName;
+  localStorage.setItem(key,JSON.stringify(temp));
+  param.params=convertParamToString(temp);
+  
   stopTask();
   resetChart();
   currentWorker=new FixWorker();
@@ -64,6 +74,22 @@ function startTask(){
   isTaskStopped=false;
   startShow();
   console.log("start");
+}
+/**
+ * @Date: 2020-09-09 23:53:34
+ * @Description: 
+ * @param {TaskParamListFromDevice} params
+ * @return {string} 
+ */
+function convertParamToString(params){
+  let strParam="";
+  params.Params.Param.forEach(par=>{
+    if(strParam!=""){
+      strParam+=";";
+    }
+    strParam+=par.Name+"="+par.Value;
+  })
+  return strParam;
 }
 toolbarCmdCallback.stopTaskCallback=stopTask;
 window.addEventListener("close",()=>{
@@ -186,9 +212,11 @@ const FixedTask = (props) => {
     iniSiderbarState
   );
  
-  // useEffect(()=>{
-
-  // },[stateCollapse]);
+  useEffect(()=>{
+    return ()=>{
+      stopTask();
+    }
+  },[]);
   function onCollapse(collapsed, type) {
     //@ts-ignore
     dispatch({

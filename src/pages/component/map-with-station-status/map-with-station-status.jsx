@@ -238,6 +238,7 @@ class MapWithStationStatus extends Component {
     this.centerMap.removeLoadedCallBack(this.mapLoaded);
   };
   componentWillUnmount() {
+    
     this.centerMap && this.centerMap.dispose();
     pubsub.unsubscribe(this.subscribToken);
     pubsub.unsubscribe(this.currentTaskToken);

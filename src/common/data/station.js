@@ -12,6 +12,8 @@ class Station{
     name="";
     lon=0;
     lat=0;
+    url="";
+    selected=false;
     status=DeviceStatusEnum.WORKING;
     /**
      * net band from center to station,MB/s

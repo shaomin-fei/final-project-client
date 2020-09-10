@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-16 13:24:41
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-18 11:57:49
+ * @LastEditTime: 2020-09-09 15:28:40
  */
 
 import {RunningTask,TaskInfo} from "./task";
@@ -19,6 +19,7 @@ export class DeviceInfo{
     stationId="";
     id="";
     name="";
+    url="";
     status=DeviceStatusEnum.WORKING;
     /**
      * the key is the ability name, the value is the param that the task needs when it runs.
