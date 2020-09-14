@@ -14,6 +14,7 @@ const  APIConfigEnum={
     getStations:"/getStations",
     getSignalStaticByReason:"/getSignalStaticByReason",
     getTaskParams:"/getTaskParam",
+    getSignalInfoByTime:"/getSignalInfoByTime",
     putPowerOperation:"/powerOperation",
     stationChange:serverWSAddr,
 }

@@ -33,6 +33,7 @@ import { XYZ, Cluster, OSM, Vector as VectorSource } from "ol/source.js";
 import "./basemap.css"
 import OverLayInfo from "./overlay-info"
 import LineString from "ol/geom/LineString";
+import Circle from "ol/geom/Circle";
 
 export default class BaseMap extends Component{
 
@@ -124,6 +125,9 @@ export default class BaseMap extends Component{
         this.map.addControl(element);
       });
     }
+    removeLayer(layer){
+      this.map.removeLayer(layer);
+    }
     removeLoadedCallBack(loadCallBack){
       if(loadCallBack){
         this.map.removeEventListener("rendercomplete",loadCallBack);
@@ -150,7 +154,7 @@ export default class BaseMap extends Component{
      * @param {LonLat} stopPointLonLat
      * @return {VectorLayer}
      */
-    addLine(startPointLonLat,stopPointLonLat,color="green"){
+    addLine(startPointLonLat,stopPointLonLat,width=2,color="green"){
       const feature=new Feature(
         new LineString(
           [
@@ -165,7 +169,7 @@ export default class BaseMap extends Component{
         }),
         style:new Style({
           stroke:new Stroke({
-            width:2,
+            width:width,
             color:color,
             lineDash:[6]
           }),
@@ -177,6 +181,52 @@ export default class BaseMap extends Component{
       });
       this.map&&this.map.addLayer(vecLayer);
       return vecLayer;
+    }
+    /**
+     * @Date: 2020-09-13 23:25:01
+     * @Description: 
+     * @param {LonLat} pointLonLat center of the circle
+     * @param {VectorLayer} layer if null, will create a new layer
+     * @return {VectorLayer}  return current layer
+     */
+    addCircle(pointLonLat,layer,tag=null,radius=5,color="green"){
+      const feature=new Feature(
+        new Circle(fromLonLat([pointLonLat.lon,pointLonLat.lat]),radius));
+        feature.setStyle(new Style(
+          {  // 设置样式
+            fill: new Fill({
+              color: color
+            }),
+            stroke: new Stroke({
+              color: color
+            })
+          }
+        ));
+        // @ts-ignore
+        feature.tag=tag;
+        //feature.on("click",function(){alert(66);});
+      //feature.on("mouseover",()=>{this.map.getTargetElement().style.cursor="pointer"})
+      if(!layer){
+        layer=new VectorLayer({
+          source:new VectorSource({
+            features:[feature]
+          }),   
+          style:new Style({
+            stroke:new Stroke({
+              width:2,
+              color:color,
+              lineDash:[6]
+            }),
+            fill:new Fill({
+            color:color
+            })
+          }),     
+        });
+        this.map&&this.map.addLayer(layer);
+      }else{
+        layer.getSource().addFeature(feature);
+      }
+     return layer;
     }
     /**
      * @Date: 2020-08-15 07:33:23
@@ -244,6 +294,15 @@ export default class BaseMap extends Component{
       const centerCor=this.map.getCoordinateFromPixel(centerPix);
       this.map.getView().setCenter(centerCor);
       
+    }
+    /**
+     * @Date: 2020-09-14 01:23:04
+     * @Description: 
+     * @param {LonLat} center
+     * @return {void} 
+     */
+    panTo(center){
+      this.map.getView().setCenter(fromLonLat([center.lon,center.lat]));
     }
     removeOverLay(id){
       const temp=this.map.getOverlayById(id);

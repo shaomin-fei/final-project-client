@@ -30,7 +30,7 @@ let tabDataSrc=[
         station:["Virtual-001","Virtual-003"],
         edit:{
             key:"1-edit",
-            rowKey:"1",
+            //rowKey:"1",
         freq:"101.7",
         type:"Legal",
         findTime:"2010-01-02 12:05:54",
@@ -41,7 +41,7 @@ let tabDataSrc=[
         },
         delete:{
             key:"1-delete",
-            rowKey:"1",
+            //rowKey:"1",
         freq:"101.7",
         type:"Legal",
         findTime:"2010-01-02 12:05:54",
@@ -62,7 +62,7 @@ let tabDataSrc=[
         station:["Virtual-004","Virtual-006"],
         edit:{
           key:"2-edit",
-          rowKey:"2",
+          //rowKey:"2",
           freq:"91.7",
           type:"Legal",
           findTime:"2010-05-02 12:05:54",
@@ -73,7 +73,7 @@ let tabDataSrc=[
         },
         delete:{
           key:"2-delete",
-          rowKey:"2",
+          //rowKey:"2",
           freq:"91.7",
           type:"Legal",
           findTime:"2010-05-02 12:05:54",
@@ -88,6 +88,10 @@ let tabDataSrc=[
  * @type {CenterInfo}
  */
 let stationTrees = null;
+/**
+ * @type {Array<SignalInfo>}
+ */
+let signals=[];
 class ActionInfo {
   type = "";
   data;
@@ -150,6 +154,7 @@ function Reducer(preState, action) {
     case "closeSignalDlg":{
        return {...preState,SignalOperationDlg:{show:false}};
     }
+   
     default:
       return preState;
   }
@@ -162,11 +167,18 @@ const SignalFormFC = function (props) {
   const [state, dispatch] = useReducer(Reducer, initState);
 
   stationTrees = props.tree;
+  signals=props.signals;
   useEffect(() => {
     dispatch({ type: "treeUpdate", data: stationTrees });
   }, [stationTrees]);
-
-  
+ if(!signals){
+   tabDataSrc=[];
+ }else{
+   tabDataSrc=[];
+   for(let i=0;i<signals.length;i++){
+    tabDataSrc[i]={...signals[i],edit:signals[i],delete:signals[i]};
+   }
+ }
   function onStationTreeSelcChange(value) {
     dispatch({ type: "stationTreeSelcChanged", data: value });
   }
@@ -205,6 +217,7 @@ const SignalFormFC = function (props) {
     //   selectedRowKeys.push(record.key);
     // }
     dispatch({type:"treeSelectRowChanged",data:selectedRowKeys });
+    props.signalChooseCallback(record);
   }
   function onSelectedRowKeysChange(selectedRowKeys){
     //only one row can be selected at the same time.
@@ -221,6 +234,7 @@ const SignalFormFC = function (props) {
         title:"Type",
         dataIndex: 'type',
         key: 'type',
+        ellipsis:true,
     },
     {
         title:"FindTime",

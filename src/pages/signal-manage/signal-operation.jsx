@@ -31,6 +31,7 @@ const signalOption = [
 let stationTrees = null;
 const dateFormat="YYYY-MM-DD HH:mm:ss";
 export class SignalInfo {
+  key="";  
   freq = "";
   type = "Legal";
   Lon="";
