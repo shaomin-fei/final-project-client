@@ -5,7 +5,7 @@ import store from "../../../../redux/store"
 
 import {RouterEnum} from "../../../../config/define"
 import MainPageStyleBox from "../../../../components/mainpage-style-box/mainpage-style-box"
-import StorageChart from "./storage-chart"
+import StorageChart from "../../../component/storage-radar-graphic/storage-chart"
 import "./storage.css"
 
 export default class Storage extends Component{

@@ -1,0 +1,55 @@
+@bkcolor: rgba(5, 23, 61,0.6);
+.signal_operation_form{
+    width: 340px;
+    height: 380px;
+    border:1px solid @bkcolor;
+    position: fixed;
+    left: 300px;
+    top:calc(50vh - 0.5 * 380px);
+    background-color: @bkcolor;
+    .header{
+        background-color: rgba(50, 158, 255, 1);
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        >span:first-child{
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .head_close{
+            margin-top:8px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+    }
+    .content{
+       width: 100%;
+       height: calc(100% - 30px);
+       
+        .ant-select-arrow{
+            color:white;
+        }
+        table{
+            margin: 10px auto;
+            //border: 1px solid green;
+        }
+        table tbody{
+            >tr{
+                height: 32px;
+                
+                
+                td{
+                    padding: 3px;
+                    padding-top: 5px;
+                    
+                }
+            }
+        }
+        .save_button{
+            float: right;
+            margin-right: 20px;
+            margin-top: -10px;
+        }
+    }
+    
+}

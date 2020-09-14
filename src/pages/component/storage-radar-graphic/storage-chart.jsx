@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import {connect} from "react-redux"
 
 
-import {getStorageInfoAsync} from "../../../../redux/actions/StationAction"
-import { string } from "prop-types";
+import {getStorageInfoAsync} from "../../../redux/actions/StationAction"
+
 
 const echarts = require("echarts");
 
@@ -55,7 +55,9 @@ class StorageChart extends Component {
 
   componentDidMount() {
     this.createChart();
+    this.resizeChart();
     this.props.getStorageInfoAsync("/getStorageInfo");
+    
   }
  componentWillUnmount(){
   window.removeEventListener("resize",this.resizeChart)
@@ -63,10 +65,12 @@ class StorageChart extends Component {
  resizeChart=()=>{
   this.chart&&this.chart.resize();
 }
-  createChart = () => {
+  createChart = (radius=60) => {
     let bigfonts = 12;
-    let radius = 60;
-    
+    //let radius = 60;
+    if(this.props.radius){
+      radius=this.props.radius;
+    }
     this.option = {
       radar: [
         {
@@ -169,7 +173,7 @@ class StorageChart extends Component {
   };
   render() {
     /***
-     * @typedef {import("../../../../redux/reducers/storage-info-reducer").initState} initstate
+     * @typedef {import("../../../redux/reducers/storage-info-reducer").initState} initstate
      * @type {initstate}
      */
     const storageInfo=this.props.storageInfo;
@@ -230,7 +234,7 @@ class StorageChart extends Component {
     
     return (
       <div style={{ height: "100%", width: "100%" ,position:"relative"}}>
-        <div id="storage_chart_id" style={{padding:"5px"}}></div>
+        <div id="storage_chart_id"  style={{padding:"5px",height: "100%", width: "100%"}}></div>
         {/* <div style={{position:"absolute",border:"1px solid red",right:"5px",top:"0px"}}>50/1000(G)</div> */}
       </div>
     );

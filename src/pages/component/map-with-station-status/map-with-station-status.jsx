@@ -10,6 +10,7 @@ import pubsub from "pubsub-js";
 
 import StationWithStatus from "../../../components/station-with-status/station-with-status";
 import CenterInfo from "../../../common/data/center";
+import Station from "../../../common/data/station";
 import "./map-with-station-status.css";
 import BaseMap from "../../../components/map/basemap";
 import { MapInitInfo, LonLat } from "../../../components/map/datas";
@@ -68,6 +69,7 @@ class MapWithStationStatus extends Component {
     this.showStations = this.showStations.bind(this);
     this.handleStationClick = this.handleStationClick.bind(this);
     this.dlgCloseCallback = this.dlgCloseCallback.bind(this);
+    this.treeUpdate=this.treeUpdate.bind(this);
   }
   addEventListener(cmd,callback){
     this.centerMap&&this.centerMap.addEventListener(cmd,callback);
@@ -123,7 +125,7 @@ class MapWithStationStatus extends Component {
    * convert data to the form that tree can show
    * @param {CenterInfo} center
    */
-  treeUpdate = (message, center) => {
+  treeUpdate(message, center){
     if (center) {
       this.showStations(center);
       if (this.state.currentStation) {
@@ -145,6 +147,18 @@ class MapWithStationStatus extends Component {
     }
   };
   /**
+   * @Date: 2020-09-11 14:13:02
+   * @Description: 
+   * @param {Station} station
+   * @return {string} 
+   */
+  getStationHtml(station){
+    const strStation = renderToString(
+      <StationWithStatus station={{...station}} />
+    );
+    return strStation;
+  }
+  /**
    * convert data to the form that tree can show
    * @param {CenterInfo} tree
    */
@@ -165,9 +179,7 @@ class MapWithStationStatus extends Component {
       ovInfo.tag = {
         station: station,
       };
-      const strStation = renderToString(
-        <StationWithStatus station={station} />
-      );
+     const strStation=this.getStationHtml(station);
       stationHtmls += strStation;
       return ovInfo;
     });
@@ -271,7 +283,7 @@ class MapWithStationStatus extends Component {
           >
             {this.createDlg(this.state.currentStation)}
           </div>
-          {/* ol-viewport会挡在最上面，所以如果下面的控件有输入框，输入框会无法输入 */}
+          
           {this.getExtralControls()}
         </div>
         <div id={this.stationOverlayId}></div>

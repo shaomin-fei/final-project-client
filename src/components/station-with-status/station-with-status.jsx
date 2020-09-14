@@ -25,6 +25,9 @@ export default class StationWithStatus extends Component {
     } else if (station.status === StatusEnum.FAULT) {
       circleColor = "red";
     }
+    if(station.alwaysNotShowCircle){
+      showCircle=false;
+    }
     return (<div className={`station_on_map ${station.selected?"station_on_map_selected":""}`} id={station.id}>
       <img className="station_img" src={img} alt=""></img>
       {showCircle ? (

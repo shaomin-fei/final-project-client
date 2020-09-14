@@ -1,10 +1,164 @@
-.line_separator_hr {
-  width: 100%;
-  height: 2px;
-  background-image: linear-gradient(to right, rgba(25, 157, 252, 0.2) 1%, #199dfc 50%, rgba(25, 157, 252, 0.2) 96%);
-}
 .page_container {
-  background-color: #06183d;
+  background-color: #05173d;
+  width: 100%;
   height: calc(100vh - 52px);
+  position: relative;
+}
+.page_container #control_signal_queryByDate {
+  float: left;
+  width: 300px;
+  height: 35px;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.page_container #control_signal_queryByDate .date_picker {
+  background-color: rgba(5, 23, 61, 0.9);
+  border: 2px solid #05173d;
+  box-shadow: inset 1px 0px 1px  blue;
+  border-radius: 15px;
+  float: left;
+}
+.page_container #control_signal_queryByDate .button_query_by_date {
+  text-align: center;
+  float: right;
+}
+.page_container #control_signal_queryByDate .button_query_by_date .anticon-search {
+  top: -2px;
+  position: relative;
+}
+.page_container #control_signal_queryByDate .ant-picker-input > input {
   color: white;
+}
+.page_container #control_signal_queryByDate .ant-picker-separator {
+  color: white;
+}
+.page_container #control_signal_queryByDate .ant-picker-suffix {
+  color: rgba(255, 255, 255, 0.8);
+}
+.page_container #control_signal_queryByDate .ant-picker-clear {
+  background-color: rgba(5, 23, 61, 0.8);
+}
+.page_container #control_signal_queryByDate .ant-picker-clear svg {
+  fill: red;
+}
+.page_container #control_signal_legend {
+  float: right;
+  border: 1px solid green;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  position: absolute;
+  right: calc(40% + 10px);
+  bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgba(5, 23, 61, 0.8);
+  border-radius: 5px;
+}
+.page_container #control_signal_legend div {
+  color: white;
+  font-weight: bold;
+}
+.page_container #control_signal_legend > div:first-child {
+  margin-top: 5px;
+}
+.page_container #control_signal_legend > div:first-child > span:first-child {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: green;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.page_container #control_signal_legend > div:nth-child(2) > span:first-child {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: gray;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.page_container #control_signal_legend > div:nth-child(3) > span:first-child {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: red;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.page_container .control_signal_form_bigger {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.page_container .control_signal_form_normal {
+  position: relative;
+  width: 40%;
+  height: 100%;
+}
+.page_container #control_signal_form {
+  float: right;
+  border: 1px solid #05173d;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(5, 23, 61, 0.8);
+}
+.page_container #control_signal_form .signal_form_header {
+  height: 30px;
+  width: 100%;
+  background-color: #329eff;
+}
+.page_container #control_signal_form .signal_form_header > span {
+  margin-left: 5px;
+}
+.page_container #control_signal_form .signal_form_header > span:nth-child(2) {
+  border: 1px solid #ccc;
+  padding: 2px;
+}
+.page_container #control_signal_form .signal_form_header > span:nth-child(3) {
+  margin-left: 30px;
+}
+.page_container #control_signal_form .add_signal_button {
+  float: right;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.page_container #control_signal_form .zoom_in_form_button {
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.page_container #control_signal_form .signal_form_content {
+  margin-top: 10px;
+}
+.page_container #control_signal_form .signal_form_content .ant-table {
+  background-color: transparent;
+  color: white;
+}
+.page_container #control_signal_form .signal_form_content .ant-table-thead > tr > th {
+  background-color: #bed523;
+  color: black;
+  font-weight: bold;
+}
+.page_container #control_signal_form .signal_form_content .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: rgba(0, 141, 255, 0.6);
+}
+.page_container #control_signal_form .signal_form_content .ant-table-tbody > tr {
+  background-color: transparent;
+}
+.page_container #control_signal_form .signal_form_content .ant-table-tbody > tr > td {
+  background-color: transparent;
+}
+.page_container #control_signal_form .signal_form_content .ant-pagination-item {
+  background-color: transparent;
+}
+.page_container #control_signal_form .signal_form_content .ant-pagination-item a {
+  color: white;
+}
+.page_container #control_signal_form .signal_form_content .ant-table-tbody > tr.ant-table-row-selected > td {
+  border-color: inherit;
+  background-color: rgba(0, 141, 255, 0.6);
 }

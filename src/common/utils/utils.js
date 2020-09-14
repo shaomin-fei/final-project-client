@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-26 22:22:20
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-04 12:54:01
+ * @LastEditTime: 2020-09-11 15:33:17
  */
 export default class Utils{
     static arrayBuf2Utf8(array){

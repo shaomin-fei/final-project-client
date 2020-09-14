@@ -8,3 +8,147 @@
   height: calc(100vh - 52px);
   color: white;
 }
+.data_manage_page_container {
+  height: calc(100vh - 52px);
+  background-color: #05173d;
+  padding: 5px;
+}
+.data_manage_page_container .head_box {
+  width: 100%;
+  height: 32px;
+  color: white;
+  font-weight: bold;
+  line-height: 32px;
+  background-color: rgba(31, 164, 255, 0.8);
+}
+.data_manage_page_container .head_box > span {
+  margin-left: 5px;
+}
+.data_manage_page_container .page_top {
+  width: 100%;
+  height: calc(50% - 10px);
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.data_manage_page_container .page_top .page_top_left {
+  width: 48%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: 1px solid rgba(14, 73, 146);
+}
+.data_manage_page_container .page_top .page_top_left .chart_box {
+  width: 100%;
+  height: calc(100% - 32px);
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .chart_radar_box {
+  width: 65%;
+  height: 100%;
+  float: left;
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box {
+  color: white;
+  width: 35%;
+  height: 100%;
+  float: right;
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table {
+  margin: 8px auto;
+  color: rgba(246, 209, 0, 0.9);
+  font-size: 1rem;
+  font-weight: bold;
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table thead {
+  color: white;
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table tr {
+  border: 1px solid #ccc;
+}
+.data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table td {
+  padding: 3px;
+}
+.data_manage_page_container .page_top .page_top_right {
+  width: 48%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: 1px solid rgba(14, 73, 146);
+}
+.data_manage_page_container .page_top .page_top_right .file_list {
+  width: 100%;
+  height: calc(100% - 32px);
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_path {
+  width: 100%;
+  height: 30px;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_path span {
+  color: #ccc;
+  text-decoration: underline;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_content::-webkit-scrollbar {
+  display: none;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_content {
+  width: 100%;
+  height: calc(100% - 32px);
+  border-top: 1px solid rgba(14, 73, 146);
+  display: flex;
+  overflow: auto;
+  flex-wrap: wrap;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_content .single_file_container {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  position: relative;
+  cursor: pointer;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_content .single_file_container img {
+  width: 49px;
+  height: 43px;
+}
+.data_manage_page_container .page_top .page_top_right .file_list .file_content .single_file_container div {
+  color: #ccc;
+  bottom: 5px;
+  height: 20px;
+  line-height: 20px;
+  margin-top: -25px;
+}
+.data_manage_page_container .page_bottom {
+  width: 100%;
+  height: calc(50% - 10px);
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.data_manage_page_container .page_bottom .page_bottom_left {
+  width: 48%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: 1px solid rgba(14, 73, 146);
+}
+.data_manage_page_container .page_bottom .page_bottom_left .disk_chart_box {
+  width: 100%;
+  height: calc(100% - 32px);
+}
+.data_manage_page_container .page_bottom .page_bottom_right {
+  width: 48%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: 1px solid rgba(14, 73, 146);
+}
+.data_manage_page_container .page_bottom .page_bottom_right .station_storage_chart_box {
+  width: 100%;
+  height: calc(100% - 32px);
+}

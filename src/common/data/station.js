@@ -13,6 +13,7 @@ class Station{
     lon=0;
     lat=0;
     url="";
+    alwaysNotShowCircle=false;
     selected=false;
     status=DeviceStatusEnum.WORKING;
     /**

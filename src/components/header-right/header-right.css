@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-content: center;
-  width: 100px;
+  width: 50px;
   cursor: pointer;
 }
 .header_always_exist_pic {

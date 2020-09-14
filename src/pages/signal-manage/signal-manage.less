@@ -1,1 +1,184 @@
-@import '../common-page-style.less';
+@bkcolor: rgba(5, 23, 61,1);
+@bkcolorWithTransparent:rgba(5, 23, 61,0.8);
+.page_container{
+    background-color: @bkcolor;
+    width: 100%;
+    height: calc(100vh - 52px);
+    position: relative;
+    #control_signal_queryByDate{
+       float: left;
+       width: 300px;
+       height: 35px;
+       
+       margin-top:10px;
+       margin-left: 20px;
+       
+      
+       .date_picker{
+        background-color:  rgba(5, 23, 61,0.9);
+        border:2px solid @bkcolor;
+        box-shadow: inset 1px 0px 1px  blue;
+        border-radius: 15px;
+        float: left;
+       }
+       .button_query_by_date{
+           text-align: center;
+           float: right;
+           .anticon-search{
+               top:-2px;
+               position: relative;
+           }
+       }
+       .ant-picker-input > input{
+           color:white;
+       }
+       .ant-picker-separator{
+           color:white;
+       }
+       .ant-picker-suffix{
+           color:rgba(255,255,255,0.8);
+       }
+       .ant-picker-clear{
+        background-color:  rgba(5, 23, 61, 0.8);
+        svg{
+            fill: red;
+        }
+       }
+       
+    }
+    
+    #control_signal_legend{
+        float: right;
+        border: 1px solid green;
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+        position: absolute;
+        right: calc(40% + 10px);
+        bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: @bkcolorWithTransparent;
+        border-radius: 5px;
+        div{
+            color:white;
+            font-weight: bold;
+        }
+        .legendCircle(@color){
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background-color:@color;
+            margin-left:5px;
+            margin-right: 5px;
+            
+        }
+        >div:first-child{
+            margin-top: 5px;
+            >span:first-child{
+                .legendCircle(green);
+            }
+            
+        }
+        >div:nth-child(2){
+            >span:first-child{
+                .legendCircle(gray);
+            }
+        }
+        >div:nth-child(3){
+            >span:first-child{
+                .legendCircle(red);
+            }
+        }
+       
+    }
+
+   
+    .control_signal_form_bigger{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      
+    }
+    .control_signal_form_normal{
+        position: relative;
+        width: 40%;
+        height: 100%;
+      
+    }
+    #control_signal_form{
+        float: right;
+        border:1px solid @bkcolor;
+        height: 100%;
+        
+        z-index: 1;
+       
+        //margin-right: 1px;
+        background-color: @bkcolorWithTransparent;
+       
+        .signal_form_header{
+            height: 30px;
+            width: 100%;
+            background-color: rgba(50, 158, 255, 1);
+            >span{
+                margin-left: 5px;
+            }
+            >span:nth-child(2){
+                border:1px solid #ccc;
+                padding: 2px;
+            }
+            >span:nth-child(3){
+                margin-left: 30px;
+            }
+           
+        }
+        .add_signal_button{
+            float: right;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .zoom_in_form_button{
+            float: right;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .signal_form_content{
+            margin-top: 10px;
+            .ant-table{
+                background-color:  transparent;
+                color: white;
+            }
+            .ant-table-thead > tr > th{
+                background-color:  rgba(190,213,35,1);
+                color: black;
+                font-weight: bold;
+            }
+            .ant-table-tbody > tr.ant-table-row:hover > td{
+                background-color: rgba(0,141,255,0.6);
+            }
+            .ant-table-tbody>tr{
+                background-color: transparent;
+                
+            }
+            .ant-table-tbody>tr>td{
+                background-color: transparent;
+                
+                //border:1px solid red;
+            }
+            .ant-pagination-item{
+                background-color: transparent;
+            }
+            .ant-pagination-item a{
+                color:white;
+            }
+            .ant-table-tbody > tr.ant-table-row-selected > td{
+                border-color:inherit;
+                background-color: rgba(0,141,255,0.6);
+            }
+           
+        }
+    }
+    
+
+}

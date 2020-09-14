@@ -1,0 +1,46 @@
+.signal_operation_form {
+  width: 340px;
+  height: 380px;
+  border: 1px solid rgba(5, 23, 61, 0.6);
+  position: fixed;
+  left: 300px;
+  top: calc(50vh - 0.5 * 380px);
+  background-color: rgba(5, 23, 61, 0.6);
+}
+.signal_operation_form .header {
+  background-color: #329eff;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.signal_operation_form .header > span:first-child {
+  margin-left: 10px;
+  font-weight: bold;
+}
+.signal_operation_form .header .head_close {
+  margin-top: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.signal_operation_form .content {
+  width: 100%;
+  height: calc(100% - 30px);
+}
+.signal_operation_form .content .ant-select-arrow {
+  color: white;
+}
+.signal_operation_form .content table {
+  margin: 10px auto;
+}
+.signal_operation_form .content table tbody > tr {
+  height: 32px;
+}
+.signal_operation_form .content table tbody > tr td {
+  padding: 3px;
+  padding-top: 5px;
+}
+.signal_operation_form .content .save_button {
+  float: right;
+  margin-right: 20px;
+  margin-top: -10px;
+}
