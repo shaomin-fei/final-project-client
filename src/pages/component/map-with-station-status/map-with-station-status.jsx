@@ -18,6 +18,7 @@ import OverlayInfo from "../../../components/map/overlay-info";
 import MapConfig from "../../../config/mapconfig";
 import centerIcon from "../../../imgs/station/省中心.png";
 
+
 //import RigtTaskControl from "./right-task-list";
 class MapWithStationStatus extends Component {
   // state={
@@ -32,11 +33,16 @@ class MapWithStationStatus extends Component {
         ...extendState,
         showDlg: false,
         currentStation: null,
+        showStatonTooltip:false,
+          stationtoShowTip:null,
+        
       };
     } else {
       this.state = {
         showDlg: false,
         currentStation: null,
+        showStatonTooltip:false,
+        stationtoShowTip:null,
       };
     }
 
@@ -68,8 +74,13 @@ class MapWithStationStatus extends Component {
 
     this.showStations = this.showStations.bind(this);
     this.handleStationClick = this.handleStationClick.bind(this);
+    this.showStationTip=this.showStationTip.bind(this);
+    this.hideStationTip=this.hideStationTip.bind(this);
     this.dlgCloseCallback = this.dlgCloseCallback.bind(this);
     this.treeUpdate=this.treeUpdate.bind(this);
+
+    this.stationTooltipLeft=0;
+    this.stationTooltipTop=0;
   }
   addEventListener(cmd,callback){
     this.centerMap&&this.centerMap.addEventListener(cmd,callback);
@@ -107,7 +118,7 @@ class MapWithStationStatus extends Component {
     );
     const tree = getCurrentTree();
 
-    tree && this.showStations(tree);
+    tree && this.treeUpdate("getCurrentTree",tree);
 
     this.subscribToken = pubsub.subscribe(
       CmdDefineEnum.cmdGetTree,
@@ -197,10 +208,33 @@ class MapWithStationStatus extends Component {
       this.centerMap.insertOverLayer(sta);
 
       sta.element = document.getElementById(sta.id);
+      sta.element.onmouseenter=e=>this.showStationTip(e,sta);
+      sta.element.onmouseleave=e=>this.hideStationTip(e,sta);
       sta.element.onclick = (e) => this.handleStationClick(e, sta);
       //sta.element.addEventListener("click",e=>this.handleStationClick(e,sta));
     });
   }
+  /**
+   * @Date: 2020-09-01 22:26:55
+   * @Description:
+   * @param {OverlayInfo} staOverlay
+   * @return
+   */
+  showStationTip(e,staOverlay){
+    console.log("showStationTip",e);
+    // must set offset,or the showing div will affect the mouse event, and this event will be triggered repeatedly
+    this.stationTooltipLeft=e.layerX+5;
+    this.stationTooltipTop=e.layerY+15;
+    const station = staOverlay.tag.station;
+    //e.preventDefault();
+    this.setState({showStatonTooltip:true,stationtoShowTip:{...station}});
+  }
+  hideStationTip(e,staOverlay){
+    console.log("hideStationTip");
+    this.setState({showStatonTooltip:false});
+    e.preventDefault();
+  }
+
   /**
    * @Date: 2020-09-01 22:26:55
    * @Description:
@@ -287,6 +321,7 @@ class MapWithStationStatus extends Component {
           {this.getExtralControls()}
         </div>
         <div id={this.stationOverlayId}></div>
+       
       </>
     );
   }

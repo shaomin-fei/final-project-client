@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 16:00:14
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-26 13:45:09
+ * @LastEditTime: 2020-09-14 21:42:11
  */
 //const serverHttpAddr="http://192.168.0.31:3005/";
 export const serverWSAddr="ws://localhost:3005/";
@@ -15,6 +15,9 @@ const  APIConfigEnum={
     getSignalStaticByReason:"/getSignalStaticByReason",
     getTaskParams:"/getTaskParam",
     getSignalInfoByTime:"/getSignalInfoByTime",
+    addSignalInfo:"/addSingnalInfo",
+    updateSingnalInfo:"/updateSingnalInfo",
+    deleteSingnalInfo:"/deleteSingnalInfo",
     putPowerOperation:"/powerOperation",
     stationChange:serverWSAddr,
 }

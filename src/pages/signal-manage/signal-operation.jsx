@@ -2,7 +2,7 @@
 import React,{useMemo,useReducer,useEffect} from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { Select, TreeSelect, DatePicker, Button } from "antd";
+import { Select, TreeSelect, DatePicker, Button,message } from "antd";
 import moment from 'moment';
 
 import Utils from "../../common/utils/utils";
@@ -61,6 +61,9 @@ function Reducer(preState,{type,data}){
       case "addSignal":{
           return {...preState,signalInfo:data};
       }
+      case "saveBtnLoading":{
+        return {...preState,saveLoading:data};
+      }
          default:
             return preState;
     }
@@ -68,6 +71,7 @@ function Reducer(preState,{type,data}){
 const initState={
     
     signalInfo:new SignalInfo(),
+    saveLoading:false,
     //stationTreeChange:[],
 
 };
@@ -104,12 +108,52 @@ const SignalOperation = function (props) {
   },[currentSignal]);
 
   function handleInput(cmd,e){
+     
       dispatch({type:cmd,data:e.target.value});
   }
   function onStationTreeSelcChange(value) {
     dispatch({ type: "stationTreeSelcChanged", data: value });
   }
- 
+  /**
+ * @Date: 2020-09-14 18:54:18
+ * @Description: 
+ * @param {string} cmd "add" or "update" 
+ * @param {SignalInfo} signalInfo
+ * @return {void} 
+ */
+ function saveSignalInfo(cmd,signalInfo){
+   if(!signalInfo.freq){
+     message.info("Please input frequency");
+     return;
+   }
+   if(!signalInfo.Lat){
+    message.info("Please input Lat");
+    return;
+   }
+   if(!signalInfo.Lon){
+    message.info("Please input Lon");
+    return;
+   }
+   if(!signalInfo.findTime){
+    message.info("Please select findTime");
+    return;
+   }
+   if(!signalInfo.station||signalInfo.station.length===0){
+    message.info("Please select stations");
+    return;
+   }
+   if(signalInfo.station.length===1&&signalInfo.station[0]===stationTrees.name){
+     signalInfo.station=stationTrees.stations.map(sta=>{
+       return sta.name;
+     });
+     
+   }
+  dispatch({type:"saveBtnLoading",data:true});
+   props.saveSignalInfoCallback(cmd,signalInfo,(succeed,msg)=>{
+      message.info(msg);
+      dispatch({type:"saveBtnLoading",data:false});
+   });
+ }
   const treeData = useMemo(() => {
     //console.log("use memo call");
     if (
@@ -166,9 +210,12 @@ const SignalOperation = function (props) {
             <tr>
               <td>Frequency:</td>
               <td>
-                  <input type="text" value={state.signalInfo.freq} 
+                  <input type="number" value={state.signalInfo.freq}
+                  max={108}
+                  min={87} 
                   
                   style={{width:"196px",height:"32px",color:"black"}}
+                  
                   onChange={e=>handleInput("inputFreq",e)}/>
               </td>
             </tr>
@@ -242,7 +289,11 @@ const SignalOperation = function (props) {
         </table>
 
         <div className="save_button">
-          <Button size="small" type="primary">Save</Button>
+          <Button size="small" type="primary" 
+          loading={state.saveLoading}
+          onClick={
+                  ()=>saveSignalInfo(cmd,state.signalInfo)
+            }>Save</Button>
       </div>
       </div>
       

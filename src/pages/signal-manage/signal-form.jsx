@@ -114,6 +114,8 @@ const initState = {
   stationTreeChange: [],
   formBigger: false,
   centerInfo:null,
+  showSignalType:"All",
+  //showSignalStations:[],
 //   选中的tree 行,只能选一个
   selectedRowKeys:[],
   SignalOperationDlg:{
@@ -121,56 +123,73 @@ const initState = {
       props:{},
   },
 };
-function Reducer(preState, action) {
-  switch (action.type) {
-    case "stationTreeSelcChanged":
-      return { ...preState, stationTreeChange: action.data };
-    case "zoomin":
-      return { ...preState, formBigger: true };
-    case "zoomout":
-      return { ...preState, formBigger: false };
-    case "treeUpdate":
-      const stationSelected=preState.stationTreeChange;
-      if(stationSelected.length===0&&action.data){
-        stationSelected.push(action.data.name);
-      }
-      return {
-        ...preState,
-        centerInfo:action.data,
-        stationTreeChange:stationSelected,
-      };
-    case "treeSelectRowChanged":{
-        return {...preState,selectedRowKeys:action.data}
-    }
-    case "addSignal":{
-        return {...preState,SignalOperationDlg:{show:true,props:
-          {cmd:"add",closeCallback:action.data.closeCallback,centerInfo:preState.centerInfo}}}
-    }
-    case "updateSignalClick":{
-      return {...preState,SignalOperationDlg:{show:true,props:
-        {cmd:"update",closeCallback:action.data.closeCallback,
-        signalInfo:action.data.signalInfo,centerInfo:preState.centerInfo}}};
-    }
-    case "closeSignalDlg":{
-       return {...preState,SignalOperationDlg:{show:false}};
-    }
-   
-    default:
-      return preState;
-  }
-}
+
 
 const SignalFormFC = function (props) {
+  const selectedSignalOnMap=props.selectedSignalOnMap;
+  
   /**
    * @type {[initState,React.Dispatch<ActionInfo>]}
    */
   const [state, dispatch] = useReducer(Reducer, initState);
-
+  function Reducer(preState, action) {
+    switch (action.type) {
+      case "stationTreeSelcChanged":
+        return { ...preState, stationTreeChange: action.data };
+      case "zoomin":
+        return { ...preState, formBigger: true };
+      case "zoomout":
+        return { ...preState, formBigger: false };
+      case "treeUpdate":
+        const stationSelected=preState.stationTreeChange;
+        if(stationSelected.length===0&&action.data){
+          stationSelected.push(action.data.name);
+        }
+        return {
+          ...preState,
+          centerInfo:action.data,
+          stationTreeChange:stationSelected,
+        };
+      case "treeSelectRowChanged":{
+          return {...preState,selectedRowKeys:action.data}
+      }
+      case "addSignal":{
+          return {...preState,SignalOperationDlg:{show:true,props:
+            {cmd:"add",closeCallback:action.data.closeCallback,
+            centerInfo:preState.centerInfo,
+            saveSignalInfoCallback:props.saveSignalInfoCallback,
+          }}}
+      }
+      case "updateSignalClick":{
+        return {...preState,SignalOperationDlg:{show:true,props:
+          {cmd:"update",closeCallback:action.data.closeCallback,
+          signalInfo:action.data.signalInfo,centerInfo:preState.centerInfo,
+          saveSignalInfoCallback:props.saveSignalInfoCallback,
+        }}};
+      }
+      case "closeSignalDlg":{
+         return {...preState,SignalOperationDlg:{show:false}};
+      }
+      case "typeSelectChange":{
+        return {...preState,showSignalType:action.data};
+      }
+     
+      default:
+        return preState;
+    }
+  }
   stationTrees = props.tree;
   signals=props.signals;
   useEffect(() => {
     dispatch({ type: "treeUpdate", data: stationTrees });
   }, [stationTrees]);
+  useEffect(()=>{
+    dispatch({type:"treeSelectRowChanged",data:selectedSignalOnMap?
+    [selectedSignalOnMap.key]:[]});
+  },[selectedSignalOnMap]);
+//   useEffect(()=>{
+// console.log("just tst");
+//   },[1]);
  if(!signals){
    tabDataSrc=[];
  }else{
@@ -198,7 +217,7 @@ const SignalFormFC = function (props) {
     console.log("modify",signal);
   }
   function deleteSignal(signal){
-    console.log("delete",signal);
+    props.deleteSignal(signal);
   }
   function addSignal(){
       dispatch({type:"addSignal",data:{closeCallback:dlgSignalClose}});
@@ -206,23 +225,61 @@ const SignalFormFC = function (props) {
   function dlgSignalClose(){
     dispatch({type:"closeSignalDlg",data:null});
   }
+  function onSelectByCheckBox(record, selected, selectedRows, nativeEvent){
+    if(!selected){
+      props.signalChooseCallback(record,"unSelected");
+    }else{
+      props.signalChooseCallback(record,"selected");
+    }
+  }
   function selectRow(record){
     //only one row can be selected at the same time.
-    const selectedRowKeys = [...state.selectedRowKeys];
-    selectedRowKeys.splice(0,selectedRowKeys.length);
-    selectedRowKeys.push(record.key);
-    // if (selectedRowKeys.indexOf(record.key) >= 0) {
-    //   selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);
-    // } else {
-    //   selectedRowKeys.push(record.key);
-    // }
+    let selectedRowKeys = [...state.selectedRowKeys];
+   
+    if (selectedRowKeys.indexOf(record.key) >= 0) {
+      //if have been selected, then this time should unselected
+      selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);
+      //
+      props.signalChooseCallback(record,"unSelected");
+      
+    } else {
+      selectedRowKeys=[];
+      selectedRowKeys.push(record.key);
+      props.signalChooseCallback(record,"selected");
+    }
     dispatch({type:"treeSelectRowChanged",data:selectedRowKeys });
-    props.signalChooseCallback(record);
+    
   }
-  function onSelectedRowKeysChange(selectedRowKeys){
+  function onSelectedRowKeysChange(selectedRowKeys, selectedRows){
     //only one row can be selected at the same time.
-  dispatch({ type: "treeSelectRowChanged", data: selectedRowKeys.length>0?selectedRowKeys[0]:[] });
+  dispatch({ type: "treeSelectRowChanged", data: selectedRowKeys.length>0?[selectedRowKeys[0]]:[] });
 }
+function handleTypeSelectChange(value){
+  dispatch({type:"typeSelectChange",data:value});
+}
+function compareSignalType(tabData){
+  if(state.showSignalType==="All"){
+    return true;
+  }
+  return tabData.type===state.showSignalType;
+}
+function compareSelectedStation(tabData){
+  if(state.stationTreeChange&&
+    state.stationTreeChange.length===1&&
+    state.stationTreeChange[0]===stationTrees.name
+    ){
+      return true;
+    }
+    for(let i=0;i<state.stationTreeChange.length;i++){
+      for(let j=0;j<tabData.station.length;j++){
+        if(state.stationTreeChange[i]===tabData.station[j]){
+          return true;
+        }
+      }      
+    }
+    return false;
+}
+
   const tabCol = [
     {
         title:"Frequency(MHz)",
@@ -272,10 +329,14 @@ const SignalFormFC = function (props) {
 const { selectedRowKeys } = state;
 const rowSelection = {
   selectedRowKeys,
-  onChange: onSelectedRowKeysChange
+  onChange: onSelectedRowKeysChange,
+  onSelect:onSelectByCheckBox,
 };
-  const treeData = useMemo(() => {
-    console.log("use memo call");
+/**
+ * @type {Array<object>}
+ */
+  let treeData = useMemo(() => {
+    //console.log("use memo call");
     if (
       stationTrees &&
       stationTrees.stations &&
@@ -300,6 +361,8 @@ const rowSelection = {
       return null;
     }
   }, [stationTrees]);
+
+  
   const tProps = {
     treeData,
     size: "small",
@@ -341,7 +404,7 @@ const rowSelection = {
             placeholder="Please select"
             
             defaultValue="All"
-            // onChange={handleChange}
+             onChange={handleTypeSelectChange}
           >
             {signalOption}
           </Select>
@@ -375,7 +438,10 @@ const rowSelection = {
                   },
               })
           }
-          dataSource={tabDataSrc}>
+          dataSource={tabDataSrc.filter(data=>{
+            return compareSignalType(data)&&compareSelectedStation(data);
+            
+          })}>
 
           </Table>
       </div>

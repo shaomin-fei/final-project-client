@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-30 11:10:12
+ * @LastEditTime: 2020-09-14 19:03:23
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -72,6 +72,9 @@ git clone https://github.com/tupes/comit-react-color-organizer.git
 24 调试web workers
 有的时候 ，chrome调试web worker并没有进入到真正到源码文件，这个时候可以右键当前所在的调试文件，add source map,输入localhost:3000//xx.worker.js，具体路径根据实际情况填。
 25 xml to json: npm install xml2js
+26 elephantSQL pgAdmin
+
+
 
 16  Reactjs code snippets
 Reactjs
