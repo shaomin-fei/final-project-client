@@ -208,9 +208,11 @@ export default class BaseMap extends Component{
       //feature.on("mouseover",()=>{this.map.getTargetElement().style.cursor="pointer"})
       if(!layer){
         layer=new VectorLayer({
+        
           source:new VectorSource({
             features:[feature]
           }),   
+          
           style:new Style({
             stroke:new Stroke({
               width:2,

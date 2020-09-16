@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 16:00:14
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-14 21:42:11
+ * @LastEditTime: 2020-09-16 00:37:59
  */
 //const serverHttpAddr="http://192.168.0.31:3005/";
 export const serverWSAddr="ws://localhost:3005/";
@@ -19,6 +19,10 @@ const  APIConfigEnum={
     updateSingnalInfo:"/updateSingnalInfo",
     deleteSingnalInfo:"/deleteSingnalInfo",
     putPowerOperation:"/powerOperation",
+    getDiskUsedTrend:"/getDiskUsedTrend",
+    getStorageOfEachStation:"getStorageOfEachStation",
+    getFoloderInfo:"/getFoloderInfo",
+    download:"/downLoad",
     stationChange:serverWSAddr,
 }
 export default APIConfigEnum;

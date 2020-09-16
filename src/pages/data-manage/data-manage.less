@@ -67,9 +67,9 @@
                     
                     table{
                        
-                       margin:8px auto;
+                       margin:4px auto;
                        color:rgba(246,209,0,0.9);
-                       font-size: 1rem;
+                       font-size: 0.9rem;
                        font-weight: bold;
                        thead{
                            color:white;
@@ -96,7 +96,7 @@
                     span{
                         color: #ccc;
                         text-decoration: underline;
-                        padding-left:10px;
+                        padding-left:2px;
                         cursor: pointer;
                     }
                 }
@@ -119,6 +119,7 @@
                         //border:1px solid red;
                         text-align: center;
                         line-height: 100px;
+                        text-overflow: ellipsis;
                         //margin-top: 5px;
                         position: relative;
                         cursor: pointer;
@@ -131,7 +132,11 @@
                             //position: absolute;
                             bottom: 5px;
                             height: 20px;
+                            width: 100%;
                             line-height: 20px;
+                            // 下面两个共同作用，才能显示...
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                             //left:calc(50% - width);
                             //display: block;
                             margin-top: -25px;

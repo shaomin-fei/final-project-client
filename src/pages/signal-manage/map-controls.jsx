@@ -34,6 +34,7 @@ export class SignalFormControl extends Control{
          * @type {HTMLElement}
          */
         this.element=opt_options.element;
+        
     }
 }
 const dateFormat = "YYYY/MM/DD";

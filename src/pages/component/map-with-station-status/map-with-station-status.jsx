@@ -221,7 +221,7 @@ class MapWithStationStatus extends Component {
    * @return
    */
   showStationTip(e,staOverlay){
-    console.log("showStationTip",e);
+    //console.log("showStationTip",e);
     // must set offset,or the showing div will affect the mouse event, and this event will be triggered repeatedly
     this.stationTooltipLeft=e.layerX+5;
     this.stationTooltipTop=e.layerY+15;
@@ -230,7 +230,7 @@ class MapWithStationStatus extends Component {
     this.setState({showStatonTooltip:true,stationtoShowTip:{...station}});
   }
   hideStationTip(e,staOverlay){
-    console.log("hideStationTip");
+    //console.log("hideStationTip");
     this.setState({showStatonTooltip:false});
     e.preventDefault();
   }

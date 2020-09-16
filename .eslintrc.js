@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 12:12:36
- * @LastEditTime: 2020-08-27 14:12:35
+ * @LastEditTime: 2020-09-15 15:56:14
  * @LastEditors: shaomin fei
  * @Description: 
  * @FilePath: \rms-ui\.eslintrc.js
@@ -33,9 +33,12 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks',
     '@typescript-eslint',
   ],
   rules: {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "globals":{
     "document": true,

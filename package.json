@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "customize-cra": "^1.0.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "file-loader": "^4.3.0",
     "react-app-rewired": "^2.1.6",
     "worker-loader": "^3.0.1"

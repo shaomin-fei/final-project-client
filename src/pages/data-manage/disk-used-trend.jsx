@@ -3,6 +3,10 @@ import React,{useEffect} from "react";
 
 import "./data-manage.css";
 
+class DiskUedInfo{
+    time="";
+    volume=0;
+}
 const echarts=require("echarts");
 /**
  * @type {echarts.ECharts}
@@ -69,6 +73,10 @@ const option = {
 
 const DiskUsedTrend=function(props){
 
+    /**
+     * @type {Array<DiskUedInfo>}
+     */
+    let diskTrendData=props.diskTrendData;
     useEffect(()=>{
         chart=echarts.init(chartContainer);
         //@ts-ignore
@@ -80,6 +88,28 @@ const DiskUsedTrend=function(props){
         }
 
     },[]);
+    useEffect(()=>{
+        let times=[];
+        let volume=[];
+        if(diskTrendData){
+            times= diskTrendData.map(trend=>{
+                return trend.time;
+            });
+            volume= diskTrendData.map(trend=>{
+                return trend.volume;
+            });
+        }
+        chart.setOption({
+            xAxis:{
+                data:times,  
+            },
+            series:[
+                {
+                    data:volume
+                }
+            ]
+        });
+    },[diskTrendData]);
     function resizeChart(){
         chart&&chart.resize();
     }

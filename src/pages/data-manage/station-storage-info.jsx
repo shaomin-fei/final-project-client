@@ -9,6 +9,11 @@ const echarts=require("echarts");
  */
 let chart=null;
 let chartContainer=null;
+class StationStorage{
+    station="";
+    volume=0;
+}
+
 const option = {
     color: ['#3398DB'],
     tooltip: {
@@ -74,6 +79,10 @@ const option = {
 
 const StationStorageInfo=function(props){
 
+    /**
+     * @type {Array<StationStorage>}
+     */
+    const storageData=props.storageData;
     useEffect(()=>{
         chart=echarts.init(chartContainer);
         //@ts-ignore
@@ -85,6 +94,30 @@ const StationStorageInfo=function(props){
         }
 
     },[]);
+    useEffect(()=>{
+        let data=[],xAxis=[];
+        if(storageData){
+            data=storageData.map(store=>{
+                return store.volume;
+            });
+            xAxis=storageData.map(store=>{
+                return store.station;
+            });
+        }
+        chart.setOption({
+            xAxis:[
+                {
+                    data:xAxis,
+                }
+            ],
+            series: [
+                {
+                    data:data,
+                }
+            ]
+
+        });
+    },[storageData]);
     function resizeChart(){
         chart&&chart.resize();
     }

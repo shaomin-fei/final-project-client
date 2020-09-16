@@ -97,6 +97,7 @@ const SignalOperation = function (props) {
   useEffect(()=>{
 
     console.log("signal-operation did mount");
+    //document.getElementById("signal_opeation_form_content").onmousemove=mouseMove;
   },[]);
   useEffect(()=>{
     console.log("signal-operation currentSignal change",cmd);
@@ -114,6 +115,7 @@ const SignalOperation = function (props) {
   function onStationTreeSelcChange(value) {
     dispatch({ type: "stationTreeSelcChanged", data: value });
   }
+  
   /**
  * @Date: 2020-09-14 18:54:18
  * @Description: 
@@ -199,12 +201,12 @@ const SignalOperation = function (props) {
     },
   };
   return (
-    <div className="signal_operation_form">
+    <div className="signal_operation_form" >
       <div className="header">
         <span>{title}</span>
         <CloseOutlined className="head_close" onClick={props.closeCallback} />
       </div>
-      <div className="content">
+      <div className="content" >
         <table>
           <tbody>
             <tr>

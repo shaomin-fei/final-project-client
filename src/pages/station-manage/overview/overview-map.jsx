@@ -77,7 +77,7 @@ export default class OverviewMap extends MapWithStationStatus{
           tree.stations&&tree.stations.length>0&&tree.stations.forEach(sta=>{
               const des=new LonLat(sta.lon,sta.lat);
               const color=getColorByNetSpeed(sta.netSpeed);
-              this.mapLineVecLayer.set(sta.id,this.centerMap.addLine(centerPos,des,color)) ;
+              this.mapLineVecLayer.set(sta.id,this.centerMap.addLine(centerPos,des,3,color)) ;
           });
       }
       addAllControls(){

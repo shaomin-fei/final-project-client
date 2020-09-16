@@ -55,9 +55,9 @@
   float: right;
 }
 .data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table {
-  margin: 8px auto;
+  margin: 4px auto;
   color: rgba(246, 209, 0, 0.9);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 .data_manage_page_container .page_top .page_top_left .chart_box .disk_info_box table thead {
@@ -88,7 +88,7 @@
 .data_manage_page_container .page_top .page_top_right .file_list .file_path span {
   color: #ccc;
   text-decoration: underline;
-  padding-left: 10px;
+  padding-left: 2px;
   cursor: pointer;
 }
 .data_manage_page_container .page_top .page_top_right .file_list .file_content::-webkit-scrollbar {
@@ -107,6 +107,7 @@
   height: 100px;
   text-align: center;
   line-height: 100px;
+  text-overflow: ellipsis;
   position: relative;
   cursor: pointer;
 }
@@ -118,7 +119,10 @@
   color: #ccc;
   bottom: 5px;
   height: 20px;
+  width: 100%;
   line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-top: -25px;
 }
 .data_manage_page_container .page_bottom {

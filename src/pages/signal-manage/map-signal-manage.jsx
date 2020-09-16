@@ -170,6 +170,7 @@ saveSignalInfoCallback=async (cmd,signalInfo,resultCallback)=>{
      * @param {MapBrowserEvent} evt 
      */
     mapMouseMove=(evt)=>{
+      //console.log("mouse move map");
       let map = evt.map;
       const pixel=map.getEventPixel(evt.originalEvent);
       this.mouseLeft=pixel[0]+5;
@@ -182,6 +183,7 @@ saveSignalInfoCallback=async (cmd,signalInfo,resultCallback)=>{
         let element = evt.map.getTargetElement();
         //@ts-ignore
         if (this.moveElement&&(!feature||!feature.tag)){
+          
           //move from feature
           //console.log("xxx",feature);
           this.moveElement.style.cursor = this.previousCursor_;
@@ -190,11 +192,17 @@ saveSignalInfoCallback=async (cmd,signalInfo,resultCallback)=>{
           this.setState({showSignalInfo:false});
         }
         if (feature) {
+          //console.log("on feature ",feature);
           //@ts-ignore
           if(!feature.tag){
             return;
           }
-          
+          // the event is triggered through other element,like signal operation form
+          //@ts-ignore
+          if(evt.originalEvent.target.localName!="canvas" ){
+            return;
+          }
+          //console.log(evt);
           if (element.style.cursor != this.cursor_) {
             this.previousCursor_ = element.style.cursor;
             element.style.cursor = this.cursor_;
@@ -212,6 +220,7 @@ saveSignalInfoCallback=async (cmd,signalInfo,resultCallback)=>{
           //console.log("move evt restore",evt);
         }
       }
+      
     }
 
     /**
