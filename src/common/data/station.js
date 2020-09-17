@@ -15,6 +15,7 @@ class Station{
     url="";
     alwaysNotShowCircle=false;
     selected=false;
+    devicesUrl=[];
     status=DeviceStatusEnum.WORKING;
     /**
      * net band from center to station,MB/s

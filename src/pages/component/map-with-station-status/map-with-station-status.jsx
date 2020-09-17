@@ -81,6 +81,8 @@ class MapWithStationStatus extends Component {
 
     this.stationTooltipLeft=0;
     this.stationTooltipTop=0;
+
+    this.centerInfo=null;
   }
   addEventListener(cmd,callback){
     this.centerMap&&this.centerMap.addEventListener(cmd,callback);
@@ -137,6 +139,7 @@ class MapWithStationStatus extends Component {
    * @param {CenterInfo} center
    */
   treeUpdate(message, center){
+    this.centerInfo=center;
     if (center) {
       this.showStations(center);
       if (this.state.currentStation) {
@@ -225,6 +228,9 @@ class MapWithStationStatus extends Component {
     // must set offset,or the showing div will affect the mouse event, and this event will be triggered repeatedly
     this.stationTooltipLeft=e.layerX+5;
     this.stationTooltipTop=e.layerY+15;
+    if(!staOverlay||!staOverlay.tag){
+      return;
+    }
     const station = staOverlay.tag.station;
     //e.preventDefault();
     this.setState({showStatonTooltip:true,stationtoShowTip:{...station}});

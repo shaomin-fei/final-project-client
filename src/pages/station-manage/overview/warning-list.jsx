@@ -1,14 +1,19 @@
 //@ts-check
 import React from "react";
-import { renderToString } from "react-dom/server";
 import "antd/dist/antd.css";
-import { CloseOutlined, CalendarOutlined } from "@ant-design/icons";
-import { DatePicker, TreeSelect,Button,Table } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { DatePicker, TreeSelect,Button,Table,message } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import Axios from "axios";
+
+import  APIConfigEnum from "../../../config/api-config";
 import Utils from "../../../common/utils/utils";
+import StationTreeSelect from "../../component/station-tree-select/station-tree-select";
+
 const { RangePicker } = DatePicker;
-const { SHOW_PARENT } = TreeSelect;
+
+
 
 const warningLevelTree = [
   {
@@ -56,175 +61,188 @@ const warningHandleTree = [
 ];
 
 export class WarningQueryCondition {
-  warningLevel = "Fatal"; //defaul to query all
-  startTime = Date.now();
-  endTime = Date.now() - 24 * 60 * 60;
-  handled = false; //query those warnings haven't been handled
+  warningLevel = ["Fatal"]; //defaul to query all
+  startTime = Utils.dateFormat(
+    dateFormat,
+    new Date(Date.now() - 24 * 30 * 3600 * 1000)
+  )
+  endTime = Utils.dateFormat(dateFormat, new Date());
+  type = ["Unhandled"]; //query those warnings haven't been handled
+  stationsName=[];
   constructor({
-    warningLevel = "Fatal",
-    startTime = Date.now(),
-    endTime = Date.now() - 24 * 60 * 60,
+    warningLevel = ["Fatal"],
   } = {}) {
     this.warningLevel = warningLevel;
-    this.startTime = startTime;
-    this.endTime = this.endTime;
+    
+    
   }
 }
 const dateFormat = "YYYY/MM/DD HH:mm:ss";
 
-  const columns=[
-      {
-          title:"Index",
-          dataIndex:"index",
-          key:"index"
-      },
-      {
-        title:"Station",
-        dataIndex:"Station",
-        key:"Station"
-    },
-    {
-        title:"StartTime",
-        dataIndex:"StartTime",
-        key:"StartTime"
-    },
-    {
-        title:"EndTime",
-        dataIndex:"EndTime",
-        key:"EndTime"
-    },
-    {
-        title:"Reason",
-        dataIndex:"Reason",
-        key:"Reason"
-    },
-    {
-        title:"Cancel",
-        dataIndex:"Cancel",
-        key:"Cancel",
-        render:needCancel=>(
-            needCancel?<Button type="primary">Cancel</Button>:null
-        )
-    },
-    
-  ];
+
   const listData=[
       {
           key:"1",
-          index:1,
+          warningLevel:"General",
           Station:"Virtual-001",
-          StartTime:"2020-10-01 11:55:59",
-          EndTime:"2020-10-01 12:55:59",
+          StartTime:"2020-09-01 11:55:59",
+          EndTime:"2020-09-01 12:55:59",
           Reason:"Temperature Exceed",
-          Cancel:1
+          needCancel:1
       },
       {
         key:"10",
-        index:10,
+        warningLevel:"General",
         Station:"Virtual-001",
-        StartTime:"2020-10-01 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
+        StartTime:"2020-09-01 11:55:59",
+        EndTime:"2020-09-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:1
+        needCancel:1
     },
     {
         key:"2",
-        index:2,
+        warningLevel:"General",
         Station:"Virtual-002",
         StartTime:"2020-10-02 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:0
+        needCancel:0
     },
     {
         key:"3",
-        index:3,
+        warningLevel:"General",
         Station:"Virtual-003",
         StartTime:"2020-10-03 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:1
+        needCancel:1
     },
     {
         key:"4",
-        index:4,
+        warningLevel:"General",
         Station:"Virtual-004",
         StartTime:"2020-10-04 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:0
+        needCancel:0
     },
     {
         key:"5",
-        index:5,
+        warningLevel:"General",
         Station:"Virtual-005",
         StartTime:"2020-10-05 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:1
+        needCancel:1
     },
     {
         key:"6",
-        index:6,
+        warningLevel:"General",
         Station:"Virtual-006",
         StartTime:"2020-10-01 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:0
+        needCancel:0
     },
     {
         key:"7",
-        index:7,
+        warningLevel:"General",
         Station:"Virtual-007",
         StartTime:"2020-10-07 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:1
+        needCancel:1
     },
     {
         key:"8",
-        index:8,
+        warningLevel:"Serious",
         Station:"Virtual-001",
         StartTime:"2020-10-08 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:0
+        needCancel:0
     },
     {
         key:"9",
-        index:9,
+        warningLevel:"Fatal",
         Station:"Virtual-002",
         StartTime:"2020-10-09 11:55:59",
         EndTime:"2020-10-01 12:55:59",
         Reason:"Temperature Exceed",
-        Cancel:1
+        needCancel:1
     }
   ];
+
+
+ let currentSelectedStations=[];
+ let currentStartTime="";
+ let currentStopTime="";
 const WarningList = function (props) {
   /**
    * @type {WarningQueryCondition}
    */
   const warningQueryCondition = props.warningQueryCondition;
-  const { warningLevel, handled } = warningQueryCondition;
+  const { warningLevel, type } = warningQueryCondition;
+ 
   const [treeValues, setTreeValue] = useState({
-    levelValue: warningLevel ? [warningLevel] : ["Fatal"],
-    typeValue: handled ? ["Handled"] : ["Unhandled"],
+    levelValue: warningLevel ? warningLevel : ["Fatal"],
+    typeValue: type?type:["Unhandled"],
+    stationsName:[],
+    tableData:[]
   });
+ 
   useEffect(() => {
-    // document.getElementsByClassName("ant-picker-clear")[0].firstChild.innerHTML=
-    // renderToString(<CloseOutlined/>);
-  }, []);
+    //when triggered from click map icon
+    warningQueryCondition.stationsName=currentSelectedStations;
+    warningQueryCondition.startTime=currentStartTime?currentStartTime:warningQueryCondition.startTime;
+    warningQueryCondition.endTime=currentStopTime?currentStopTime:warningQueryCondition.endTime;
+    warningQueryCondition.type=treeValues.typeValue;
+    handleQueryByCondition(warningQueryCondition,(data)=>{
+      setTreeValue({...treeValues,tableData:data,levelValue:warningLevel});
+      
+    });
+    
+    //console.log("did mound")
+  }, [warningQueryCondition]);
+  /*useEffect(()=>{
+    setTreeValue({
+      levelValue: warningLevel ? warningLevel : ["Fatal"],
+      typeValue: type?type:["Unhandled"],
+      stationsName:treeValues.stationsName,
+      tableData:[]
+    });
+    updatedConditionFromMap=true;
+    console.log("warningQueryCondition")
+  },[warningQueryCondition]);
+  useEffect(()=>{
+    if(updatedConditionFromMap){
+      handleQuery()
+    }
+    updatedConditionFromMap=false;
+    console.log("updatedConditionFromMap",updatedConditionFromMap)
+  },[updatedConditionFromMap])
+  */
   const levelTreeProps = {
     size: "small",
     treeData: warningLevelTree,
     value: treeValues.levelValue,
     onChange: (value) => onChange("warningLevel", value),
     treeCheckable: true,
-    showCheckedStrategy: SHOW_PARENT,
+    maxTagCount: 1,
+    maxTagPlaceholder: () => {
+      return <label style={
+        {color:"black",
+        fontSize:"0.5rem",
+        //marginLeft:"-3px",
+        display:"inline-block",
+        width:"10px"}
+      }>...</label>;
+    },
+    //showCheckedStrategy: SHOW_PARENT,
     treeDefaultExpandAll: true,
     placeholder: "Please select",
     style: {
-      width: "150px",
+      width: "140px",
     },
   };
 
@@ -235,7 +253,18 @@ const WarningList = function (props) {
     value: treeValues.typeValue,
     onChange: (value) => onChange("type", value),
     treeCheckable: true,
-    showCheckedStrategy: SHOW_PARENT,
+    
+    maxTagCount: 1,
+    maxTagPlaceholder: () => {
+      return <label style={
+        {color:"black",
+        fontSize:"0.5rem",
+        //marginLeft:"-3px",
+        display:"inline-block",
+        width:"10px"}
+      }>...</label>;
+    },
+    //showCheckedStrategy: SHOW_PARENT,
     placeholder: "Please select",
     style: {
       width: "160px",
@@ -243,6 +272,80 @@ const WarningList = function (props) {
       //color:"white",
     },
   };
+
+  const columns=[
+     
+    {
+      title:"Station",
+      dataIndex:"Station",
+      key:"Station"
+  },
+  {
+      title:"StartTime",
+      dataIndex:"StartTime",
+      key:"StartTime"
+  },
+  {
+      title:"EndTime",
+      dataIndex:"EndTime",
+      key:"EndTime"
+  },
+  {
+    title:"Level",
+    dataIndex:"warningLevel",
+    key:"warningLevel"
+},
+  {
+      title:"Reason",
+      dataIndex:"Reason",
+      key:"Reason"
+  },
+  {
+      title:"Cancel",
+      dataIndex:"needCancel",
+      key:"needCancel",
+      render:cancelInfo=>(
+        cancelInfo.needCancel?<Button loading={cancelInfo.loading} type="primary" onClick={e=>handleCancelWarning(cancelInfo.cancelKey)}>Cancel</Button>:null
+      )
+  },
+  
+];
+
+async function handleCancelWarning(cancelKey){
+  //show loding circle
+  const tabData=treeValues.tableData;
+  const canceledData=tabData.find(tb=>{
+        return tb.key===cancelKey;
+      });
+      if(canceledData){
+        canceledData.needCancel.loading=true;
+      }
+      setTreeValue({...treeValues,tableData:[...tabData]});
+      ////
+  try{
+    const response=await Axios.put(APIConfigEnum.cancelEnvironWarning,{
+      key:cancelKey
+    });
+    const data=response.data;
+    if(data.success){
+      message.info("Operation Success");
+      handleQuery();
+      props.cancelWarningCallback();
+      
+      // const tabData=treeValues.tableData;
+      // const canceledData=tabData.find(tb=>{
+      //   return tb.key===cancelKey;
+      // });
+      // if(canceledData){
+      //   canceledData.needCancel.needCancel=0;
+      // }
+      // setTreeValue({...treeValues,tableData:[...tabData]});
+    }
+  }catch(e){
+    message.warn(e.message);
+  }
+  
+}
   function onChange(cmd, value) {
     if (cmd === "warningLevel") {
       setTreeValue({ ...treeValues, levelValue: value });
@@ -250,8 +353,57 @@ const WarningList = function (props) {
       setTreeValue({ ...treeValues, typeValue: value });
     }
   }
-
-  
+  /**
+   * @Date: 2020-09-16 09:40:14
+   * @Description: 
+   * @param {Array<string>} selectedStations
+   * @return {void} 
+   */
+  function stationTreeSelectedChanged(selectedStations){
+    currentSelectedStations=selectedStations;
+    warningQueryCondition.stationsName=selectedStations;
+  }
+  function onTimeSelectChange(dates, dateStrings) {
+    currentStartTime=dateStrings[0]+" 00:00:00";
+    currentStopTime=dateStrings[1]+" 23:59:59";
+    warningQueryCondition.startTime=dateStrings[0]+" 00:00:00";
+    warningQueryCondition.endTime=dateStrings[1]+" 23:59:59";
+    // console.log('From: ', dates[0], ', to: ', dates[1]);
+    // console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+  }
+   function handleQuery(){
+    warningQueryCondition.type=treeValues.typeValue;
+    warningQueryCondition.warningLevel=treeValues.levelValue;
+    warningQueryCondition.stationsName=currentSelectedStations;
+    handleQueryByCondition(warningQueryCondition,(data)=>{
+      setTreeValue({...treeValues,tableData:data});
+    });
+    
+  }
+  async function handleQueryByCondition(condition,callback){
+    try{
+      const result= await Axios.get(APIConfigEnum.getEnvWarning,{
+        params:condition
+      });
+      let data=result.data;
+      if(!data){
+        data=[];
+      }
+      data=data.map(d=>{
+        d.needCancel={
+          needCancel:d.needCancel,
+          cancelKey:d.key,
+          loading:false,
+        };
+        return d;
+      });
+      if(callback){
+        callback(data);
+      }
+    }catch(e){
+       message.warn("get warning list error"+e.message);
+    }
+  }
   return (
     <div className="warning_list_container">
       <div className="warning_list_head">
@@ -277,7 +429,15 @@ const WarningList = function (props) {
           <span>
             <label htmlFor="">Station:&nbsp;</label>
             {/* @ts-ignore */}
-            <TreeSelect {...levelTreeProps}></TreeSelect>
+           <StationTreeSelect 
+           style= {
+             {
+            width: "170px",
+            height: "30px",
+          }
+        }
+           centerInfo={props.centerInfo} 
+           stationTreeSelectedChanged={stationTreeSelectedChanged}/>
           </span>
          
         </div>
@@ -286,6 +446,7 @@ const WarningList = function (props) {
             <label>Time:&nbsp;</label>
             <RangePicker
               className="warnning_list_query_date"
+              onChange={onTimeSelectChange}
               size="small"
               ranges={{
                 Today: [moment(), moment()],
@@ -294,17 +455,14 @@ const WarningList = function (props) {
                   moment().endOf("month"),
                 ],
               }}
-              allowClear={true}
+              allowClear={false}
               showTime
               defaultValue={[
-                moment(Utils.dateFormat(dateFormat, new Date()), dateFormat),
                 moment(
-                  Utils.dateFormat(
-                    dateFormat,
-                    new Date(Date.now() - 24 * 7 * 3600 * 1000)
-                  ),
+                  warningQueryCondition.startTime,
                   dateFormat
                 ),
+                moment(warningQueryCondition.endTime, dateFormat),
               ]}
               //suffixIcon={<SufficIcon/>}
               format="YYYY/MM/DD HH:mm:ss"
@@ -312,7 +470,10 @@ const WarningList = function (props) {
               //   onChange={onChange}
             />
           </span>
-          <Button size="middle" type="primary" style={{marginLeft:"10px"}}>Query</Button>
+          <Button size="middle" 
+          type="primary" 
+          onClick={handleQuery}
+          style={{marginLeft:"10px"}}>Query</Button>
         </div>
       </div>
 
@@ -320,12 +481,12 @@ const WarningList = function (props) {
       <Table 
       pagination={{
         hideOnSinglePage:true,
-        total:10,
+        total:treeValues.tableData.length,
         defaultPageSize:3,
         pageSize:3,
       }}
       size="small" 
-      className="talbe_detail" columns={columns} dataSource={listData} />
+      className="talbe_detail" columns={columns} dataSource={treeValues.tableData} />
       </div>
     </div>
   );

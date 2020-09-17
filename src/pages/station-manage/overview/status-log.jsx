@@ -1,16 +1,71 @@
 //@ts-check
 import React,{Component} from "react";
+import Axios from "axios";
 
 import 'antd/dist/antd.css';
 import { CloseOutlined} from "@ant-design/icons";
 
 import StatusLogDaily from "./status-log-daily";
 import StatusLogPie from "./status-log-pie";
+import Station from "../../../common/data/station";
+import APIConfigEnum from "../../../config/api-config";
 
 import "./overview-map.css";
+import Utils from "../../../common/utils/utils";
+import { message } from "antd";
 class StatusLog extends Component{
 
+   data={
+     totalWarning:50,
+     latestWarning:"2020-01-02 23:59:59",
+     warningTime:100,
+     workingTime:100,
+     idleTime:100,
+     shutdownTime:100,
+     dailyWarningInfo:[
+       {
+         day:"2020-01-01",
+        //  minute
+         time:10,
+       }
+     ]
+
+  }
+  state={
+    logData:this.data
+  }
+  componentDidMount(){
+    this.getLogInfo()
+  }
+  async getLogInfo(){
+    const dateNow=new Date();
+    const dateHalfBefore=new Date();
+    dateHalfBefore.setMonth(dateHalfBefore.getMonth()-6);
+    try{
+      const response=await Axios.get(APIConfigEnum.getStationLogInfo,{
+        params:{
+          stationName:this.props.showLogStation.name,
+          startTime:Utils.dateFormat("YYYY-MM-DD HH:mm:ss",dateHalfBefore ),
+          stopTime:Utils.dateFormat("YYYY-MM-DD HH:mm:ss",dateNow ),
+          
+        }
+      });
+      const data=response.data;
+      this.setState({
+        logData:data
+      });
+    }catch(e){
+      message.warn(e.message);
+    }
+   
+  }
     render(){
+
+/**
+ * @type {Station}
+ */
+     const showLogStation=this.props.showLogStation;
+      //console.log(showLogStation);
       return (
 
         <div className="status_log_container" >
@@ -27,34 +82,36 @@ class StatusLog extends Component{
                 <tbody>
                   <tr>
                     <td>Name:</td>
-                    <td>Virtual-001</td>
+                    <td>{showLogStation.name}</td>
                   </tr>
 
                   <tr>
                     <td>Status:</td>
-                    <td>Normal</td>
+                    <td>{showLogStation.status}</td>
                   </tr>
 
                  
 
                   <tr>
                     <td>Total Warning:</td>
-                    <td>50</td>
+                    <td>{this.state.logData.totalWarning}</td>
                   </tr>
                   <tr>
                     <td>Latest Warning:</td>
-                    <td>2020-01-02 23:59:59</td>
+                    <td>{this.state.logData.latestWarning}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div className="status_basic_pie">
-              <StatusLogPie/>
+              <StatusLogPie logData={
+                this.state.logData
+              }/>
             </div>
            
           </div>
           <div className="status_static_daily">
-            <StatusLogDaily/>
+            <StatusLogDaily logData={this.state.logData}/>
           </div>
         </div>
     );

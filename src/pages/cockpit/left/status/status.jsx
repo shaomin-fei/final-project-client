@@ -95,7 +95,7 @@ export default function Status(props) {
     <section className="status_description mainpage_title_font_info">
       <div className="des_working">Working</div>
       <div className="des_idle">Idle</div>
-      <div className="des_fault">Fault</div>
+      <div className="des_fault">Warning</div>
       <div className="des_shutdown">Shutdown</div>
     </section>
     <section className="net_condition">

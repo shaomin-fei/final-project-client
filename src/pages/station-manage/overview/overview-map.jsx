@@ -35,7 +35,13 @@ function getColorByNetSpeed(speed){
 export default class OverviewMap extends MapWithStationStatus{
     
     constructor(props){
-        super(props,{isShowLog:false,isShowWarning:false,warningQueryCondition:null});
+        super(props,{
+            isShowLog:false,
+            showLogStation:null,
+            isShowWarning:false,
+            warningQueryCondition:null,
+            staticByWarningLevel:null
+        });
         /**
          * @type {Map<string,VectorLayer>}
          * key is station id
@@ -55,8 +61,27 @@ export default class OverviewMap extends MapWithStationStatus{
     }
     componentDidMount(){
         super.componentDidMount();
-       
+       this.getEnvStaticByLevel();
     }
+    /**
+   * convert data to the form that tree can show
+   * @param {CenterInfo} center
+   */
+  treeUpdate(message, center){
+      super.treeUpdate(message,center);
+      if(this.state.isShowLog){
+          const station=this.state.showLogStation;
+          if(center.stations&&center.stations.length>0){
+              const temp=center.stations.find(sta=>{
+                  return sta.id===station.id;
+              });
+              if(temp){
+                this.setState({showLogStation:temp});
+              }
+          }
+          
+      }
+  }
       showStations(tree,showCenter=false){
           super.showStations(tree,true);
           this.connectCenterAndStation(tree);
@@ -102,6 +127,7 @@ export default class OverviewMap extends MapWithStationStatus{
       getExtralControls(){
           return ( <WarningControlComponent 
             ref={dv=>this.warningControlContainer=dv}
+            staticByWarningLevel={this.state.staticByWarningLevel}
             handleWarningClick={this.handleWarningClick}
             />);
     }
@@ -130,8 +156,22 @@ export default class OverviewMap extends MapWithStationStatus{
  */
 showLogInfo=(station)=>{
 //console.log("showloginfo",station);
-this.setState({...this.state,isShowLog:true});
+this.setState({...this.state,isShowLog:true,showLogStation:station});
 this.dlgCloseCallback(station);
+}
+cancelWarningCallback=()=>{
+    this.getEnvStaticByLevel();
+}
+async getEnvStaticByLevel(){
+    try{
+        const response=await Axios(APIConfigEnum.getEnvStaticByLevel);
+        const data=response.data;
+        this.setState({staticByWarningLevel:data});
+    }catch(e){
+        message.warn(e.message);
+    }
+    
+
 }
 /**
  * 
@@ -177,12 +217,14 @@ render() {
     return (
       <>
       {super.render()}
-      {this.state.isShowLog?<StatusLog closeCallback={e=>this.setState({...this.state,isShowLog:false})}/>:null}
+      {this.state.isShowLog?<StatusLog showLogStation={this.state.showLogStation} closeCallback={e=>this.setState({...this.state,isShowLog:false})}/>:null}
       
      
      {this.state.isShowWarning?<WarningList 
      warningQueryCondition={this.state.warningQueryCondition}
+     centerInfo={this.centerInfo}
      closeCallback={()=>this.setState({...this.state,isShowWarning:false})}
+     cancelWarningCallback={this.cancelWarningCallback}
      />:
      null}
       </>

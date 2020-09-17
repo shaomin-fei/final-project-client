@@ -1,6 +1,6 @@
 const StatusEnum={
     WORKING:"working",
-    FAULT:"fault",
+    FAULT:"warning",
     IDLE:"idle",
     SHUTDOWN:"shutdown",
 }

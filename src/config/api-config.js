@@ -4,14 +4,18 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 16:00:14
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-16 00:37:59
+ * @LastEditTime: 2020-09-16 22:57:59
  */
 //const serverHttpAddr="http://192.168.0.31:3005/";
 export const serverWSAddr="ws://localhost:3005/";
+
 const  APIConfigEnum={
 
     // http use proxy, so don't need to specify host. data come from proxy server
     getStations:"/getStations",
+    addStation:"/addStation",
+    updateStation:"/updateStation",
+    deleteStation:"/deleteStation",
     getSignalStaticByReason:"/getSignalStaticByReason",
     getTaskParams:"/getTaskParam",
     getSignalInfoByTime:"/getSignalInfoByTime",
@@ -22,7 +26,14 @@ const  APIConfigEnum={
     getDiskUsedTrend:"/getDiskUsedTrend",
     getStorageOfEachStation:"getStorageOfEachStation",
     getFoloderInfo:"/getFoloderInfo",
-    download:"/downLoad",
+    download:"http://localhost:3005/downLoad",
+
+
+    getEnvWarning:"/getEnvWarning",
+    getEnvStaticByLevel:"/getEnvStaticByLevel",
+    cancelEnvironWarning:"/cancelEnvironWarning",
+    getStationLogInfo:"/getStationLogInfo",
     stationChange:serverWSAddr,
+    
 }
 export default APIConfigEnum;

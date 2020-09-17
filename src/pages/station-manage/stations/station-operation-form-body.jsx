@@ -1,13 +1,17 @@
 //@ts-check
-import React, { useRef, useEffect, useReducer } from "react";
-import { Button } from "antd";
+import React, {useEffect, useReducer,useRef,useState } from "react";
+import { Button, message,Modal } from "antd";
 import "antd/dist/antd.css";
+import Axios from "axios";
+
+import APIConfigEnum from "../../../config/api-config";
 
 export class DeviceListInfo{
   url="";
   checked=false;
 }
 export class StationBodyInfo {
+  id="";
   cmd = "add";
   /**
    * @type {Array<string>}
@@ -49,6 +53,7 @@ function reducer(prestate, action) {
     case "deleteDevices":{
       return {...prestate,devicesUrl:action.data};
     }
+   
     default:
       return prestate;
   }
@@ -57,6 +62,9 @@ let deviceLstTbBody=null;
 let updateStation=null;
 const StationOperationBody = function (props) {
   //const [station,setStationInfo]=useState(new StationBodyInfo());
+
+  const headCheckBox=useRef();
+  const [dlgShow,setDlgShow]=useState(false);
   /**
    * @type {[StationBodyInfo, React.Dispatch<object>]}
    */
@@ -122,15 +130,31 @@ const StationOperationBody = function (props) {
        * @type {Array<DeviceListInfo>}
        */
       const devices=station.devicesUrl;
+      
       devices.forEach(dev=>{
         dev.checked=e.target.checked;
+       
       });
+     
       //@ts-ignore
       dispatch({type:"checkedDeviceChange",data:devices});
   }
   function checkBoxChange(index,e){
     const devices=station.devicesUrl;
     devices[index].checked=e.target.checked;
+    let checkedCount=0;
+    devices.forEach(dev=>{
+      if(dev.checked){
+        checkedCount++;
+      }
+    });
+    if(checkedCount===0){
+      const current=headCheckBox.current;
+      current.checked=false;
+    }else if(checkedCount===devices.length){
+      const current=headCheckBox.current;
+      current.checked=true;
+    }
     dispatch({type:"checkedDeviceChange",data:devices});
   }
   function deleteDevices(){
@@ -140,9 +164,79 @@ const StationOperationBody = function (props) {
         devices.splice(i,1);
       }
     }
+    
+    if(devices.length===0){
+      /**
+       * @type {HTMLInputElement}
+       */
+      const current=headCheckBox.current;
+      current.checked=false;
+    }
     dispatch({type:"deleteDevices",data:devices});
   }
-  console.log("render",station);
+  function hideModal(isOk){
+    setDlgShow(false);
+    if(isOk){
+      deleteStation();
+
+    }
+  }
+  async function deleteStation(){
+    const response=await Axios.delete(APIConfigEnum.deleteStation,{
+      params:{
+        key:station.id
+      }
+    });
+    if(response.data.success){
+      message.info("Delete Success");
+      props.closeCallback();
+    }else{
+      message.warn("Delete Failed "+response.data.errorInfo);
+    }
+  }
+  function handleSave(){
+    if(!station.name){
+      message.info("Please Input Station Name");
+      return;
+    }
+    if(!station.lat){
+      message.info("Please Input Lat");
+      return;
+    }
+    if(!station.lon){
+      message.info("Please Input Lon");
+      return;
+    } if(!station.url){
+      message.info("Please Input url");
+      return;
+    }
+    if(!station.devicesUrl||station.devicesUrl.length===0){
+      message.info("Please Input devicesUrl");
+      return;
+    }
+    saveStation();
+  }
+  async function saveStation(){
+    if(station.cmd==="add"){
+      const response=await Axios.post(APIConfigEnum.addStation,station);
+      if(response.data.success){
+        message.info("Add Success");
+      }else{
+        message.warn("Add Failed "+response.data.errorInfo);
+      }
+    }else if(station.cmd==="update"){
+      const response=await Axios.put(APIConfigEnum.updateStation,station);
+      if(response.data.success){
+        message.info("Update Success");
+      }else{
+        message.warn("Update Failed "+response.data.errorInfo);
+      }
+    }
+  }
+  function handleDeleteStation(){
+    setDlgShow(true);
+  }
+  //console.log("render",station);
   return (
     <div className="station_base_info_container">
       <div >
@@ -156,12 +250,20 @@ const StationOperationBody = function (props) {
         station.cmd==="update"?
         <Button type="primary" size="small" 
          style={{ float: "right", marginRight: "5px", marginTop: "5px" }}
+         onClick={handleDeleteStation}
         >Delete</Button>:
         null
         }
         
         <Button type="primary" size="small" 
-         style={{ float: "right", marginRight: "5px", marginTop: "5px" }}
+        onClick={handleSave}
+         style={
+           { 
+             float: "right", 
+             marginRight: "5px", 
+             marginTop: "5px" 
+            }
+          }
         >Save</Button>
       </div>
       <table className="station_base_info">
@@ -253,7 +355,9 @@ const StationOperationBody = function (props) {
             <thead>
               <tr>
                 <td style={{textAlign:"center"}}>
-                  <input style={{marginTop:"4px"}} type="checkbox" onChange={e=>{e.persist();headIndexChanged(e)}}/>
+                  <input style={{marginTop:"4px"}} type="checkbox" 
+                  ref={headCheckBox}
+                  onChange={e=>{e.persist();headIndexChanged(e)}}/>
                   <label style={{ marginLeft: "5px" }} htmlFor="">
                     Index
                   </label>
@@ -289,6 +393,19 @@ const StationOperationBody = function (props) {
           </table>
         </div>
       </div>
+
+      <Modal
+          title="Modal"
+          visible={dlgShow}
+          onOk={e=>hideModal(true)}
+          onCancel={e=>hideModal(false)}
+          okText="Confirm"
+          cancelText="Cancel"
+          width="400px"
+        >
+          <p>Are you sure you want to delete this item?</p>
+          
+        </Modal>
     </div>
   );
 };

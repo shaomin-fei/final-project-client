@@ -328,10 +328,17 @@
   border-bottom: 1px solid #ccc;
 }
 .warning_list_container .warning_list_query_condition .ant-select-selector {
-  background-color: rgba(5, 23, 61, 0.8);
+  background-color: transparent;
+}
+.warning_list_container .warning_list_query_condition .ant-select-selection-item {
+  padding: 0px;
+}
+.warning_list_container .warning_list_query_condition .ant-select-selection-item {
+  margin-right: 0px;
+  margin-left: 2px;
 }
 .warning_list_container .warning_list_query_condition .warnning_list_query_date {
-  background-color: rgba(5, 23, 61, 0.8);
+  background-color: transparent;
   color: white;
   text-decoration-color: white;
   width: 640px;
@@ -339,8 +346,8 @@
 }
 .warning_list_container .warning_list_query_condition label {
   color: white;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 .warning_list_container .warning_list_query_condition .ant-picker-input > input {
   color: white;
@@ -355,7 +362,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 .warning_list_container .warning_list_query_condition .ant-picker-clear {
-  background-color: rgba(5, 23, 61, 0.8);
+  background-color: rgba(5, 23, 61, 0.6);
 }
 .warning_list_container .warning_list_query_condition .ant-picker-clear svg {
   fill: red;
@@ -370,14 +377,17 @@
   height: 100%;
 }
 .warning_list_container .warning_list_results .talbe_detail .ant-table {
-  background-color: rgba(5, 23, 61, 0.6);
+  background-color: transparent;
   color: white;
 }
 .warning_list_container .warning_list_results .talbe_detail .ant-table-thead > tr > th {
-  background-color: rgba(5, 23, 61, 0.6);
+  background-color: transparent;
   color: white;
 }
 .warning_list_container .warning_list_results .talbe_detail .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: rgba(0, 141, 255, 0.6);
+}
+.warning_list_container .warning_list_results .talbe_detail .ant-table-tbody > tr.ant-table-placeholder:hover > td {
   background-color: rgba(0, 141, 255, 0.6);
 }
 .warning_list_container .warning_list_results .talbe_detail .ant-pagination-item {

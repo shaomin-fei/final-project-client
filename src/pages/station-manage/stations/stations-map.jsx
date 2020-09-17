@@ -72,6 +72,7 @@ export default class MapStations extends MapWithStationStatus {
         >
           <StationOperationBody   
           stationInfo={this.state.stationInfo}
+          closeCallback={this.stationFormCloseCallback}
           // 如果要对函数组件用ref,函数组件要通过forwardRef包裹，否则会报：warning:Function components cannot be given refs
           // ref={sta=>this.stationBody=sta}
           />
@@ -103,7 +104,11 @@ export default class MapStations extends MapWithStationStatus {
         stationInfo.devicesUrl.push(devInfo);
       })
     }
+    if(station.devicesUrl&&station.devicesUrl.length>0){
+      stationInfo.devicesUrl=station.devicesUrl;
+    }
     station.selected=true;
+    stationInfo.id=station.id;
     //@ts-ignore
     stationInfo.lon= lonlat[0].toFixed(6)*1;
     //@ts-ignore

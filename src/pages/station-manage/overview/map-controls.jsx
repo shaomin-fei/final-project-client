@@ -61,7 +61,7 @@ export class StatusInfoControl extends Control{
         </div>
 
         <div id=status_fault_info>
-        <div>Fault</div>
+        <div>Warning</div>
         <div id=status_fault_count>0</div>
         </div>
 
@@ -130,7 +130,7 @@ export class WarningControlComponent extends Component{
 
     container=null;
      handleClick=(cmd,e)=>{
-         this.props.handleWarningClick(cmd);
+         this.props.handleWarningClick([cmd]);
         // switch(cmd){
         //     case "fatal":
         //         break;
@@ -143,22 +143,23 @@ export class WarningControlComponent extends Component{
         // }
     }
     render(){
+        const staticByWarningLevel=this.props.staticByWarningLevel;
         return (
             <>
             <div id="warnning_container" ref={dv=>this.container=dv}>
         <div id="warnning_fatal_info" onClick={e=>this.handleClick("Fatal",e)}>
         <div>Fatal</div>
-        <div id="fatal_count">0</div>
+        <div id="fatal_count">{staticByWarningLevel?staticByWarningLevel.Fatal:0}</div>
         </div>
 
         <div id="warnning_serious_info" onClick={e=>this.handleClick("Serious",e)}>
         <div>Serious</div>
-        <div id="serious_count">0</div>
+        <div id="serious_count">{staticByWarningLevel?staticByWarningLevel.Serious:0}</div>
         </div>
 
         <div id="warnning_general_info" onClick={e=>this.handleClick("General",e)}>
         <div>General</div>
-        <div id="general_count">0</div>
+        <div id="general_count">{staticByWarningLevel?staticByWarningLevel.General:0}</div>
         </div>
         </div>
             </>

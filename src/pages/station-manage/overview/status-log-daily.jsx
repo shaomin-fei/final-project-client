@@ -1,29 +1,17 @@
 //@ts-check
 import React, { Component } from 'react';
-import {renderToString} from "react-dom/server"
+
 import echarts from "echarts";
 import 'antd/dist/antd.css';
 import { UpOutlined,DownOutlined} from "@ant-design/icons";
 
-function getVirtulData(year) {
-    year = year || '2020';
-    var date = +echarts.number.parseDate(year + '-01-01');
-    var end = +echarts.number.parseDate((+year + 1) + '-01-01');
-    var dayTime = 3600 * 24 * 1000;
-    var data = [];
-    for (var time = date; time < end; time += dayTime) {
-        data.push([
-            echarts.format.formatTime('yyyy-MM-dd', time),
-            Math.floor(Math.random() * 10000)
-        ]);
-    }
-    return data;
-}
 
-var data = getVirtulData(2020);
+
+//var data = getVirtulData(2020);
 
 export default class StatusLogDaily extends Component{
 
+    data=[];
     chart=null;
     chartContainer=null;
     option = {
@@ -64,7 +52,7 @@ export default class StatusLogDaily extends Component{
         legend: {
             bottom: '30',
             left: '10',
-            data: ['Have Warnings', 'Last Over 8 Hours'],
+            data: ['Have Warnings', 'Last Over 12 Hours'],
             textStyle: {
                 color: '#fff'
             }
@@ -86,7 +74,7 @@ export default class StatusLogDaily extends Component{
             },
             yearLabel: {
                
-                formatter: '{start}  1st',
+                formatter: '{start}',
                 
                 textStyle: {
                     color: '#fff'
@@ -109,9 +97,14 @@ export default class StatusLogDaily extends Component{
                 name: 'Have Warnings',
                 type: 'scatter',
                 coordinateSystem: 'calendar',
-                data: data,
+                data: this.data,
                 symbolSize: function (val) {
-                    return val[1] / 500;
+                    let size=val[1];
+                    if(val[1]<8){
+                        size=8;
+                    }
+                    
+                    return size;
                 },
                 itemStyle: {
                     color: '#FFC0F5'
@@ -119,15 +112,15 @@ export default class StatusLogDaily extends Component{
             },
             
             {
-                name: 'Last Over 8 Hours',
+                name: 'Last Over 12 Hours',
                 type: 'effectScatter',
                 coordinateSystem: 'calendar',
                 
-                data: data.sort(function (a, b) {
-                    return b[1] - a[1];
-                }).slice(0, 12),
+                data: this.data.filter(dt=>{
+                    return dt[1]>=12;
+                }),
                 symbolSize: function (val) {
-                    return val[1] / 500;
+                    return val[1];
                 },
                 showEffectOn: 'render',
                 rippleEffect: {
@@ -150,6 +143,30 @@ export default class StatusLogDaily extends Component{
        
     }
     render(){
+        this.data=this.props.logData.dailyData||[];
+        this.chart&&this.chart.setOption({
+            calendar: [{
+                range: this.data?[this.data[0][0],this.data[this.data.length-1][0]]:['2020-01-01', '2020-06-30'],
+            }],
+            series: [
+                {
+                    data: this.data,
+                },
+               { 
+                   data: this.data.filter(dt=>{
+                       return dt[1]>=12;
+                   }),
+                symbolSize: function (val) {
+                    let size=val[1];
+                    if(val[1]<8){
+                        size=8;
+                    }
+                    
+                    return size;
+                },
+            }
+            ]
+        });
         return (
             <>
             <div className="status_log_daily_chart_container" ref={dv=>this.chartContainer=dv}>        

@@ -12,7 +12,7 @@ import {RunningTask,TaskInfo} from "./task";
 export const DeviceStatusEnum={
     WORKING:"working",
     IDLE:"idle",
-    FAULT:"fault",
+    FAULT:"warning",
     SHUTDOWN:"shutdown"
 }
 export class DeviceInfo{

@@ -78,6 +78,7 @@
 }
 .status_description .des_fault {
   color: red;
+  margin-left: -15px;
 }
 .status_description .des_shutdown {
   color: #b5b5b5;

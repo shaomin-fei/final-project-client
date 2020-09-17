@@ -85,6 +85,7 @@ const FileToDownload=function(props){
 
     useEffect(()=>{
         if(stateInfo.downloadLink){
+            //@ts-ignore
             downloadLink.current.click();
         }
     },[stateInfo.downloadLink]);
@@ -129,7 +130,7 @@ const FileToDownload=function(props){
             //props.getFilesCallback(getPath());
         }else{
             //download file from server
-            let path="http://localhost:3005/downLoad" //APIConfigEnum.download;
+            let path=APIConfigEnum.download;
             let temp=getPath([...stateInfo.pathInfo]);
             if(temp==="root"){
                 temp="";
