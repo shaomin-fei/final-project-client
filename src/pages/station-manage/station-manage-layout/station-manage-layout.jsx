@@ -93,7 +93,7 @@ class StationManageLayout extends Component {
   };
   render() {
 
-    console.log(this.props);
+    //console.log(this.props);
     const path=this.props.location.pathname;
     const current=this.MenueItems.find((item)=>{
         return item.path===path;

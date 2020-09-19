@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-26 22:50:45
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 14:14:51
+ * @LastEditTime: 2020-09-19 14:13:33
  */
 import Utils from "../../utils/utils"
 export class SpectrumData{
@@ -41,13 +41,24 @@ export function parseSpectrum(array,offset,factor=0.1,original=true){
     let index=0;
     spectrum.type=dataView.getInt8(index);
     index+=1;
+    //debugger
     if(spectrum.type===1){
-        spectrum.centerFreqHz=(dataView.getBigUint64(index,true));
+        //getBigUint64 在safari下不支持
+        if(dataView.getBigUint64){
+            spectrum.centerFreqHz=(dataView.getBigUint64(index,true));
+        }else{
+            spectrum.centerFreqHz=(dataView.getUint32(index,true));
+        }
+        
         index+=8;
         spectrum.span=dataView.getInt32(index,true);
         index+=4;
     }else if(spectrum.type===0){
-        spectrum.startFreqHz=(dataView.getBigUint64(index,true)) ;
+        if(dataView.getBigUint64){
+            spectrum.centerFreqHz=(dataView.getBigUint64(index,true));
+        }else{
+            spectrum.centerFreqHz=(dataView.getUint32(index,true));
+        }
         index+=8;
         spectrum.step=dataView.getInt32(index,true);
         index+=4;
@@ -91,13 +102,22 @@ export function pack(spectrum,desArray,offset){
     dataView.setInt8(index,spectrum.type);
     index+=1;
     if(spectrum.type===0){
-        
-        dataView.setBigInt64(index,(spectrum.startFreqHz),true);
+        //
+        if(dataView.setBigUint64){
+            dataView.setBigUint64(index,(spectrum.startFreqHz),true);
+        }else{
+            dataView.setUint32(index,(spectrum.startFreqHz),true);
+        }
+       
         index+=8;
         dataView.setInt32(index,spectrum.step,true);
         index+=4;
     }else if(spectrum.type===1){
-        dataView.setBigInt64(index,(spectrum.centerFreqHz),true);
+        if(dataView.setBigUint64){
+            dataView.setBigUint64(index,(spectrum.centerFreqHz),true);
+        }else{
+            dataView.setUint32(index,(spectrum.centerFreqHz),true);
+        }
         index+=8;
         dataView.setInt32(index,spectrum.span,true);
         index+=4;

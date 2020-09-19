@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-25 20:24:24
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-31 23:02:25
+ * @LastEditTime: 2020-09-19 13:56:49
  */
 import RealtimeTaskBase from "../realtime-task-base";
 import CmdDefineEnum from "../../../../workers/cmd-define";
@@ -47,7 +47,7 @@ class FixedTask extends RealtimeTaskBase {
   handleBusinessData (type, array, offset,dataLen) {
     if (type === "Spectrum") {
         //this.realSpectrum=new Int8Array(array,offset,dataLen);
-        debugger
+        //debugger
         const specData=parseSpectrum(array,offset+24);
         this.realSpectrum=specData;
         if(!this.maxSpectrum){

@@ -17,10 +17,12 @@
   box-shadow: inset 1px 0px 1px  blue;
   border-radius: 15px;
   float: left;
+  width: 260px;
 }
 .page_container #control_signal_queryByDate .button_query_by_date {
   text-align: center;
   float: right;
+  margin-top: 1px;
 }
 .page_container #control_signal_queryByDate .button_query_by_date .anticon-search {
   top: -2px;

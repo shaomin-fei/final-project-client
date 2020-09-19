@@ -378,7 +378,7 @@ const StationOperationBody = function (props) {
                       </label>
                     </td>
                     <td>
-                      <input
+                      <input className="device_input"
                         type="text"
                         value={device.url}
                         onChange={(e) =>

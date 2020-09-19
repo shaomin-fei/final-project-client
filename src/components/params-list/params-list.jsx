@@ -158,7 +158,7 @@ const ParamsList =function(props){
 function getInputJSX(element){
 
   if(element.Type[0]==="Enum"){
-    return <select className="input_shape">
+    return <select className="input_shape" style={{height:"20px"}}>
       {
           getEnumStringJSX(element.EnumString[0])
       }
@@ -166,7 +166,9 @@ function getInputJSX(element){
   }else if(element.Type[0]==="Number"){
     return (
     <input  onInput={e=>checkNum(e.target)} className="input_shape" 
-    onBlur={e=>judgeMaxMin(e.target,element)} >
+    onBlur={e=>judgeMaxMin(e.target,element)} 
+   
+    >
     </input>
     )
   }

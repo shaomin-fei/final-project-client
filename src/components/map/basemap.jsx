@@ -107,7 +107,8 @@ export default class BaseMap extends Component{
 
       initInfo.mousePositionTargetId&&this.loadMousePosition(initInfo.mousePositionTargetId);
       initInfo.onMapClick&&this.map.addEventListener("click",initInfo.onMapClick);
-      
+      //this.updateSize();
+      //console.log("call mapload");
     }
     addEventListener(cmd,callback){
       this.map&&this.map.addEventListener(cmd,callback);

@@ -7,7 +7,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 22:41:27
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-31 19:01:05
+ * @LastEditTime: 2020-09-19 14:16:48
  */
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
@@ -103,6 +103,67 @@ export default class PlayAudio{
         //     decodeData.set(this.audioDataCache[i],i*this.audioDataCache[i].length);
         // }
         // this.audioDataCache.splice(0,this.audioDataCache.length);
+
+        
+        // this.context.decodeAudioData(data.buffer).then在safari下不支持
+        debugger
+        this.decodeInOldVersion(data);
+        
+        return true;
+    }
+    decodeInOldVersion=(data)=>{
+        this.context.decodeAudioData(data.buffer,buffer=>{
+            
+            const source=this.context.createBufferSource();
+            source.buffer=buffer;
+            buffer.getChannelData(0)
+            source.loop=false;
+            source.connect(this.context.destination);
+           
+            let startTime=this.context.currentTime;
+            if(this.sources.length===0){
+                startTime=0;
+                this.sources.push(source);
+                source.start(startTime);
+                //@ts-ignore
+                source.startTime=this.context.currentTime;
+                //@ts-ignore
+                source.endTime=source.startTime+source.buffer.duration;
+                this.isPlaying=true;
+            }else{
+                const lastSrc=this.sources[this.sources.length-1];
+                //@ts-ignore
+                source.startTime=lastSrc.endTime;
+                //@ts-ignore
+                source.endTime=source.startTime+source.buffer.duration;
+                //@ts-ignore
+                source.start(lastSrc.endTime-0.005);
+                this.sources.push(source);
+            }
+            
+            source.onended=(ev)=>{
+                //console.log("end ev:",ev,this.sources.length);
+                if(this.sources.length===0){
+                    console.log("no data to play");
+                    return;
+                }
+                
+                const index=this.sources.findIndex(src=>{
+                    //@ts-ignore
+                    return src.startTime===ev.currentTarget.startTime
+                });
+                if(index>=0){
+                    this.sources.splice(index,1);
+                }
+                // ev.target.stop();
+                // ev.target.disconnect();
+                //this.sources.shift().start();
+               
+              
+            }
+        });
+    }
+    decodeInNewVersion=(data)=>{
         this.context.decodeAudioData(data.buffer).then(buffer=>{
             
             const source=this.context.createBufferSource();
@@ -155,10 +216,7 @@ export default class PlayAudio{
         }).catch(err=>{
             console.log("audio decode error",err);
         });
-        
-        return true;
     }
-
    
     stop(){
        

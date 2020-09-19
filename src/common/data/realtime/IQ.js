@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-26 22:51:39
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-27 18:35:58
+ * @LastEditTime: 2020-09-19 14:07:57
  */
 //@ts-check
 export class IQData{
@@ -29,7 +29,12 @@ export function parseIQ(array,offset){
    
     let index=0;
     //@ts-ignore
-    iqData.centerFreqHz=Number(dataView.getBigUint64(index,true));
+    if(dataView.getBigUint64){
+        iqData.centerFreqHz=Number(dataView.getBigUint64(index,true));
+    }else{
+        iqData.centerFreqHz=Number(dataView.getUint32(index,true));
+    }
+    
     index+=8;
     iqData.sampleRate=dataView.getInt32(index,true);
     index+=4;

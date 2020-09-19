@@ -39,7 +39,11 @@
     .station-operation-form-body{
         width: 100%;
         height: calc(100% - @headerHeight - 2px);
-        
+        .device_input{
+            //border: 1px solid red;
+            width: 150px;
+            
+        }
         //border:1px solid red;
         .station_base_info_container{
             width: 100%;
@@ -47,6 +51,7 @@
             border-radius: 8px;
             margin-top: 3px;
             border:1px solid #ccc;
+           
             .station_base_info{
                 margin:10px auto;
                 width: 260px;
@@ -63,6 +68,11 @@
                         color:black;
                         width: 150px;
                         height: 30px;
+                        
+                    }
+                    select{
+                        // need border, or height attr can't work in safari
+                        border:1px solid @bkcolor;
                     }
                 }
             }

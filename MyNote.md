@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 09:02:11
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-15 20:07:32
+ * @LastEditTime: 2020-09-17 18:56:17
 -->
 1. when you use git to commit, maybe you will input commit message in vim. you need to press ESC to quit the edit model ,then press :w to save ,then press :q to quit
 2 how to use git it vscode:
@@ -77,6 +77,8 @@ git clone https://github.com/tupes/comit-react-color-organizer.git
 28 typeorm  prisma 
 29 bcrypt
 30 express session
+31 jwt web token
+jsonwebtoken
 
 
 

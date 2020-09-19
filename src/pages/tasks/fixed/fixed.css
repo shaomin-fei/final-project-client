@@ -6,6 +6,7 @@
 .execute_task_layout .site-layout-background {
   margin-top: 5px;
   min-height: 280px;
+  height: calc(100vh - 1px);
 }
 .execute_task_layout .left_sider .ant-layout-sider-zero-width-trigger-left {
   top: auto;

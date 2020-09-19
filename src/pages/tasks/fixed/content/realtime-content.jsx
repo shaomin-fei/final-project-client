@@ -166,6 +166,8 @@ const RealTimeContent =function(props){
                     <input type="text" style={{width:"70px",
                     height:"30px",borderRadius:"10px",marginLeft:"5px",
                     fontWeight:"bold",
+                    // must have, compatiable with safari
+                    lineHeight:"30px",
                     
                 }}
                     value={state.centerFreq}

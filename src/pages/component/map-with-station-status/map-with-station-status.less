@@ -1,9 +1,13 @@
 #realtime_center_map_container{
     width: 100%;
-    height: 100%;
+    // 100%在safari下不兼容
+    //具有百分比高度的元素的父级必须具有已定义的高度,并且必须具有height属性.否则,具有百分比高度的元素必须默认为height：auto(内容高度)。
+
+//chrome会自动弥补这个问题，但是Safari会认为这是一个缺陷,
+    height: calc(100vh - 50px);
     padding:5px;
     position: relative;
-    //border:2px solid yellow;
+    //border:1px solid yellow;
 }
 #realtime_mouseposition_container{
     // border: 1px solid red;

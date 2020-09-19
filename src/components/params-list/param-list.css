@@ -18,8 +18,12 @@
 }
 .paramList_container li .input_shape {
   width: 55px;
+  border: 1px solid #06183d;
   right: 2px;
   top: 3px;
+  height: 20px;
+  line-height: 20px;
   position: absolute;
   color: black;
+  border-radius: 3px;
 }

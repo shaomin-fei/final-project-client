@@ -32,6 +32,9 @@
   width: 100%;
   height: calc(100% - 30px - 2px);
 }
+#station-operation-form .station-operation-form-body .device_input {
+  width: 150px;
+}
 #station-operation-form .station-operation-form-body .station_base_info_container {
   width: 100%;
   height: calc(100% - 4px);
@@ -55,6 +58,9 @@
   color: black;
   width: 150px;
   height: 30px;
+}
+#station-operation-form .station-operation-form-body .station_base_info_container .station_base_info td select {
+  border: 1px solid rgba(5, 23, 61, 0.8);
 }
 #station-operation-form .station-operation-form-body .station_base_info_container .seperator_baseinfo_list {
   width: 100%;

@@ -252,7 +252,7 @@ const FixedTask = (props) => {
           <LeftTree taskInfo={taskInfo} ref={left=>leftTree=left}/>
         </Sider>
         {/* center */}
-        <Layout className="site-layout">
+        <Layout className="site-layout center_side">
           <Content className="site-layout-background">
             <RealTimeContent ></RealTimeContent>
           </Content>
