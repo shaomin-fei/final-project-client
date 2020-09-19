@@ -4,7 +4,7 @@
  * @Author: shaomin fei
  * @Date: 2020-07-29 08:56:20
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-02 18:00:26
+ * @LastEditTime: 2020-09-19 14:27:38
 -->
 1 url:
 front-end url:
@@ -14,7 +14,7 @@ https://github.com/shaomin-fei/final-project-server
 
 2 Introduction
 **2.1 There are three main requirements of the project:manage unattended devices which are used to collect radio signal,control devices,visualize data got from devices.
-**2.2 The project now is testing under Mac, haven't known what it will like under windows or other resolution. So in order to show the current effect, in the front-end's pic folder, I update four pictures,which I cut from my Mac computer.
+**2.2 The project now is testing on Macbook pro,and is able to work well in browser chrome(v 85.0.4183.102) and safari(v13.1.1 (15609.2.9.1.2)), haven't known what it will look like under windows or other resolution. So in order to show the current effect, in the front-end's pic folder, I update four pictures,which I cut from my Mac computer.
 3 How to start?
 **3.1 start server-side:
       npm start
