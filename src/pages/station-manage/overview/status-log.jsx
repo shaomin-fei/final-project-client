@@ -1,6 +1,7 @@
 //@ts-check
 import React,{Component} from "react";
 import Axios from "axios";
+import { message } from "antd";
 
 import 'antd/dist/antd.css';
 import { CloseOutlined} from "@ant-design/icons";
@@ -12,7 +13,7 @@ import APIConfigEnum from "../../../config/api-config";
 
 import "./overview-map.css";
 import Utils from "../../../common/utils/utils";
-import { message } from "antd";
+import withDrag from "../../../components/HOC/with-drag/with-drag";
 class StatusLog extends Component{
 
    data={
@@ -68,8 +69,8 @@ class StatusLog extends Component{
       //console.log(showLogStation);
       return (
 
-        <div className="status_log_container" >
-          <div className="status_header">
+        <div className="status_log_container" id="status_log_container_id">
+          <div className="status_header" id="status_header_drag">
             <span>Status Log</span>
             <span>
               <CloseOutlined onClick={this.props.closeCallback}/>
@@ -118,4 +119,5 @@ class StatusLog extends Component{
     }
     
 }
-export default StatusLog;
+export default withDrag(StatusLog,"status_header_drag","status_log_container_id");
+//export default StatusLog;
