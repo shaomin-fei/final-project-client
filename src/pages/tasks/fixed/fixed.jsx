@@ -118,11 +118,12 @@ function stopTask(){
       currentWorker&&currentWorker.terminate();
     currentWorker=null;
     playAudio.stop();
-    }, 500);
+    console.log("stop");
+    }, 0);
     
   }
  
-  console.log("stop");
+  
 }
 /**
  * @Date: 2020-08-27 07:57:34

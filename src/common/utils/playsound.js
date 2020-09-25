@@ -7,7 +7,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 22:41:27
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-19 14:16:48
+ * @LastEditTime: 2020-09-24 22:03:03
  */
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
@@ -44,13 +44,15 @@ export default class PlayAudio{
      * @param {WaveFormate} wvFormate 
      */
     initPlay(wvFormate){
-        
+        //console.log("initplay in");
         if(this.hasInit){
             return;
         }
+        //console.log("initplay start");
         this.channel=wvFormate.channels;
         this.sampleRate=wvFormate.samplePerSec;
         this.stop();
+        //console.log("new context");
          this.context=new AudioContext();
          
          //this.audioBuffer=this.context.createBuffer(this.channel,this.bufferLen,this.sampleRate);
@@ -113,7 +115,10 @@ export default class PlayAudio{
     }
     decodeInOldVersion=(data)=>{
         this.context.decodeAudioData(data.buffer,buffer=>{
-            
+            if(!this.context){
+                //because it's an asynchronous function, maybe it'll be called after stop
+                return;
+            }
             const source=this.context.createBufferSource();
             source.buffer=buffer;
             buffer.getChannelData(0)
@@ -219,10 +224,11 @@ export default class PlayAudio{
     }
    
     stop(){
-       
+        //console.log("stop in");
         if(!this.hasInit){
             return;
         }
+        //console.log("stop start");
         this.hasInit=false;
         //this.audioData&&this.audioData.splice(0,this.audioData.length);
         
