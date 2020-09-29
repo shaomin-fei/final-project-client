@@ -8,7 +8,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-26 11:27:48
+ * @LastEditTime: 2020-09-29 00:12:18
  */
 
 import React, { Component } from "react";
@@ -84,17 +84,20 @@ export default class CenterMap extends Component {
         sta.element.removeEventListener("click", this.onStationClick);
     });
     //@ts-ignore
+    console.log("bug unmount ",this.signalListInfo);
     this.signalListInfo &&
       this.signalListInfo.closeElement &&
-      this.signalListInfo.closeElement.forEach((element) => {
-        element.removeEventListener("click", this.closeSignalDetailDiag);
-      });
+      this.signalListInfo.closeElement.length>0&&
+      this.signalListInfo.closeElement[0].removeEventListener("click", this.closeSignalDetailDiag);
+     
     //@ts-ignore
-    this.signalListInfo &&
-      this.signalListInfo.showDetailElement &&
-      this.signalListInfo.showDetailElement.forEach((element) => {
-        element.removeEventListener("click", this.showSignalDetailClick);
-      });
+    if(this.signalListInfo &&
+      this.signalListInfo.showDetailElement ){
+        for(let i=0;i<this.signalListInfo.showDetailElement.legth;i++){
+          this.signalListInfo.showDetailElement[i].removeEventListener("click", this.showSignalDetailClick);
+        }
+      }
+     
     //document.removeEventListener("mouseout",this.resizeEnd);
   }
   componentDidMount() {
@@ -104,6 +107,9 @@ export default class CenterMap extends Component {
     window.addEventListener("resize",this.restoreMapHeighToOriginal);
     this.signalListDlg = null;
     this.signalListInfo = {
+      /**
+       * @type {HTMLCollection}
+       */
       closeElement: null,
       showDetailElement: null,
     };
