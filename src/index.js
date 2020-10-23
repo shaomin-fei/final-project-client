@@ -1,7 +1,7 @@
 /*
  * @Author: shaomin fei
  * @Date: 2020-07-28 14:15:40
- * @LastEditTime: 2020-08-24 11:02:05
+ * @LastEditTime: 2020-10-23 11:49:56
  * @LastEditors: shaomin fei
  * @Description:
  * @FilePath: \rms-ui\src\index.js
@@ -19,6 +19,7 @@ import "./index.css";
 import { MainPageInfo,Routers } from "./config/config";
 import WorkersManage from "./workers/workers-manage";
 import store from "./redux/store";
+
 
 const workManage=new WorkersManage();
 //workManage.start();

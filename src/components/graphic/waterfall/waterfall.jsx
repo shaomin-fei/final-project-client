@@ -226,7 +226,7 @@ export default class Waterfall extends Component {
     },10);
   }
   componentWillUnmount(){
-    console.log("xxx waterwall unmount");
+    //console.log("xxx waterwall unmount");
   }
   updateSymbolHeight(){
     this.chartHeatMap.legend.update(
@@ -405,14 +405,17 @@ export default class Waterfall extends Component {
     };
 
     this.chartHeatMap = Highcharts.chart(this.heatMapContainer, options);
-    //    replace  update function and speed up the process
-    this.chartHeatMap.get("waterfall").__proto__.updateData = this.updateData;
+    
 
-    console.log("water fall set originalTranslate");
+    //console.log("water fall set originalTranslate");
     this.chartHeatMap.get("waterfall").originalTranslate=
     this.chartHeatMap.get("waterfall").__proto__.translate;
 
-    this.chartHeatMap.get("waterfall").__proto__.translate=this.wrappedTranslate
+    //this.chartHeatMap.get("waterfall").__proto__.translate=this.wrappedTranslate
+    this.chartHeatMap.get("waterfall").translate=this.wrappedTranslate;
+    //    replace  update function and speed up the process
+    //this.chartHeatMap.get("waterfall").__proto__.updateData = this.updateData;
+    this.chartHeatMap.get("waterfall").updateData=this.updateData;
 
     this.chartHeatMap.get("waterfall").prePoints=[];
 

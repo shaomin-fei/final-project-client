@@ -7,7 +7,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 22:41:27
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-24 22:03:03
+ * @LastEditTime: 2020-10-23 11:57:40
  */
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
@@ -108,7 +108,7 @@ export default class PlayAudio{
 
         
         // this.context.decodeAudioData(data.buffer).then在safari下不支持
-        debugger
+        //debugger
         this.decodeInOldVersion(data);
         
         return true;
