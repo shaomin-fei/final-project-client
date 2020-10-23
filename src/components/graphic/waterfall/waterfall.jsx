@@ -405,6 +405,7 @@ export default class Waterfall extends Component {
     //    replace  update function and speed up the process
     this.chartHeatMap.get("waterfall").__proto__.updateData = this.updateData;
 
+    console.log("water fall set originalTranslate");
     this.chartHeatMap.get("waterfall").originalTranslate=
     this.chartHeatMap.get("waterfall").__proto__.translate;
 
@@ -438,7 +439,11 @@ export default class Waterfall extends Component {
     const totalRow=this.totalRow;
     if(!prePoints||prePoints.length==0){
       //第一次
-      this.originalTranslate();
+      //console.log("first call originalTranslate");
+      if(this.originalTranslate){
+        this.originalTranslate();
+      }
+      
       return;
     }
     const shapeArgs=prePoints[0].shapeArgs;
