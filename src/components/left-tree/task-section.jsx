@@ -167,7 +167,7 @@ if(device){
                  <span className="task_operation_span" style={{padding:"0px 5px"}}>
                 {/* href 中执行js代码，;表示执行空代码，这样onclick才会响应 */}
                 {/* executeTask格式 type=executeTask&&stationid=xx&&deviceid=xxx&&tasktype=xxx */}
-                 <Link to={strExecute}  style={linkStyleStart}  onClick={(e)=>this.handleLinkClick(e,item,"start")}> Start</Link>
+                 <Link to={strExecute}  target="_blank" style={linkStyleStart}  onClick={(e)=>this.handleLinkClick(e,item,"start")}> Start</Link>
                  {/* watchTask格式 type=watchTask&&stationid=xx&&deviceid=xxx&&tasktype=xxx&&taskid=xxx */}
                  <Link to={strWatch} target="_blank" style={linkStyleWatch}  onClick={(e)=>this.handleLinkClick(e,item,"watch")}>Watch</Link>
             </span>

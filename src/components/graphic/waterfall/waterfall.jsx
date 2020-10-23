@@ -225,6 +225,9 @@ export default class Waterfall extends Component {
         this.updateSymbolHeight();
     },10);
   }
+  componentWillUnmount(){
+    console.log("xxx waterwall unmount");
+  }
   updateSymbolHeight(){
     this.chartHeatMap.legend.update(
       { symbolHeight: this.chartHeatMap?.plotHeight },
@@ -442,6 +445,8 @@ export default class Waterfall extends Component {
       //console.log("first call originalTranslate");
       if(this.originalTranslate){
         this.originalTranslate();
+      }else{
+        console.log("originalTranslate is null" );
       }
       
       return;
@@ -709,7 +714,9 @@ const ExtendChart = () => {
           const dateIn=Date.now();
         //   试下两个contex绘图的效率怎么杨
         ((data)=> {
-          
+          if(!data){
+            return;
+          }
           //原图下移， 通过数据绘制第一行图像，并插入在第一行像素中
           rowToImageData(data);
           //copy waterfallctx to ctx
