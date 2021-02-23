@@ -1,7 +1,7 @@
-//@ts-check
+
 import React,{useReducer} from "react";
 
-import {TaskParamFromDevice,ToolbarCmdContext} from "../../../../common/data/realtime/tasks-common"
+import {ToolbarCmdContext} from "../../../../common/data/realtime/tasks-common"
 import CommonToolbar from "../../toolbars/common-toolbar";
 import Spectrum,{startTask as startShow,stopTask as stopShow, reset as resetSpectrum, resizeChart as resizeSpectrumChart,setData as setSpecData} from "../../../../components/graphic/spectrum/spectrum";
 import LevelGraph,{reset as resetLevel, resizeChart as resizeLevelChart,setData as setLevelData}  from "../../../../components/graphic/level/level";

@@ -29,7 +29,7 @@ const CockPit = function (props) {
    * @type {CenterInfo} tree
    */
   const tree=props.tree;  
-  console.log("cockpit render");
+
   return (
     <TreeContext.Provider value={tree}>
     <div className="cockPit">
@@ -58,9 +58,7 @@ const CockPit = function (props) {
     
   );
 };
-const mapStateToProps={
 
-};
 export default connect(
   // props will pass state.tree
   state=>({tree:state.tree}),

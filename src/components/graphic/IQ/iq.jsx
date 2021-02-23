@@ -203,8 +203,7 @@ const optionStar={
       },
 }
 function ZoomXaxis(event) {
-    console.log("zoomxaxix",event);
-    const [min, max] = SpectrumUtils.ZoomXaxies(
+    SpectrumUtils.ZoomXaxies(
       event,
       chartIQRealtime.xAxis[0].tickInterval
     );
@@ -216,7 +215,7 @@ const IQGraph=function(props){
       //
       //@ts-ignore
       if (!Highcharts.Series.prototype.renderCanvas) {
-        throw 'Module not loaded';
+        throw Error('Module not loaded');
     }
         chartIQRealtime = Highcharts.chart(
             containerRealtime,

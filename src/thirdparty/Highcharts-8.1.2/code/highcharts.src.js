@@ -16461,6 +16461,7 @@
             Axis.prototype.drawCrosshair = function (e, point) {
                 var path, options = this.crosshair, snap = pick(options.snap, true), pos, categorized, graphic = this.cross, crossOptions, chart = this.chart;
                 fireEvent(this, 'drawCrosshair', { e: e, point: point });
+                //console.log("plotx,y",point.plotX,point.plotY);
                 // Use last available event when updating non-snapped crosshairs without
                 // mouse interaction (#5287)
                 if (!e) {
@@ -16517,6 +16518,7 @@
                     categorized = this.categories && !this.isRadial;
                     // Draw the cross
                     if (!graphic) {
+                        //console.log("graphic is true");
                         this.cross = graphic = chart.renderer
                             .path()
                             .addClass('highcharts-crosshair highcharts-crosshair-' +
@@ -16550,6 +16552,7 @@
                     graphic.show().attr({
                         d: path
                     });
+                    //console.log("graphic show,",path);
                     if (categorized && !options.width) {
                         graphic.attr({
                             'stroke-width': this.transA
@@ -23042,7 +23045,8 @@
                 if (!chart.openMenu &&
                     (this.inClass(pEvt.target, 'highcharts-tracker') ||
                         chart.isInsidePlot((pEvt.chartX - chart.plotLeft), (pEvt.chartY - chart.plotTop)))) {
-                    this.runPointActions(pEvt);
+                            //console.log("onContainerMouseMove");
+                            this.runPointActions(pEvt);
                 }
             };
             /**
@@ -23505,6 +23509,7 @@
                     // Axis has snapping crosshairs, and one of the hover points belongs
                     // to axis. Always call drawCrosshair when it is not snap.
                     if (point || !snap) {
+                        //console.log("drawCrosshair",Date.now());
                         axis.drawCrosshair(e, point);
                         // Axis has snapping crosshairs, but no hover point belongs to axis
                     }
@@ -31684,7 +31689,7 @@
                     }
                 }, this);
                 // Remove points that don't exist in the updated data set
-                let dateIn=Date.now();
+                //let dateIn=Date.now();
                 if (hasUpdatedByKey) {
                     i = oldData.length;
                     while (i--) {
@@ -31693,7 +31698,7 @@
                             point.remove(false, animation);
                         }
                     }
-                    console.log("upate destroy out",Date.now()-dateIn);
+                    //console.log("upate destroy out",Date.now()-dateIn);
                     // If we did not find keys (ids or x-values), and the length is the
                     // same, update one-to-one
                 }
@@ -31782,7 +31787,7 @@
              * @return {void}
              */
             setData: function (data, redraw, animation, updatePoints) {
-               const dateIn=Date.now();
+               //const dateIn=Date.now();
                 var series = this, oldData = series.points, oldDataLength = (oldData && oldData.length) || 0, dataLength, options = series.options, chart = series.chart, dataSorting = options.dataSorting, firstPoint = null, xAxis = series.xAxis, i, turboThreshold = options.turboThreshold, pt, xData = this.xData, yData = this.yData, pointArrayMap = series.pointArrayMap, valueCount = pointArrayMap && pointArrayMap.length, keys = options.keys, indexOfX = 0, indexOfY = 1, updatedData;
                 data = data || [];
                 dataLength = data.length;
@@ -31802,7 +31807,7 @@
                     // (#8355)
                     !series.isSeriesBoosting) {
                     updatedData = this.updateData(data, animation);
-                    console.log("from setdata to update",Date.now()-dateIn);
+                    //console.log("from setdata to update",Date.now()-dateIn);
                 }
                 if (!updatedData) {
                     // Reset properties
@@ -31874,14 +31879,14 @@
                     series.options.data = series.userOptions.data = data;
                     // destroy old points
                     i = oldDataLength;
-                    let dateIn=Date.now();
+                    //let dateIn=Date.now();
                     //console.log("destroy in",);
                     while (i--) {
                         if (oldData[i] && oldData[i].destroy) {
                             oldData[i].destroy();
                         }
                     }
-                    console.log("destroy out",Date.now()-dateIn);
+                    //console.log("destroy out",Date.now()-dateIn);
                     // reset minRange (#878)
                     if (xAxis) {
                         xAxis.minRange = xAxis.userMinRange;
@@ -33514,9 +33519,9 @@
                     });
                     
                 }
-                const dateIn=Date.now();
+                //const dateIn=Date.now();
                 series.translate();
-                console.log("from redraw before series.render",Date.now()-dateIn);
+                //console.log("from redraw before series.render",Date.now()-dateIn);
                
                 series.render();
                 //
@@ -33658,9 +33663,11 @@
                     return ret;
                 }
                 if (!this.kdTree && !this.buildingKdTree) {
+                    //console.log("build kdtree");
                     this.buildKDTree(e);
                 }
                 if (this.kdTree) {
+                    //console.log("build kdtree");
                     return _search(point, this.kdTree, kdDimensions, kdDimensions);
                 }
             },

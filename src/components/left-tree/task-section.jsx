@@ -43,7 +43,6 @@ class TaskSection extends Component {
    * @param {string} operation "watch" "start"
    */
   handleLinkClick=(e,item,operation)=>{
-    console.log(e);
     if(operation==="watch"){
       if(!item.canWatch){
         message.info("no tasks");

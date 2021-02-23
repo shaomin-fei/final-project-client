@@ -1686,6 +1686,7 @@
             translate: function () {
                 var series = this, options = series.options, symbol = options.marker && options.marker.symbol || '', shape = symbols[symbol] ? symbol : 'rect', options = series.options, hasRegularShape = ['circle', 'square'].indexOf(shape) !== -1;
                 series.generatePoints();
+                //const dataIn=Date.now();
                 series.points.forEach(function (point) {
                     var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
                         x: Math.min(cellAttr.x1, cellAttr.x2),
@@ -1724,7 +1725,9 @@
                     }
                     extend(point, pointAttr);
                 });
+                //console.log("heatmap translate",Date.now()-dataIn);
                 fireEvent(series, 'afterTranslate');
+                
             },
             /**
              * @private

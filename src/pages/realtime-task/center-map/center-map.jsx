@@ -11,8 +11,6 @@ import pubsub from "pubsub-js";
 import "./center-map.css";
 import RealtimeStationInfoBox from "./realtime-station-info-box";
 
-import OverlayInfo from "../../../components/map/overlay-info";
-import Station from "../../../common/data/station";
 import RigtTaskControl from "./right-task-list";
 import MapWithStationStatus from "../../component/map-with-station-status/map-with-station-status";
 class CenterMap extends MapWithStationStatus {
@@ -44,9 +42,7 @@ class CenterMap extends MapWithStationStatus {
   }
  
   
-  /**
- * @param {Station} station
- */
+
 createDlg=(station)=>{
   return <RealtimeStationInfoBox 
   currentStation={station} 

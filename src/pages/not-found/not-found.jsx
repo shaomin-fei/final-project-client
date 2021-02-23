@@ -1,15 +1,16 @@
 // @ts-check
 import React,{useState,useEffect,useRef} from 'react';
 import {Link} from "react-router-dom"
-import Rocket from "../../imgs/pagenotfound/rocket.png"
+
 import "./not-found.css"
 
+let fromLeftToRight=true;
 const NotFoundPage=function(props){
    
 let [rocketLeft,setRocketLeft]=useState(0);
 let[spanClassName,setSpanClassName]=useState("steam1");
   //let rocket=document.getElementById("rocket");
-  let fromLeftToRight=true;
+ 
   //
   let didMount=useRef(false);
   
@@ -21,7 +22,7 @@ let[spanClassName,setSpanClassName]=useState("steam1");
         if(!rocket){
          rocket=document.getElementById("rocket");
          originalOffsetLeft=rocket?rocket.offsetLeft:0;
-         rocketLeft=rocket.offsetLeft;
+         setRocketLeft(rocket.offsetLeft);
          return;
         }
         
@@ -31,14 +32,13 @@ let[spanClassName,setSpanClassName]=useState("steam1");
         else if(rocket.offsetLeft-originalOffsetLeft<=0){
          fromLeftToRight=true;
         }
-        fromLeftToRight?rocketLeft=rocket.offsetLeft+1:rocketLeft=rocket.offsetLeft-1;
-        setRocketLeft(rocketLeft);
-        if(spanClassName==="steam1"){
-            spanClassName="steam2";
-        }else{
-         spanClassName="steam1";
+        let rocketLeftTemp=rocket.offsetLeft-1;
+        if(fromLeftToRight){
+            rocketLeftTemp=rocket.offsetLeft+1;
         }
-        setSpanClassName(spanClassName);
+        setRocketLeft(rocketLeftTemp);
+        
+        setSpanClassName( span=>(span==="steam1"?"steam2":"steam1"));
     }, 50);
 
     return ()=>{

@@ -4,7 +4,7 @@ import pubsub from "pubsub-js";
 import { getSingalByReason } from "../../../../workers/workers-manage";
 import CmdDefineEnum from "../../../../workers/cmd-define";
  
-import {Issue,SignalStaticByReason} from "../../context"
+
 
 const echarts = require("echarts");
 
@@ -125,7 +125,7 @@ export default class SignalChart extends Component {
     let opacity = 0.5;
 
     const getColor = (params) => {
-      {
+      
         if (params && params.data && params.data.selected) {
           //return "rgba(38,178,232,1)";
           return {
@@ -149,10 +149,10 @@ export default class SignalChart extends Component {
         } else {
           return "rgba(38,178,232,0.5)";
         }
-      }
+      
     };
     const getCircleColor = (params) => {
-      {
+      
         if (params && params.data && params.data.selected) {
           //return "rgba(38,178,232,1)";
           return {
@@ -176,7 +176,7 @@ export default class SignalChart extends Component {
         } else {
           return "rgba(38,178,232,0.5)";
         }
-      }
+      
     };
     this.option = {
       //   backgroundColor: "#031845",

@@ -4,13 +4,12 @@
  * @Author: shaomin fei
  * @Date: 2020-08-17 20:58:04
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-24 10:01:52
+ * @LastEditTime: 2021-02-23 00:49:03
  */
 import { notification } from 'antd';
 import "antd/dist/antd.css";
 
 import StationActionType from "../action-types/action-types";
-import ActionParam from "../action-param";
 import Axios from "axios";
 // when use thunk,the param must be plain object,can't be class
 export const addStation=(station)=>({type:StationActionType.addStation,data:station});

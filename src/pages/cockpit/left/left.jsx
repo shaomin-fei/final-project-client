@@ -12,7 +12,7 @@ import DailyMonitor from "./daily-monitor/DailyMonitor";
 import Status from "./status/status";
 
 const Left=function(props){
-    console.log("left called");
+   
     return (
     <>
     <Status/>

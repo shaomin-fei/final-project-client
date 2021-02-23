@@ -1,8 +1,7 @@
-//@ts-check
 import React, { useMemo, useState,useEffect } from "react";
 import "antd/dist/antd.css";
 import { TreeSelect} from "antd";
-import CenterInfo from "../../../common/data/center";
+
 
 const { SHOW_PARENT } = TreeSelect;
 const StationTreeSelect=function(props){
@@ -17,10 +16,26 @@ const StationTreeSelect=function(props){
     if(props.style){
         style=props.style;
     }
+    const stationTreeSelectedChanged=props.stationTreeSelectedChanged;
     const [state,setTreeSelection]=useState({stationTreeChange:stationTrees?[stationTrees.name]:[]});
     useEffect(()=>{
+      function invokeStationSelectedChangedCallBack(value){
+        if(stationTreeSelectedChanged){
+            if(value.length===1&&value[0]===stationTrees.name){
+                //select the root, expand the root to children
+                
+                const selected=stationTrees.stations.map(sta=>{
+                    return sta.name;
+                });
+                stationTreeSelectedChanged(selected);
+            }else{
+                stationTreeSelectedChanged(value);
+            }
+           
+        }
+      }
         invokeStationSelectedChangedCallBack(state.stationTreeChange);
-    },[state.stationTreeChange]);
+    },[state.stationTreeChange,stationTreeSelectedChanged,stationTrees]);
     /**
      * @Date: 2020-09-16 09:43:11
      * @Description: 
@@ -31,21 +46,7 @@ const StationTreeSelect=function(props){
         setTreeSelection({stationTreeChange:value});
         
       }
-      function invokeStationSelectedChangedCallBack(value){
-        if(props.stationTreeSelectedChanged){
-            if(value.length===1&&value[0]===stationTrees.name){
-                //select the root, expand the root to children
-                
-                const selected=stationTrees.stations.map(sta=>{
-                    return sta.name;
-                });
-                props.stationTreeSelectedChanged(selected);
-            }else{
-                props.stationTreeSelectedChanged(value);
-            }
-           
-        }
-      }
+      
     let treeData = useMemo(() => {
         //console.log("use memo call");
         if (

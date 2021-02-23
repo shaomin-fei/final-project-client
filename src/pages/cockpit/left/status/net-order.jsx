@@ -1,7 +1,7 @@
 //@ts-check
 import React from 'react';
 import { Component } from 'react';
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
+
 
 const echarts = require('echarts');
 
@@ -158,7 +158,7 @@ export default class NetOrder extends Component{
         this.chart&&this.chart.setOption(option);
     }
     render(){
-        console.log("net order called");
+       
         const {lastFive}=this.props;
         if(lastFive&&lastFive.length>0){
             //console.log("lastfive",lastFive);

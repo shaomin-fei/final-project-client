@@ -45,10 +45,11 @@ let startTime=Utils.dateFormat(
   )+" 00:00:00";
 export const QueryByDateFC=function(props){
 
+    const queryCallback= props.queryCallback;
     useEffect(()=>{
         // query when component did mount
-        handleQueryBtnClick();
-    },[]);
+        queryCallback(startTime,stopTime);
+    },[queryCallback]);
     //const dataRange=useRef();
     function handleQueryBtnClick(){
         props.queryCallback(startTime,stopTime);

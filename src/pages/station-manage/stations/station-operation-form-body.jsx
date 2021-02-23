@@ -59,7 +59,7 @@ function reducer(prestate, action) {
   }
 }
 let deviceLstTbBody=null;
-let updateStation=null;
+
 const StationOperationBody = function (props) {
   //const [station,setStationInfo]=useState(new StationBodyInfo());
 
@@ -74,7 +74,7 @@ const StationOperationBody = function (props) {
      */
 
     const stationInfo = props.stationInfo;
-    updateStation=stationInfo;
+ 
 
     //第一次加载和选中站变化时候调用
   useEffect(() => {
@@ -84,13 +84,11 @@ const StationOperationBody = function (props) {
      * @type {StationBodyInfo}
      */
 
-    const stationInfo = props.stationInfo;
     if (stationInfo) {
       //@ts-ignore
       dispatch({ type: stationInfo.cmd, data: stationInfo });
     }
-    console.log("did mount effect");
-  }, [updateStation]);
+  }, [stationInfo]);
   //仅当添加或删除站的设备完成后调用
   useEffect(()=>{
     if(station.devicesUrl.length===0){

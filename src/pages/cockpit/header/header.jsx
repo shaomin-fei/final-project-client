@@ -14,10 +14,10 @@ import '../cockpit.css'
 const Header=function(props){
     return (
     <section className="header">
-        <img className="header_left" src={require('../../../imgs/newLeftLogo.png')}></img>
+        <img alt='' className="header_left" src={require('../../../imgs/newLeftLogo.png')}></img>
         <section className="header_center">FM Monitor System</section>
        
-        <img  className="header_right" src={require('../../../imgs/newRightLogo.png')}>
+        <img alt='' className="header_right" src={require('../../../imgs/newRightLogo.png')}>
         </img>
         
         <HeaderRight />

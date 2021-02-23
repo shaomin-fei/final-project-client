@@ -1,5 +1,3 @@
-// @ts-check
-
 /*
 
 
@@ -8,7 +6,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-07 21:52:44
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-29 00:12:18
+ * @LastEditTime: 2021-02-22 23:37:49
  */
 
 import React, { Component } from "react";
@@ -20,9 +18,9 @@ import { MapInitInfo, LonLat } from "../../../../components/map/datas";
 import OverlayInfo from "../../../../components/map/overlay-info";
 import MapConfig from "../../../../config/mapconfig";
 import CmdDefineEnum from "../../../../workers/cmd-define";
-import CenterInfo from "../../../../common/data/center";
+
 import { getCurrentTree } from "../../../../workers/workers-manage";
-import { Issue, SignalStaticByReason } from "../../context";
+
 import SignalList from "./signal-list";
 
 import "./station_overlay.css";
@@ -84,7 +82,7 @@ export default class CenterMap extends Component {
         sta.element.removeEventListener("click", this.onStationClick);
     });
     //@ts-ignore
-    console.log("bug unmount ",this.signalListInfo);
+    
     this.signalListInfo &&
       this.signalListInfo.closeElement &&
       this.signalListInfo.closeElement.length>0&&
@@ -395,7 +393,7 @@ export default class CenterMap extends Component {
   };
 
   mapLoaded = () => {
-    console.log("map loded");
+    //console.log("map loded");
     // when the map first loaded, we need to updatesize,or the map will not be full of the container
     this.map.updateSize();
     this.map.removeLoadedCallBack(this.mapLoaded);

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 //import Highcharts,{extend} from "highcharts";
 
-import Highcharts,{merge,extend,fireEvent} from "../../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js";
+import Highcharts,{extend} from "../../../thirdparty/Highcharts-8.1.2/code/highcharts.src.js";
 import highchartsHeatmap from "../../../thirdparty/Highcharts-8.1.2/code/modules/heatmap.src.js";
 
 import { SpectrumUtils } from "../utils";
@@ -51,7 +51,7 @@ highchartsHeatmap(Highcharts);
   }
   function calculateShapes(points,hasRegularShape){
     points.forEach(function (point) {
-      var pointAttr, sizeDiff, hasImage, cellAttr = point.getCellAttributes(), shapeArgs = {
+      var pointAttr, sizeDiff, cellAttr = point.getCellAttributes(), shapeArgs = {
           x: Math.min(cellAttr.x1, cellAttr.x2),
           y: Math.min(cellAttr.y1, cellAttr.y2),
           width: Math.max(Math.abs(cellAttr.x2 - cellAttr.x1), 0),
@@ -143,8 +143,8 @@ export default class Waterfall extends Component {
     if (this.valueData) {
       this.valueData.splice(0, this.valueData.length);
     }
-    const dataIn=Date.now();
-    let index=0;
+ 
+    
     data.forEach(function (point) {
       //this.addPoint(point, false, null, null, false);
       //xData，yData，processedXData，processedXData分别关联
@@ -202,7 +202,7 @@ export default class Waterfall extends Component {
       if (this.chartHeatMap) {
         //(this.chartHeatMap.get("waterfall") as Highcharts.Series).setData(dataShowTemp,true,false,true);
         //(this.chartHeatMap.get("waterfall") ).setData([],false);
-        const date=Date.now();
+        
         this.chartHeatMap.get("waterfall").isTranslated=false;
         this.chartHeatMap.get("waterfall").thisData=data;
         this.chartHeatMap.get("waterfall").setData(dataShow, bDraw);
@@ -436,14 +436,14 @@ export default class Waterfall extends Component {
   }
    
   wrappedTranslate(){
-    const dateIn=Date.now();
+    
     let prePoints=this.prePoints;
     let preData=this.preData;
     this.points=prePoints;
     this.data=preData;
     const thisData=this.thisData;
     const totalRow=this.totalRow;
-    if(!prePoints||prePoints.length==0){
+    if(!prePoints||prePoints.length===0){
       //第一次
       //console.log("first call originalTranslate");
       if(this.originalTranslate){
@@ -476,7 +476,7 @@ export default class Waterfall extends Component {
       //console.log("delete count",ii,Date.now()-dateRm);
     }
    
-    let dateAdd=Date.now();
+   
     //新数据添加
     let newPts=[];
     for (let i = 0; i < thisData.length; i++) {
@@ -497,7 +497,7 @@ export default class Waterfall extends Component {
     const hasRegularShape = ['circle', 'square'].indexOf(shape) !== -1;
     
 
-    let dateShape=Date.now();
+    
     calculateShapes(newPts,hasRegularShape);
 
   //console.log("data shape",Date.now()-dateShape);
@@ -513,7 +513,7 @@ export default class Waterfall extends Component {
   }
 
   render() {
-    const {display}=this.props;
+    let {display}=this.props;
     if(!display){
         display="block";
     }
@@ -611,7 +611,7 @@ const ExtendChart = () => {
      */
     H.wrap(H.seriesTypes.heatmap.prototype, "drawPoints", function () {
       //const dateIn=Date.now();
-      var { ctx, waterFallCtx } = this.getContext();
+      var { ctx } = this.getContext();
       if (1) {
 
         
@@ -631,7 +631,7 @@ const ExtendChart = () => {
         let pointNew=[];
         
        pointNew=(()=>{
-            const dateIn=Date.now();
+            
             let pts=[];
             data.forEach((dt)=>{
                 let pt=getPoint(dt);
@@ -645,7 +645,7 @@ const ExtendChart = () => {
 
         //draw first line
         //const count=this.points.length/801;
-        const dateRec=Date.now();
+        
         //if()
         if(pointNew.length>0){
             // 将已生成的图像向下移动一个点的位置
@@ -698,9 +698,7 @@ const ExtendChart = () => {
      
      };
         const drawImage= ()=> {
-            const dateIn=Date.now();
-            const width = this.ctx.canvas.width
-            const height = this.ctx.canvas.height
+            
             if (!this.waterFallCtx.canvas.width) {
                 return
             }
@@ -714,7 +712,7 @@ const ExtendChart = () => {
 
           }
 
-          const dateIn=Date.now();
+          
         //   试下两个contex绘图的效率怎么杨
         ((data)=> {
           if(!data){

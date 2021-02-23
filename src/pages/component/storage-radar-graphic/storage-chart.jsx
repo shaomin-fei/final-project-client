@@ -177,7 +177,7 @@ class StorageChart extends Component {
      * @type {initstate}
      */
     const storageInfo=this.props.storageInfo;
-    console.log("storage chart render");
+   
     
     if(storageInfo){
       if(typeof(storageInfo)==="string"){
@@ -243,10 +243,7 @@ class StorageChart extends Component {
 const mapStateToProps=(state,ownProps)=>{
   return {storageInfo:state.storageInfo};
 }
-//包装一下action，使其可以被diaptch
-const mapDipatchToProps=(dispatch,ownProps)=>{
-  return {getStorageInfoAsync};
-}
+
 export default connect(
   mapStateToProps,
   {getStorageInfoAsync}

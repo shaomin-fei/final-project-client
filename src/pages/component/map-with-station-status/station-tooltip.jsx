@@ -2,7 +2,7 @@ import React from "react";
 
 import "./station-tooltip.css"
 const StationTooltip=function(props){
-    console.log("StationTooltip",props);
+   
     const station=props.station;
     const left=props.left;
     const top=props.top;

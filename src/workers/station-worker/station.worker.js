@@ -1,16 +1,7 @@
 
-//@ts-check
-/*
- * @Description: 
- * @version: 1.0
- * @Author: shaomin fei
- * @Date: 2020-08-17 11:34:24
- * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-02 16:11:53
- */
 let temp=0;
 temp=temp+1;
-console.log("load worker",temp);
+//console.log("load worker",temp);
 /**
  * @Date: 2020-08-17 16:07:56
  * @Description: 
@@ -46,7 +37,7 @@ const getStations=async (url)=>{
         //console.log("get",strNowTree);
         if(strNowTree!==stationString){
             stationString=strNowTree;
-            console.log("tree changed,post");
+            //console.log("tree changed,post");
             if(!signalByReason){
                 //the first time to get the signal,must after the stations get value;
                 getSignalByReason(APIConfigEnum.getSignalStaticByReason);

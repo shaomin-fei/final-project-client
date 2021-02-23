@@ -1,5 +1,5 @@
 //@ts-check
-import React from "react";
+import React,{useCallback} from "react";
 import "antd/dist/antd.css";
 import { CloseOutlined } from "@ant-design/icons";
 import { DatePicker, TreeSelect,Button,Table,message } from "antd";
@@ -13,7 +13,7 @@ import StationTreeSelect from "../../component/station-tree-select/station-tree-
 
 const { RangePicker } = DatePicker;
 
-
+const dateFormat = "YYYY-MM-DD HH:mm:ss";
 
 const warningLevelTree = [
   {
@@ -77,102 +77,6 @@ export class WarningQueryCondition {
     
   }
 }
-const dateFormat = "YYYY/MM/DD HH:mm:ss";
-
-
-  const listData=[
-      {
-          key:"1",
-          warningLevel:"General",
-          Station:"Virtual-001",
-          StartTime:"2020-09-01 11:55:59",
-          EndTime:"2020-09-01 12:55:59",
-          Reason:"Temperature Exceed",
-          needCancel:1
-      },
-      {
-        key:"10",
-        warningLevel:"General",
-        Station:"Virtual-001",
-        StartTime:"2020-09-01 11:55:59",
-        EndTime:"2020-09-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:1
-    },
-    {
-        key:"2",
-        warningLevel:"General",
-        Station:"Virtual-002",
-        StartTime:"2020-10-02 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:0
-    },
-    {
-        key:"3",
-        warningLevel:"General",
-        Station:"Virtual-003",
-        StartTime:"2020-10-03 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:1
-    },
-    {
-        key:"4",
-        warningLevel:"General",
-        Station:"Virtual-004",
-        StartTime:"2020-10-04 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:0
-    },
-    {
-        key:"5",
-        warningLevel:"General",
-        Station:"Virtual-005",
-        StartTime:"2020-10-05 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:1
-    },
-    {
-        key:"6",
-        warningLevel:"General",
-        Station:"Virtual-006",
-        StartTime:"2020-10-01 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:0
-    },
-    {
-        key:"7",
-        warningLevel:"General",
-        Station:"Virtual-007",
-        StartTime:"2020-10-07 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:1
-    },
-    {
-        key:"8",
-        warningLevel:"Serious",
-        Station:"Virtual-001",
-        StartTime:"2020-10-08 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:0
-    },
-    {
-        key:"9",
-        warningLevel:"Fatal",
-        Station:"Virtual-002",
-        StartTime:"2020-10-09 11:55:59",
-        EndTime:"2020-10-01 12:55:59",
-        Reason:"Temperature Exceed",
-        needCancel:1
-    }
-  ];
-
 
  let currentSelectedStations=[];
  let currentStartTime="";
@@ -191,37 +95,45 @@ const WarningList = function (props) {
     tableData:[]
   });
  
+  const handleQueryByCondition=useCallback(
+    async (condition,callback)=>{
+      try{
+        const result= await Axios.get(APIConfigEnum.getEnvWarning,{
+          params:condition
+        });
+        let data=result.data;
+        if(!data){
+          data=[];
+        }
+        data=data.map(d=>{
+          d.needCancel={
+            needCancel:d.needCancel,
+            cancelKey:d.key,
+            loading:false,
+          };
+          return d;
+        });
+        if(callback){
+          callback(data);
+        }else{
+          setTreeValue(t=>({...t,tableData:data,levelValue:condition.warningLevel}) );
+        }
+      }catch(e){
+         message.warn("get warning list error"+e.message);
+      }
+    }
+  ,[]);
   useEffect(() => {
     //when triggered from click map icon
     warningQueryCondition.stationsName=currentSelectedStations;
     warningQueryCondition.startTime=currentStartTime?currentStartTime:warningQueryCondition.startTime;
     warningQueryCondition.endTime=currentStopTime?currentStopTime:warningQueryCondition.endTime;
-    warningQueryCondition.type=treeValues.typeValue;
-    handleQueryByCondition(warningQueryCondition,(data)=>{
-      setTreeValue({...treeValues,tableData:data,levelValue:warningLevel});
-      
-    });
+    //warningQueryCondition.type=treeValues.typeValue;
+    handleQueryByCondition(warningQueryCondition);
     
     //console.log("did mound")
-  }, [warningQueryCondition]);
-  /*useEffect(()=>{
-    setTreeValue({
-      levelValue: warningLevel ? warningLevel : ["Fatal"],
-      typeValue: type?type:["Unhandled"],
-      stationsName:treeValues.stationsName,
-      tableData:[]
-    });
-    updatedConditionFromMap=true;
-    console.log("warningQueryCondition")
-  },[warningQueryCondition]);
-  useEffect(()=>{
-    if(updatedConditionFromMap){
-      handleQuery()
-    }
-    updatedConditionFromMap=false;
-    console.log("updatedConditionFromMap",updatedConditionFromMap)
-  },[updatedConditionFromMap])
-  */
+  }, [warningQueryCondition,handleQueryByCondition]);
+  
   const levelTreeProps = {
     size: "small",
     treeData: warningLevelTree,
@@ -359,10 +271,13 @@ async function handleCancelWarning(cancelKey){
    * @param {Array<string>} selectedStations
    * @return {void} 
    */
-  function stationTreeSelectedChanged(selectedStations){
-    currentSelectedStations=selectedStations;
-    warningQueryCondition.stationsName=selectedStations;
-  }
+  const stationTreeSelectedChanged=useCallback(
+    (selectedStations)=>{
+      currentSelectedStations=selectedStations;
+      warningQueryCondition.stationsName=selectedStations;
+      warningQueryCondition.type=treeValues.typeValue;
+    },[warningQueryCondition,treeValues.typeValue]
+  );
   function onTimeSelectChange(dates, dateStrings) {
     currentStartTime=dateStrings[0]+" 00:00:00";
     currentStopTime=dateStrings[1]+" 23:59:59";
@@ -380,30 +295,7 @@ async function handleCancelWarning(cancelKey){
     });
     
   }
-  async function handleQueryByCondition(condition,callback){
-    try{
-      const result= await Axios.get(APIConfigEnum.getEnvWarning,{
-        params:condition
-      });
-      let data=result.data;
-      if(!data){
-        data=[];
-      }
-      data=data.map(d=>{
-        d.needCancel={
-          needCancel:d.needCancel,
-          cancelKey:d.key,
-          loading:false,
-        };
-        return d;
-      });
-      if(callback){
-        callback(data);
-      }
-    }catch(e){
-       message.warn("get warning list error"+e.message);
-    }
-  }
+  
   return (
     <div className="warning_list_container">
       <div className="warning_list_head">
@@ -465,7 +357,7 @@ async function handleCancelWarning(cancelKey){
                 moment(warningQueryCondition.endTime, dateFormat),
               ]}
               //suffixIcon={<SufficIcon/>}
-              format="YYYY/MM/DD HH:mm:ss"
+              format="YYYY-MM-DD"
               //   bordered={false}
               //   onChange={onChange}
             />

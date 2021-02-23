@@ -3,21 +3,16 @@ import React,{useEffect,useState} from "react";
 import {message} from "antd";
 
 import {getTaskParam} from "../../workers/workers-manage";
-import {ExecuteTask,
+import {
   TaskParamListFromDevice,
-  TaskParamFromDevice,
+  
   ToolbarCmdContext,
-  ToolbarCmdCallback
+ 
 } from "../../common/data/realtime/tasks-common"
 
 import "./param-list.css"
 import { useContext } from "react";
-/**
- * @Date: 2020-08-30 11:51:53
- * @Description: 
- * @param {ExecuteTask}  taskInfo
- * @return {void} 
- */
+
 function setParmFrom(taskInfo){
     if(!taskInfo){
         return;
@@ -98,9 +93,7 @@ const initParamList=new TaskParamListFromDevice();
  * @type {function}
  */
 let setParamsList=null;
-/**
- * @type {ToolbarCmdCallback}
- */
+
 let toolbarCmdContext=null;
 /**
  * @type {TaskParamListFromDevice}
@@ -111,13 +104,13 @@ const ParamsList =function(props){
     const [paramList,setParamFunc]=useState(initParamList);
     setParamsList=setParamFunc;
     currentParam=paramList;
+    const {taskInfo}=props;
     useEffect(()=>{
-        const {taskInfo}=props;
         if(!taskInfo){
             return null;
         }
         setParmFrom(taskInfo);
-    },[]); 
+    },[taskInfo]); 
     if(!paramList){
       return null;
     }
@@ -149,12 +142,7 @@ const ParamsList =function(props){
         </>
     );
 }
-/**
- * @Date: 2020-08-31 11:54:45
- * @Description: 
- * @param {TaskParamFromDevice} element
- * @return {JSX.Element} 
- */
+
 function getInputJSX(element){
 
   if(element.Type[0]==="Enum"){

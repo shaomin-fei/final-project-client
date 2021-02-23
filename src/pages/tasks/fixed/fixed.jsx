@@ -5,7 +5,7 @@ import { Layout,message } from "antd";
 import {ToolbarCmdContext,ToolbarCmdCallback,ExecuteParam} from "../../../common/data/realtime/tasks-common";
 import RealTimeContent,{startTask as startShow,stopTask as stopShow, getImportantParams,setImportantParamToToolbar,resetChart,resizeChart,setData as setGraphicData} from "./content/realtime-content";
 import ParamsList,{getParams} from "../../../components/params-list/params-list";
-import {ExecuteTask,TaskParamListFromDevice} from "../../../common/data/realtime/tasks-common";
+import {ExecuteTask} from "../../../common/data/realtime/tasks-common";
 import LeftTree from "../../../components/left-tree/left-tree";
 import "./fixed.css";
 //@ts-ignore
@@ -18,7 +18,7 @@ import PlayAudio from "../../../common/utils/playsound";
 
 //import {AudioData,WaveFormate,parseWaveFormate,parseAudio} from "../../../common/data/realtime/audio";
 
-const { Header, Sider, Content } = Layout;
+const {  Sider, Content } = Layout;
 const playAudio=new PlayAudio();
 let isTaskStopped=true;
 const iniSiderbarState={
@@ -73,18 +73,13 @@ function startTask(){
   currentWorker.postMessage(new WorkerParam(CmdDefineEnum.cmdStartRealtime,param));
   isTaskStopped=false;
   startShow();
-  console.log("start");
+  
 }
-/**
- * @Date: 2020-09-09 23:53:34
- * @Description: 
- * @param {TaskParamListFromDevice} params
- * @return {string} 
- */
+
 function convertParamToString(params){
   let strParam="";
   params.Params.Param.forEach(par=>{
-    if(strParam!=""){
+    if(strParam!==""){
       strParam+=";";
     }
     strParam+=par.Name+"="+par.Value;
@@ -118,7 +113,7 @@ function stopTask(){
       currentWorker&&currentWorker.terminate();
     currentWorker=null;
     playAudio.stop();
-    console.log("stop");
+    
     }, 0);
     
   }
@@ -183,6 +178,7 @@ function workerMessage(e){
     }
     case CmdDefineEnum.cmdStopTaskSucceed:{
       message.info(data.arg);
+      return;
     }
     default:
       return;

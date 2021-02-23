@@ -1,6 +1,5 @@
 import React from "react";
 
-import {SignalInfo} from "./signal-operation";
 import "./signal-info-onmap.css";
 const SignalInfoOnMap=function(props){
     //console.log("xxx",props)

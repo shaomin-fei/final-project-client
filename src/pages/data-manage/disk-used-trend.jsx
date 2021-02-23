@@ -3,10 +3,7 @@ import React,{useEffect} from "react";
 
 import "./data-manage.css";
 
-class DiskUedInfo{
-    time="";
-    volume=0;
-}
+
 const echarts=require("echarts");
 /**
  * @type {echarts.ECharts}
@@ -73,9 +70,7 @@ const option = {
 
 const DiskUsedTrend=function(props){
 
-    /**
-     * @type {Array<DiskUedInfo>}
-     */
+    
     let diskTrendData=props.diskTrendData;
     useEffect(()=>{
         chart=echarts.init(chartContainer);

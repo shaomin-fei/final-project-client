@@ -183,9 +183,9 @@ class FixedTask extends RealtimeTaskBase {
   };
 }
 const fixedTask = new FixedTask();
-console.log("fixedworker load");
+
 onmessage = (ev) => {
-  console.log("fixedworker msg", ev);
+  
   /**
    * @type {WorkerParam}
    */

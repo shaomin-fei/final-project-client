@@ -12,14 +12,13 @@ import React from 'react';
 import { connect} from "react-redux"
 import {withRouter} from 'react-router-dom'
 
-import {TaskType} from "../../../../common/data/task"
 import './daily-monitor.css'
 const DailyMonitor=function(props){
     const redirectToRealTimePage=()=>{
         props.history.replace("/realtime");
     }
     const {currentTask}=props;
-    console.log("DailyMonitor render");
+  
     return (
         <section className="daily_task_container">
             <div className="daily_task_title" onClick={redirectToRealTimePage}>

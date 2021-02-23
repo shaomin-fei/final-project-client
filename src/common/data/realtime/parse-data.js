@@ -5,7 +5,7 @@
  * @Author: shaomin fei
  * @Date: 2020-08-27 07:59:32
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-08-28 00:33:06
+ * @LastEditTime: 2021-02-22 23:35:16
  */
   
   import {parseSpectrum} from "./Spectrum";
@@ -15,9 +15,8 @@
   //import {playAudio} from
   import Utils from "../../utils/utils";
 
-  import {AudioData,
-    parseAudio} from "./audio";
-import { map, offset } from "highcharts";
+  import {parseAudio} from "./audio";
+
 
 
   export const DataTypeEnum={
@@ -54,10 +53,8 @@ export function parseData(data,factor=0.1,original=true){
         while(index<data.byteLength){
             let dataView=null;
             let currentPackageIndex=0;
-            let isInt8Arra=false;
             if(data instanceof Int8Array){
                 dataView=new DataView(data.buffer,index);
-                isInt8Arra=true;
             }else{
                 dataView=new DataView(data,index);
             }

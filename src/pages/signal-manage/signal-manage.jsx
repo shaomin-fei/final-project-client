@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import MapWithStationStatus from "../component/map-with-station-status/map-with-station-status";
+
 import MainNavgationBar from '../../components/main-nav/main-nav';
 import MapSignalManage from "./map-signal-manage";
 

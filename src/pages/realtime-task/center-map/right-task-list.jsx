@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import {renderToString} from "react-dom/server"
 import Control from 'ol/control/Control'
 
-import autoPic from "../../../imgs/gms/task/mscan.png";
-import fixPic from "../../../imgs/gms/task/fixfq.png";
-import scanPic from "../../../imgs/gms/task/pscan.png";
+
 
 export default class RigtTaskControl extends Control{
 
@@ -20,7 +18,7 @@ export default class RigtTaskControl extends Control{
     }
 
     updateTaskCount(currentTask){
-        console.log("realtask list " ,currentTask.Auto,currentTask.Fixed,currentTask.Scan);
+       
        if(this.element){
            const taskCountElements=this.element.getElementsByClassName("task_count");
            taskCountElements[0].innerHTML=currentTask.Auto+"";

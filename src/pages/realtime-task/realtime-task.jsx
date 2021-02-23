@@ -1,7 +1,7 @@
 //@ts-check
 
 import React, { Component } from "react";
-import { Layout,Divider} from "antd";
+import { Layout} from "antd";
 
 import LeftTree from '../../components/left-tree/left-tree';
 import CenterMap from './center-map/center-map';
@@ -10,7 +10,7 @@ import MainNavgationBar from "../../components/main-nav/main-nav";
 
 
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 class RealtimeTask extends Component {
   centerMap=null;
   state = {

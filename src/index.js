@@ -16,7 +16,7 @@ import { Switch, Route, HashRouter } from "react-router-dom";
 
 
 import "./index.css";
-import { MainPageInfo,Routers } from "./config/config";
+import { Routers } from "./config/config";
 import WorkersManage from "./workers/workers-manage";
 import store from "./redux/store";
 

@@ -12,7 +12,7 @@
 //@ts-check
 //window.AudioContext=window.AudioContext||window.webkitAudioContext;
 
-import {WaveFormate} from "../data/realtime/audio";
+
 //@ts-ignore
 window.AudioContext=window.AudioContext||window.webkitAudioContext;
 export default class PlayAudio{
@@ -39,10 +39,7 @@ export default class PlayAudio{
     hasInit=false;
     isPlaying=false;
     
-    /**
-     * 
-     * @param {WaveFormate} wvFormate 
-     */
+
     initPlay(wvFormate){
         //console.log("initplay in");
         if(this.hasInit){

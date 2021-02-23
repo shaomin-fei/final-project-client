@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Station from "../../common/data/station";
+
 import "./station-with-status.css";
 import statioIdle from "../../imgs/station/超短波一类固定站_空闲.png";
 import statioOffline from "../../imgs/station//超短波一类固定站_离线.png";

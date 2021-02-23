@@ -5,11 +5,11 @@
  * @Author: shaomin fei
  * @Date: 2020-08-06 11:57:57
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-13 18:10:53
+ * @LastEditTime: 2021-02-22 23:36:00
  */
 import React from "react";
 import {Link} from "react-router-dom"
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu } from "antd";
 import "antd/dist/antd.css";
 
 import { RouterEnum } from "../../config/define";
@@ -21,32 +21,10 @@ import stationManagePic from "../../imgs/gateway/new/monitor.png";
 import './header-right.css'
 
 const HeaderRight = function (props) {
-  const userName = "--";
   function showAbout(){
 
   }
-  const menueUser = (
-    <Menu >
-      <Menu.Item>
-        <label className="userInfo" htmlFor="">User:{userName}</label>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item>
-        
-          <div>
-            <Button size="large" type="primary"> FeedBack</Button>
-          </div>
-        
-      </Menu.Item>
-      <Menu.Item>
-        
-          <div>
-            <Button  size="large" type="primary">LogOut</Button>
-          </div>
-        
-      </Menu.Item>
-    </Menu>
-  );
+  
 
   const menueNav = (
     <Menu >

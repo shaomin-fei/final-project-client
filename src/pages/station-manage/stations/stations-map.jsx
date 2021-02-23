@@ -1,9 +1,9 @@
-//@ts-check
-import React from "react";
-import { toLonLat, fromLonLat } from "ol/proj";
-import { MapBrowserEvent } from "ol";
 
-import OverlayInfo from "../../../components/map/overlay-info";
+import React from "react";
+import { toLonLat } from "ol/proj";
+
+
+
 import MapWithStationStatus from "../../component/map-with-station-status/map-with-station-status";
 import StationOperationForm from "./station-operation-form";
 import StationOperationBody,{StationBodyInfo,DeviceListInfo} from "./station-operation-form-body";
@@ -11,7 +11,7 @@ import {
     getCurrentTree,
     
   } from "../../../workers/workers-manage";
-import Station from "../../../common/data/station";
+
 
 
 export default class MapStations extends MapWithStationStatus {
@@ -110,9 +110,9 @@ export default class MapStations extends MapWithStationStatus {
     station.selected=true;
     stationInfo.id=station.id;
     //@ts-ignore
-    stationInfo.lon= lonlat[0].toFixed(6)*1;
+    stationInfo.lon= (lonlat[0]*1).toFixed(6)*1;
     //@ts-ignore
-    stationInfo.lat=lonlat[1].toFixed(6)*1;
+    stationInfo.lat=(lonlat[1]*1).toFixed(6)*1;
     stationInfo.center.push(getCurrentTree().name);
     //this.stationBody.addStation(stationInfo);
     /**

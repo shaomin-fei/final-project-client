@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BarsOutlined, CloseOutlined } from "@ant-design/icons";
 
 import "./signal-list.css";

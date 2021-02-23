@@ -1,4 +1,4 @@
-//@ts-check
+
 import React, { useEffect } from "react";
 
 import { SpectrumUtils } from "../utils";
@@ -18,7 +18,7 @@ import Exporting from "highcharts/modules/exporting";
 import {DataTypeEnum} from "../../../common/data/realtime/parse-data"
 
 import "./spectrum.css";
-import { SpectrumData } from "../../../common/data/realtime/Spectrum";
+
 import play from "../../../imgs/icon/sgl/start.png";
 import pause from "../../../imgs/icon/sgl/pause.png";
 
@@ -79,9 +79,9 @@ function waterFallXaxisZoomedCallback(min, max){
   //@ts-ignore
     chart.xAxis[0].setExtremes(min, max);
   };
-function setOptions(props) {
-  if (props.specAttr) {
-    const { xTitle, yTitle, yMin, yMax, yData } = props.specAttr;
+function setOptions(specAttr) {
+  if (specAttr) {
+    const { xTitle, yTitle, yMin, yMax } = specAttr;
     iniChart.xTitle = xTitle || iniChart.xTitle;
     iniChart.yTitle = yTitle || iniChart.yTitle;
     iniChart.yMin = yMin || iniChart.yMin;
@@ -444,8 +444,9 @@ function updateX(data) {
 let spectrumHeight="60%";
 
 const Spectrum = function (props) {
+  const {specAttr}=props;
   useEffect(() => {
-    setOptions(props);
+    setOptions(specAttr);
     addMeasureCount();
     addToolbar();
     setTimeout(()=>{
@@ -456,7 +457,7 @@ const Spectrum = function (props) {
     
     //chart&&chart.setSize(container.clientWidth,container.clientHeight);
     
-  }, [spectrumHeight]);
+  }, [specAttr]);
 
   const showWaterfall=true;
 

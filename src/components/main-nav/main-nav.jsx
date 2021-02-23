@@ -5,9 +5,9 @@
  * @Author: shaomin fei
  * @Date: 2020-08-12 23:23:21
  * @LastEditors: shaomin fei
- * @LastEditTime: 2020-09-02 13:36:29
+ * @LastEditTime: 2021-02-23 00:02:29
  */
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
 // config中引用了该模块，不能在这里引用config，否则会交叉引用，
@@ -17,7 +17,7 @@ import { RouterEnum } from "../../config/define";
 import "../../thirdparty/bootstrap/css/bootstrap.min.css";
 import "./main-nav.css";
 //import navBg from '@/imgs/nav-bar-bg.png'
-import navBg from "../..//imgs/nav-bar-bg.png";
+
 import mainPic from "../../imgs/common/houseWorking.png";
 import realTimeTaskPic from "../../imgs/gateway/new/chaoduanbo.png";
 import signalManagePic from "../../imgs/gateway/new/radio.png";
@@ -25,7 +25,7 @@ import dataBaseManagePic from "../../imgs/gateway/new/dataanalyze.png";
 import stationManagePic from "../../imgs/gateway/new/monitor.png";
 
 import HeaderRight from "../header-right/header-right";
-import Right from "../../pages/cockpit/right/right";
+
 
 const navBarMap = {
   Home: "Home",
@@ -91,15 +91,13 @@ const MainNavgationBar = function (props) {
   };
   const refInfo = useRef(iniRefInfo);
 
-  const moveSliderToSelectedItem = (target) => {
+  const moveSliderToSelectedItem = useCallback((target) => {
     //const {itemSelected,sliderItem}=refInfo.current;
     //debugger
     const clientRect = target.getBoundingClientRect();
-    sliderPos.left = clientRect.left;
-    sliderPos.width = clientRect.width;
-    setSliderPos({ ...sliderPos });
+    setSliderPos(t=>({...t,left:clientRect.left,width:clientRect.width}));
     //sliderPos.width=itemSelected.clientWidth;
-  };
+  },[]);
   const itemSelected = (name, target) => {
     let path = "";
     navBar.forEach((item) => {
@@ -136,6 +134,7 @@ const MainNavgationBar = function (props) {
       if (bar.name === name) {
         return true;
       }
+      return false;
     });
     return item ? item.select : false;
   };
@@ -179,14 +178,10 @@ const MainNavgationBar = function (props) {
   };
 
   useEffect(() => {
-    console.log("nav bar",props);
     setSelectedItem(props.location.pathname);
     moveSliderToSelectedItem(refInfo.current.itemSelected);
-    //console.log("effect call");
-    return () => {
-      //console.log("effect return call");
-    };
-  }, []);
+    
+  }, [props.location.pathname,moveSliderToSelectedItem]);
   // 通过列的嵌套来实现对列宽的再分配
   return (
     <section className="main_navbar_container container-fluid">
@@ -209,7 +204,7 @@ const MainNavgationBar = function (props) {
             sliderPos.display = "none";
             //sliderPos.opacity=0;
             setSliderPos({ ...sliderPos });
-            console.log("transition end");
+            
           }
         }}
       >

@@ -44,11 +44,11 @@ export default class RealtimeTaskBase{
         this.socketIO.on("connect",this.callbackConnected);
     }
     callbackConnected=()=>{
-        console.log("connected",this.currentParam);
+        
         this.socketIO.emit("startTask",this.currentParam,(ack)=>{
             //ack is the task id in server
             if(ack){
-                console.log("ack",ack);
+                
                 this.currentParam.taskid=ack;
                 //@ts-ignore
                 postMessage(new WorkerParam(CmdDefineEnum.cmdStartTaskSucceed,ack));
