@@ -10,7 +10,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.1",
     "echarts": "^4.8.0",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "immutable": "^4.0.0-rc.12",
     "ol": "^6.4.2",
     "prop-types": "^15.7.2",
